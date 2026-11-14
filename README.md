@@ -96,7 +96,7 @@ Copyright 2026 Ronald Rivera and the NASA Space Apps Sangolquí team. Licencia [
 
 **Idioma:** la interfaz, esta documentación y los comentarios van en español. Los nombres de conjuntos de datos y las citas se conservan en su idioma original. English follows the Spanish section.
 
-La entrega oficial es la **v1 congelada** (14 de noviembre de 2026, America/Guayaquil). El tablero por defecto es un sitio estático con datos reales (MOLA, LOLA, GLO-90). No hay banner MOCK sobre ese contenido.
+La entrega oficial es la **v1 congelada** (14 de noviembre de 2026, America/Guayaquil), en modo `banda_propia`. El tablero por defecto es un sitio estático con datos reales (MOLA, LOLA, GLO-90). No hay banner MOCK sobre ese contenido. Equipo: **Devebug Industries**.
 
 ---
 
@@ -111,26 +111,30 @@ El reto pide identificar lugares en la Tierra que se parezcan a emplazamientos d
 El índice v1 usa cuatro variables con **pesos iguales** (0,25): **latitud (|lat|)**, **elevación absoluta**, **pendiente** (Horn 3×3) y **rugosidad** (TRI de Wilson 3×3). Albedo, inercia térmica y cualquier variable meteorológica **no entran** (veredicto de Expertos). El clima no se publica como ráster, para no presentarlo como un dato real.
 
 - Firmas por **bandas de latitud** A–G (mediana e IQR), calculadas por separado en Marte (MOLA MEGDR 64 ppd, ~1 km) y en la Luna (LOLA LDEM_64), sin mezclar cuerpos ni usar celdas terrestres.
-- Distancia euclídea con la regla **`todas_min`** (mínimo sobre todas las bandas) y penalización por IQR. δ = 1 − min(d / d_max, 1).
+- Distancia euclídea en el **modo oficial `banda_propia`**: cada celda se compara solo con la firma de su propia banda de |lat|, como el §5 del método de Ronald. Penalización por IQR. δ = 1 − min(d / d_max, 1). Ronald eligió este modo.
+- **La corrida con `banda_propia` se hizo después de ver el AUC de `todas_min`.** `todas_min` (mínimo sobre las siete bandas) queda como corrida previa; no se borra.
 - En cada sitio de validación se toma la **mediana de las celdas válidas** dentro del buffer oficial (haversina). No se elige la «mejor» celda.
-- Los umbrales de Youden se fijaron solo sobre los 16 sitios del AUC y se **congelaron antes de Ecuador**.
-- Acta y huellas SHA-256: [`docs/version_congelada_v1.md`](./docs/version_congelada_v1.md). Nota de incertidumbre: [`docs/nota_incertidumbre.md`](./docs/nota_incertidumbre.md).
-- La v1 compara cada lugar con las siete bandas y toma la más cercana (`todas_min`). Eso no está en el §5 del método (muestreo en las mismas bandas de latitud). Ronald no aprobó esa diferencia ni eligió entre `todas_min` y `banda_propia`. La v1 no se recalcula. Tiempos y cita literal: la nota de incertidumbre y el apéndice del acta.
+- Los umbrales de Youden se volvieron a fijar sobre los mismos 16 sitios del AUC y se **congelaron antes de Ecuador y de Galápagos**.
+- Acta oficial y huellas SHA-256: [`docs/version_congelada_v1_banda_propia.md`](./docs/version_congelada_v1_banda_propia.md). Corrida previa: [`docs/version_congelada_v1.md`](./docs/version_congelada_v1.md). Nota de incertidumbre: [`docs/nota_incertidumbre.md`](./docs/nota_incertidumbre.md).
+
+Galápagos es solo un **área de evaluación**: 6 606 celdas válidas de 1 km; no entra al AUC ni al umbral. Darwin y Wolf no tienen celdas válidas.
 
 Una revisión v1.1 (firmas sobre sitios objetivo definidos a priori, relieve relativo, pendiente y TRI a escala emparejada, sin latitud) **no fue aprobada**. Queda en disco como trabajo futuro, no como resultado. En el texto en español se habla de las «regiones candidatas para el primer alunizaje de Artemis».
 
 ### Resultados de la validación
 
-En datos reales el índice **no discrimina** bien los análogos etiquetados de los no análogos.
+En datos reales el índice **no discrimina** bien los análogos etiquetados de los no análogos. Las dos corridas dan el mismo AUC y los mismos aciertos:
 
-| Cuerpo | AUC (IC bootstrap 95 %) | Umbral | Sens. | Prec. | Especif. |
-|---|---|---|---|---|---|
-| Marte | **0,09** (0,00–0,29) | 0,13 | 1,00 | 0,50 | **0,00** |
-| Luna | **0,25** (0,00–0,69) | 0,79 | 0,20 | 1,00 | 1,00 |
+| Corrida | AUC Marte (IC 95 %) | AUC Luna (IC 95 %) | Aciertos |
+|---|---|---|---|
+| `banda_propia` (oficial) | **0,09** (0,00–0,29) | **0,25** (0,00–0,69) | **6 de 16** |
+| `todas_min` (previa) | **0,09** (0,00–0,29) | **0,25** (0,00–0,69) | **6 de 16** |
 
-Aciertos de clase en el AUC: **6 de 16**. El modelo nulo que usa solo |lat| obtiene un AUC de Marte de **0,58**, mayor que el del índice completo.
+No son cifras copiadas. En la Luna, la banda propia ya era la ganadora en los 16 sitios, así que δ no cambia. En Marte δ se mueve en 5 de 16 sitios, pero el orden entre análogos y no análogos no cambia (U de Mann–Whitney = 6 de 64 pares), y por eso el AUC queda igual.
 
-**Diagnóstico (no un reajuste):** a ~1 km el terreno planetario típico es suave (mediana de pendiente de la banda A en MOLA ≈ 0,79°). Varios no análogos terrestres también son casi planos a esa escala, y el índice los acerca más a Marte que a análogos clásicos más rugosos, aceptados sobre todo por su geología o mineralogía. Meteor Crater e Inferno Chasm fallan por **escala** (quedan planos en la grilla de 1 km), no necesariamente como análogos a otra resolución. La muestra del AUC es pequeña (16 sitios). No se invirtió el índice ni se retocaron pesos o umbrales después de ver el AUC, ni con Ecuador.
+Umbral oficial de Marte: 0,13 (sensibilidad 1,00, especificidad **0,00**: está degenerado; marca todo como parecido). Umbral de la Luna: 0,79 (sensibilidad 0,20, especificidad 1,00). El modelo nulo que usa solo |lat| obtiene un AUC de Marte de **0,58**, mayor que el del índice completo.
+
+**Diagnóstico:** a ~1 km el terreno planetario típico es suave (mediana de pendiente de la banda A en MOLA ≈ 0,79°). Varios no análogos terrestres también son casi planos a esa escala, y el índice los acerca más a Marte que a análogos clásicos más rugosos. El control de Yasuní (Parque Nacional, Amazonía ecuatoriana; polígono oficial WDPA, 10 272 celdas) lo muestra: pendiente mediana 0,3° y δ Marte 0,96 en `banda_propia`. Un valor alto refleja sobre todo terreno llano. Meteor Crater e Inferno Chasm fallan por **escala** (quedan planos en la grilla de 1 km). La muestra del AUC es pequeña (16 sitios).
 
 Los mapas que hay que leer son los continuos de **δ Marte** y **δ Luna**. El mapa de clases es secundario: el umbral de Marte no tiene poder de discriminación (especificidad 0). **No se presentan porcentajes de cobertura de Ecuador como «análogo».**
 
