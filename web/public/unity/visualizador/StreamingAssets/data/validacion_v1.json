@@ -1,6 +1,6 @@
 {
  "version": "ANALOG/delta v1 real 2026-11-14",
- "congelado_en": "2026-11-14T13:40:40-05:00",
+ "congelado_en": "2026-11-14T15:31:26-05:00",
  "marte": {
   "auc": 0.09375,
   "ic95_inferior": 0.0,
@@ -42,7 +42,7 @@
   "Albedo e inercia térmica no entran al índice v1 (veredicto de Expertos) y no se descargaron.",
   "Pendiente y TRI en proyección equirrectangular cerca de los polos son más inciertos (banda G).",
   "No hay un ráster global terrestre: solo Ecuador/Galápagos y las ventanas de validación.",
-  "Modo de bandas por defecto: todas_min (pendiente de confirmación de Ronald sobre el §5). Los umbrales se fijaron con la misma regla y se congelaron antes de Ecuador.",
+  "Modo de bandas oficial: banda_propia (cada celda se compara solo con la firma de su propia banda de |lat|), como el §5 del método. La corrida con banda_propia se hizo después de ver el AUC de todas_min. todas_min queda como corrida previa, no se borra. Los umbrales se volvieron a fijar con Youden sobre los mismos 16 sitios y se congelaron antes de Ecuador y de Galápagos. Galápagos es solo área de evaluación: no entra al AUC ni al umbral.",
   "Río Tinto, Ries y Sudbury se listan pero no entran al AUC (análogos no de superficie o cobertura actual no comparable); no hay ventanas GLO-90 suyas en esta entrega."
  ],
  "fuentes": {

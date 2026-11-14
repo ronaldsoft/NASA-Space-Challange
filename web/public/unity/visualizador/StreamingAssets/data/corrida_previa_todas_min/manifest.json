@@ -1,0 +1,93 @@
+{
+  "nombre": "ANALOG/delta v1 congelada — exportación Unity WebGL",
+  "version": "ANALOG/delta v1 real 2026-11-14",
+  "congelado_en": "2026-11-14T13:40:40-05:00",
+  "acta": "docs/version_congelada_v1.md",
+  "huella_catalogo_congelado_sha256": "369dd38593f76d46266d1cd86077ce4729fb7b1e3811adc66b74fe0be51c87dd",
+  "huellas_productos_congelados_sha256": {
+    "catalogo.json": "369dd38593f76d46266d1cd86077ce4729fb7b1e3811adc66b74fe0be51c87dd",
+    "tabla_validacion.csv": "7ff7856cc3581e31b1a55f32b5a5cc48191a5160bf677dd3437a0968e4a95218",
+    "delta_marte.png": "0152dfb637616e246d3c946f702ed251266c1a0db2c7d8bc6bfaf5fec30b0d4b",
+    "delta_marte.tif": "dba0f23685d35f5e6399be7ebfbc816e552e0e969a88a8e35821b39b2b1ed406",
+    "delta_luna.png": "5eb786ef217863e0f022127c5d3e1ee1c07099ccc1646b26d750cda00e684dc6",
+    "delta_luna.tif": "daf00ed5e74e6308f2a9f46a4077075e335726c278e901c1a18bef24a67372c7",
+    "clases.png": "c9fedb0c7931fda40311ccf1556266cb1165ceea9de12abfb0c519363e6997af",
+    "clases.tif": "a92f6781cc589d0de787e5ac74eae0042e56c6d89a16bd3abfa23968b0d9b886"
+  },
+  "crs": "EPSG:4326",
+  "extension": {
+    "oeste": -92.007,
+    "norte": 1.7010000000000076,
+    "este": -74.99700000000001,
+    "sur": -5.102999999999992
+  },
+  "grilla": {
+    "ancho": 1890,
+    "alto": 756,
+    "cell_deg": 0.009
+  },
+  "ruta_publica": "/unity/",
+  "archivos": [
+    {
+      "archivo": "clases.json",
+      "bytes": 1795,
+      "sha256": "3cfc2ab00f981233256885952178979c04fab3703932ba290e8cfac0328bdbf5"
+    },
+    {
+      "archivo": "clases.png",
+      "bytes": 80873,
+      "sha256": "09442e5c5f195955b2e477a173f81231a8b2f583e0a5e22db9f53fdab82dc927"
+    },
+    {
+      "archivo": "delta_luna.json",
+      "bytes": 1065,
+      "sha256": "96e8a3fc603addf61987106c9e91128625fea03ff00952d4b934108bcba09fbd"
+    },
+    {
+      "archivo": "delta_luna.png",
+      "bytes": 702071,
+      "sha256": "8aab1226a450d02010fb029744e36265e9318944e36abcd0f95bdefb089f1c8a"
+    },
+    {
+      "archivo": "delta_luna_preview.png",
+      "bytes": 789966,
+      "sha256": "6f625f31352d2605c6671948117baa3d0c054d755dfd169f2535e7089e4c5bf7"
+    },
+    {
+      "archivo": "delta_marte.json",
+      "bytes": 1067,
+      "sha256": "d8deb962acaabe9e4904291e8fa4c23de2dad2b2e2f25e978e6d5e6999f9a198"
+    },
+    {
+      "archivo": "delta_marte.png",
+      "bytes": 697029,
+      "sha256": "b973762d73b1aeaf5734bf195dee802c4d9fb6a67632443fbc306974013f2de8"
+    },
+    {
+      "archivo": "delta_marte_preview.png",
+      "bytes": 793970,
+      "sha256": "be29a30c265a40d2a6e7b0d61e8fca7dd47fc12654da180e4a59fc27cd676f9e"
+    },
+    {
+      "archivo": "hillshade.json",
+      "bytes": 847,
+      "sha256": "6a33199a141569b5e6cb130d278b311be6c85d2231efdd127eec7fec24842892"
+    },
+    {
+      "archivo": "hillshade.png",
+      "bytes": 416001,
+      "sha256": "5e59be7f1caed909fa7dfe1662e318ecc5b71806fb81318de99e74cc791bc519"
+    },
+    {
+      "archivo": "sitios_validacion.geojson",
+      "bytes": 14073,
+      "sha256": "4c1b2e320790406ae99323279a0ee9f1218b6aaf7ac435eace3337bd4df55f76"
+    },
+    {
+      "archivo": "zonas_prioritarias.geojson",
+      "bytes": 4894,
+      "sha256": "4bd6e20a341e7b75f0b3a565ca5ad7faf7c96a3cf261a86909e9ca7754fbc454"
+    }
+  ],
+  "nota": "Estos archivos son una exportación de lectura de los productos v1 ya congelados. No recalculan el índice. El mapa de clases es secundario (especificidad de Marte = 0)."
+}

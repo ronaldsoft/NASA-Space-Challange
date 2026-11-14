@@ -1,0 +1,33 @@
+{
+  "crs": "EPSG:4326",
+  "width": 298,
+  "height": 259,
+  "bounds": {
+    "oeste": -91.80000000000001,
+    "sur": -1.5479999999999923,
+    "este": -89.11800000000001,
+    "norte": 0.7830000000000077
+  },
+  "cell_deg": 0.009,
+  "transform_affine": [
+    0.009,
+    0.0,
+    -91.80000000000001,
+    0.0,
+    -0.009,
+    0.7830000000000077
+  ],
+  "pixel_origin": "upper_left",
+  "axis_order": "row0_is_north",
+  "archivo": "hillshade.png",
+  "codificacion": {
+    "tipo": "PNG RGBA 8 bits",
+    "canal": "R=G=B sombreado",
+    "valor": "byte 0–255 (0 = sombra, 255 = luz)",
+    "nodata": "alpha = 0",
+    "algoritmo": "Horn 3×3, acimut 315°, elevación solar 45°. Solo visual."
+  },
+  "fuente": "Copernicus DEM GLO-90 remuestreado a ~1 km (ecuador_elevation_1km.tif), no altera los productos congelados de δ.",
+  "version": "ANALOG/delta v1 congelada 2026-11-14",
+  "area": "galapagos"
+}

@@ -1,0 +1,41 @@
+{
+  "crs": "EPSG:4326",
+  "width": 1890,
+  "height": 756,
+  "bounds": {
+    "oeste": -92.007,
+    "sur": -5.102999999999992,
+    "este": -74.99700000000001,
+    "norte": 1.7010000000000076
+  },
+  "cell_deg": 0.009,
+  "transform_affine": [
+    0.009,
+    0.0,
+    -92.007,
+    0.0,
+    -0.009,
+    1.7010000000000076
+  ],
+  "pixel_origin": "upper_left",
+  "axis_order": "row0_is_north",
+  "archivo": "delta_marte.png",
+  "vista_previa": "delta_marte_preview.png",
+  "codificacion": {
+    "tipo": "PNG RGBA 8 bits",
+    "canal": "R=G=B",
+    "valor": "byte = round(delta * 255); delta en [0, 1]",
+    "nodata": "alpha = 0 (el valor RGB no es significativo)",
+    "valido": "alpha = 255"
+  },
+  "rango_fisico": {
+    "min": 0.0,
+    "max": 1.0,
+    "unidad": "delta (adimensional)"
+  },
+  "nodata_fuente": -9999.0,
+  "n_celdas_validas": 453375,
+  "colormap_vista_previa": "rampa RGB documentada en README_UNITY.md",
+  "version": "ANALOG/delta v1 congelada 2026-11-14",
+  "sha256_producto_fuente_tif": "dba0f23685d35f5e6399be7ebfbc816e552e0e969a88a8e35821b39b2b1ed406"
+}

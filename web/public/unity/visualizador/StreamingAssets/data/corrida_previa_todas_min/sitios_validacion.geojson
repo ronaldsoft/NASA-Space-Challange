@@ -1,0 +1,487 @@
+{
+  "type": "FeatureCollection",
+  "name": "sitios_validacion_v1_congelada",
+  "crs": {
+    "type": "name",
+    "properties": {
+      "name": "EPSG:4326"
+    }
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -70.01,
+          -24.1
+        ]
+      },
+      "properties": {
+        "id": "yungay",
+        "nombre": "Yungay, núcleo hiperárido del Atacama (Chile)",
+        "buffer_km": 20.0,
+        "etiqueta": "marciano",
+        "clase_conocida": "marte",
+        "clase_predicha": "marte",
+        "delta_marte": 0.8272,
+        "delta_luna": 0.756,
+        "acierto": true,
+        "entra_al_auc": true,
+        "excluido_auc": false,
+        "banda_latitud": "B",
+        "cita": "Navarro-González et al. (2003), 10.1126/science.1089143; Ewing et al. (2006), 10.1016/j.gca.2006.08.020"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -89.6833,
+          75.3667
+        ]
+      },
+      "properties": {
+        "id": "haughton",
+        "nombre": "Estructura de impacto de Haughton, isla Devon (Nunavut, Canadá)",
+        "buffer_km": 12.0,
+        "etiqueta": "marciano",
+        "clase_conocida": "marte",
+        "clase_predicha": "marte",
+        "delta_marte": 0.8952,
+        "delta_luna": 0.672,
+        "acierto": true,
+        "entra_al_auc": true,
+        "excluido_auc": false,
+        "banda_latitud": "F",
+        "cita": "Osinski et al. (2005), 10.1111/j.1945-5100.2005.tb00145.x"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          160.726,
+          -77.866
+        ]
+      },
+      "properties": {
+        "id": "university_valley",
+        "nombre": "University Valley, Valles Secos de McMurdo (Antártida)",
+        "buffer_km": 3.0,
+        "etiqueta": "marciano",
+        "clase_conocida": "marte",
+        "clase_predicha": "marte",
+        "delta_marte": 0.1746,
+        "delta_luna": 0.4115,
+        "acierto": true,
+        "entra_al_auc": true,
+        "excluido_auc": false,
+        "banda_latitud": "F",
+        "cita": "Heldmann et al. (2013), 10.1016/j.pss.2013.05.019; Lapalme et al. (2017a), 10.1017/s0954102016000572"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -16.64,
+          65.06
+        ]
+      },
+      "properties": {
+        "id": "askja",
+        "nombre": "Askja / colada basáltica Vikrahraun 1961 (Islandia)",
+        "buffer_km": 6.0,
+        "etiqueta": "marciano",
+        "clase_conocida": "marte",
+        "clase_predicha": "marte",
+        "delta_marte": 0.7741,
+        "delta_luna": 0.6357,
+        "acierto": true,
+        "entra_al_auc": true,
+        "excluido_auc": false,
+        "banda_latitud": "E",
+        "cita": "Blasizzo et al. (2022), 10.1186/s40623-022-01711-5, additional file 1, hoja '(1.1) Samples': punto medio de la colada Vikrahraun entre bocas (65.0647, -16.7247) y frente (65.0590, -16.5454). Se descarta el valor anterior 65.03, -16.78."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -155.4629,
+          19.8291
+        ]
+      },
+      "properties": {
+        "id": "mauna_kea",
+        "nombre": "Conos de ceniza de la cumbre de Mauna Kea (Hawái, EE. UU.)",
+        "buffer_km": 10.0,
+        "etiqueta": "ambos",
+        "clase_conocida": "ambos",
+        "clase_predicha": "marte",
+        "delta_marte": 0.1304,
+        "delta_luna": 0.1304,
+        "acierto": false,
+        "entra_al_auc": true,
+        "excluido_auc": false,
+        "banda_latitud": "B",
+        "cita": "Guinness et al. (2007), 10.1029/2006je002822; ten Kate et al. (2013), 10.1061/(asce)as.1943-5525.0000200; Graham et al. (2015), 10.1016/j.asr.2015.01.024"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          13.3072,
+          79.4305
+        ]
+      },
+      "properties": {
+        "id": "sverrefjell",
+        "nombre": "Sverrefjell, complejo volcánico de Bockfjorden (Svalbard, Noruega)",
+        "buffer_km": 5.0,
+        "etiqueta": "marciano",
+        "clase_conocida": "marte",
+        "clase_predicha": "marte",
+        "delta_marte": 0.3086,
+        "delta_luna": 0.7082,
+        "acierto": true,
+        "entra_al_auc": true,
+        "excluido_auc": false,
+        "banda_latitud": "F",
+        "cita": "Treiman et al. (2002), 10.1016/s0012-821x(02)00998-6"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -13.7744,
+          29.021
+        ]
+      },
+      "properties": {
+        "id": "timanfaya",
+        "nombre": "Parque Nacional de Timanfaya, Lanzarote (España)",
+        "buffer_km": 8.0,
+        "etiqueta": "ambos",
+        "clase_conocida": "ambos",
+        "clase_predicha": "ambos",
+        "delta_marte": 0.8939,
+        "delta_luna": 0.7915,
+        "acierto": true,
+        "entra_al_auc": true,
+        "excluido_auc": false,
+        "banda_latitud": "B",
+        "cita": "Martínez-Frías et al. (2017), 10.18814/epiiugs/2017/v40i4/017035; Alberquilla et al. (2022), 10.1038/s41598-022-20960-8"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -111.0222,
+          35.0275
+        ]
+      },
+      "properties": {
+        "id": "meteor_crater",
+        "nombre": "Meteor Crater (Barringer), Arizona (EE. UU.)",
+        "buffer_km": 3.0,
+        "etiqueta": "lunar",
+        "clase_conocida": "luna",
+        "clase_predicha": "marte",
+        "delta_marte": 0.9419,
+        "delta_luna": 0.5109,
+        "acierto": false,
+        "entra_al_auc": true,
+        "excluido_auc": false,
+        "banda_latitud": "C",
+        "cita": "Impact Earth (Western University), ficha Barringer; contexto en Osinski et al. (2023), 10.3389/fspas.2023.1186173"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -111.6336,
+          35.5831
+        ]
+      },
+      "properties": {
+        "id": "sp_mountain",
+        "nombre": "S P Mountain (S P Crater), campo volcánico de San Francisco, Arizona (EE. UU.)",
+        "buffer_km": 8.0,
+        "etiqueta": "ambos",
+        "clase_conocida": "ambos",
+        "clase_predicha": "marte",
+        "delta_marte": 0.9231,
+        "delta_luna": 0.5465,
+        "acierto": false,
+        "entra_al_auc": true,
+        "excluido_auc": false,
+        "banda_latitud": "C",
+        "cita": "Gullikson y Rumpf (2021), USGS OFR 2021-1072, https://pubs.usgs.gov/of/2021/1072/ofr20211072.pdf"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -113.1903,
+          42.9667
+        ]
+      },
+      "properties": {
+        "id": "inferno_chasm",
+        "nombre": "Inferno Chasm, llanura de Snake River / entorno de Craters of the Moon, Idaho (EE. UU.)",
+        "buffer_km": 5.0,
+        "etiqueta": "lunar",
+        "clase_conocida": "luna",
+        "clase_predicha": "marte",
+        "delta_marte": 0.9426,
+        "delta_luna": 0.5372,
+        "acierto": false,
+        "entra_al_auc": true,
+        "excluido_auc": false,
+        "banda_latitud": "C",
+        "cita": "Garry et al. (2015), resumen LPSC 46, 1009 (coordenada de resumen, no de revista); Greeley (1971), 10.1126/science.172.3984.722"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -54.9589,
+          -2.8567
+        ]
+      },
+      "properties": {
+        "id": "tapajos",
+        "nombre": "FLONA Tapajós, torre LBA km 67 (BR-Sa1), Amazonía (Brasil)",
+        "buffer_km": 10.0,
+        "etiqueta": "no_analogo",
+        "clase_conocida": "ninguno",
+        "clase_predicha": "marte",
+        "delta_marte": 0.9778,
+        "delta_luna": 0.7465,
+        "acierto": false,
+        "entra_al_auc": true,
+        "excluido_auc": false,
+        "banda_latitud": "A",
+        "cita": "AmeriFlux BR-Sa1, https://ameriflux.lbl.gov/sites/siteinfo/BR-Sa1 ; IGBP EBF"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -88.2904,
+          40.0062
+        ]
+      },
+      "properties": {
+        "id": "bondville",
+        "nombre": "Bondville, Illinois (US-Bo1), llanura agrícola (EE. UU.)",
+        "buffer_km": 5.0,
+        "etiqueta": "no_analogo",
+        "clase_conocida": "ninguno",
+        "clase_predicha": "marte",
+        "delta_marte": 0.9591,
+        "delta_luna": 0.6294,
+        "acierto": false,
+        "entra_al_auc": true,
+        "excluido_auc": false,
+        "banda_latitud": "C",
+        "cita": "AmeriFlux US-Bo1, 10.17190/AMF/1246036 ; IGBP CRO"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -72.1715,
+          42.5378
+        ]
+      },
+      "properties": {
+        "id": "harvard_forest",
+        "nombre": "Harvard Forest EMS (US-Ha1), Massachusetts (EE. UU.)",
+        "buffer_km": 5.0,
+        "etiqueta": "no_analogo",
+        "clase_conocida": "ninguno",
+        "clase_predicha": "marte",
+        "delta_marte": 0.9645,
+        "delta_luna": 0.7096,
+        "acierto": false,
+        "entra_al_auc": true,
+        "excluido_auc": false,
+        "banda_latitud": "C",
+        "cita": "AmeriFlux US-Ha1, 10.17190/AMF/1246059 ; IGBP DBF"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          148.1517,
+          -35.6566
+        ]
+      },
+      "properties": {
+        "id": "tumbarumba",
+        "nombre": "Tumbarumba (AU-Tum), Nueva Gales del Sur (Australia)",
+        "buffer_km": 5.0,
+        "etiqueta": "no_analogo",
+        "clase_conocida": "ninguno",
+        "clase_predicha": "marte",
+        "delta_marte": 0.8765,
+        "delta_luna": 0.6836,
+        "acierto": false,
+        "entra_al_auc": true,
+        "excluido_auc": false,
+        "banda_latitud": "C",
+        "cita": "FLUXNET AU-Tum, 10.18140/FLX/1440126 ; IGBP EBF"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          10.4522,
+          51.0792
+        ]
+      },
+      "properties": {
+        "id": "hainich",
+        "nombre": "Hainich (DE-Hai), Turingia (Alemania)",
+        "buffer_km": 5.0,
+        "etiqueta": "no_analogo",
+        "clase_conocida": "ninguno",
+        "clase_predicha": "marte",
+        "delta_marte": 0.8636,
+        "delta_luna": 0.7213,
+        "acierto": false,
+        "entra_al_auc": true,
+        "excluido_auc": false,
+        "banda_latitud": "D",
+        "cita": "FLUXNET DE-Hai, 10.18140/FLX/1440148 ; IGBP DBF"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          24.2948,
+          61.8474
+        ]
+      },
+      "properties": {
+        "id": "hyytiala",
+        "nombre": "Hyytiälä / SMEAR II (FI-Hyy), Finlandia",
+        "buffer_km": 5.0,
+        "etiqueta": "no_analogo",
+        "clase_conocida": "ninguno",
+        "clase_predicha": "marte",
+        "delta_marte": 0.9383,
+        "delta_luna": 0.5983,
+        "acierto": false,
+        "entra_al_auc": true,
+        "excluido_auc": false,
+        "banda_latitud": "E",
+        "cita": "FLUXNET FI-Hyy, 10.18140/FLX/1440158 ; IGBP ENF"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -6.5532,
+          37.7267
+        ]
+      },
+      "properties": {
+        "id": "rio_tinto",
+        "nombre": "Peña de Hierro / cabecera del Río Tinto (Huelva, España)",
+        "buffer_km": 5,
+        "etiqueta": "marciano",
+        "clase_conocida": "marte",
+        "clase_predicha": "",
+        "delta_marte": null,
+        "delta_luna": null,
+        "acierto": false,
+        "entra_al_auc": false,
+        "excluido_auc": true,
+        "banda_latitud": "C",
+        "cita": "Amils et al. (2014), 10.3390/life4030511; Fernández-Remolar et al. (2005), 10.1016/j.epsl.2005.09.043. Análogo solo geoquímico/mineralógico; excluido del AUC de superficie. Sin ventana GLO-90 en esta entrega."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          10.5569,
+          48.8842
+        ]
+      },
+      "properties": {
+        "id": "ries",
+        "nombre": "Ries (Nördlinger Ries), Alemania",
+        "buffer_km": 13,
+        "etiqueta": "lunar",
+        "clase_conocida": "luna",
+        "clase_predicha": "",
+        "delta_marte": null,
+        "delta_luna": null,
+        "acierto": false,
+        "entra_al_auc": false,
+        "excluido_auc": true,
+        "banda_latitud": "D",
+        "cita": "Stöffler et al. (2013), 10.1111/maps.12086; IUGS Geoheritage. Cubeta con ciudad y agricultura; no usar como positivo de superficie. Sin ventana GLO-90 en esta entrega."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -81.183,
+          46.6
+        ]
+      },
+      "properties": {
+        "id": "sudbury",
+        "nombre": "Cuenca de Sudbury, Ontario (Canadá)",
+        "buffer_km": 5,
+        "etiqueta": "lunar",
+        "clase_conocida": "luna",
+        "clase_predicha": "",
+        "delta_marte": null,
+        "delta_luna": null,
+        "acierto": false,
+        "entra_al_auc": false,
+        "excluido_auc": true,
+        "banda_latitud": "D",
+        "cita": "Lowman (1992), 10.1029/92rg00755. Análogo geológico de cuenca tipo mare; cubierta de bosque, lagos y área urbana. Coordenada de catálogo no verificada en ficha PASSC. Excluido del AUC de superficie. Sin ventana GLO-90 en esta entrega."
+      }
+    }
+  ]
+}
