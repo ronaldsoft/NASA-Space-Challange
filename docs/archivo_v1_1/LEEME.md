@@ -8,4 +8,4 @@ Estos materiales se conservan solo en disco. No son un resultado oficial y no de
 - Preparación de rásteres en `data/processed/v11/` (si existe), incompleta y no puntuada
 - `pipeline/prepare_v11_rasters.py` y `pipeline/run_v11_sitios_objetivo.py` (el puntuador exige estado `congelado` y no debe ejecutarse)
 
-El entregable congelado es la v1 por bandas. Véase `docs/version_congelada_v1.md`.
+El entregable congelado es la v1 por bandas, modo oficial `banda_propia`. Véase `docs/version_congelada_v1_banda_propia.md`. La corrida previa `todas_min` está en `docs/version_congelada_v1.md`.

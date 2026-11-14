@@ -1,7 +1,6 @@
 import { defTermino, term } from "./glossary";
 import { escapeHtml } from "./maps";
 import type { Catalogo, Nivel, SitioValidacion, Vista, ZonaPrioritaria } from "./types";
-import { CLASS_LABELS } from "./types";
 
 export function fmt(n: number | null | undefined, d = 3): string {
   if (n == null || Number.isNaN(n)) return "—";
@@ -14,6 +13,67 @@ export function fraseDelta(d: number | null | undefined): string {
   if (d >= 0.5) return "parecido a medias, según el índice";
   if (d >= 0.2) return "poco parecido, según el índice";
   return "casi nada parecido, según el índice";
+}
+
+/** Bins aligned with fraseDelta: alto ≥ 0,8; medio ≥ 0,5; bajo ≥ 0,2; casi nulo. */
+export function nivelDelta(d: number | null | undefined): string {
+  if (d == null || Number.isNaN(d)) return "sin dato";
+  if (d >= 0.8) return "alto";
+  if (d >= 0.5) return "medio";
+  if (d >= 0.2) return "bajo";
+  return "casi nulo";
+}
+
+export function fraseParecido(
+  cuerpo: "Marte" | "la Luna",
+  d: number | null | undefined,
+  conNumero = true,
+): string {
+  const n = nivelDelta(d);
+  if (n === "sin dato") return `Parecido a ${cuerpo} según el índice: sin dato`;
+  const num = conNumero && d != null ? ` (δ ${fmt(d, 2)})` : "";
+  return `Parecido a ${cuerpo} según el índice: ${n}${num}`;
+}
+
+export const NOTA_INDICE = "Es un índice, no una clasificación.";
+
+
+const ISLAS_GALAPAGOS: { isla: string; n: number }[] = [
+  { isla: "Isabela", n: 4128 },
+  { isla: "Santa Cruz", n: 839 },
+  { isla: "Fernandina", n: 527 },
+  { isla: "Santiago", n: 451 },
+  { isla: "San Cristóbal", n: 414 },
+  { isla: "Floreana", n: 107 },
+  { isla: "Marchena", n: 80 },
+  { isla: "Española", n: 24 },
+  { isla: "Pinta", n: 24 },
+  { isla: "Santa Fe", n: 5 },
+  { isla: "Baltra", n: 4 },
+  { isla: "Pinzón", n: 2 },
+  { isla: "Genovesa", n: 1 },
+  { isla: "Rábida", n: 0 },
+  { isla: "Seymour Norte", n: 0 },
+  { isla: "Plaza Sur", n: 0 },
+  { isla: "Wolf", n: 0 },
+  { isla: "Darwin", n: 0 },
+];
+
+export function islasGalapagosHTML(nivel: Nivel): string {
+  const filas = ISLAS_GALAPAGOS.map(
+    (r) => `<tr><th scope="row">${escapeHtml(r.isla)}</th><td class="num">${r.n.toLocaleString("es-EC")}</td></tr>`,
+  ).join("");
+  const fuente =
+    nivel === "explorador"
+      ? "Cuenta: una celda de 1 km si su centro cae en la isla y tiene dato. Fuente del contorno: GADM 4.1. Darwin y Wolf no tienen celdas a esta escala."
+      : "Se cuenta una celda de 1 km si su centro cae dentro del polígono (all_touched = False) y es válida en la máscara oficial de pendiente/TRI/δ (banda_propia). Fuente: GADM 4.1, provincia Galápagos (https://gadm.org/; 18 jul 2022). No se redistribuye el shapefile. Darwin y Wolf = 0. Galápagos no entra al AUC ni al umbral. Detalle: docs/galapagos_celdas_por_isla.md.";
+  return `<h3>Celdas válidas por isla (Galápagos)</h3>
+    <p>En total hay <strong>6 606</strong> celdas válidas de 1 km. Darwin y Wolf tienen <strong>0</strong>.</p>
+    <table class="islas" data-testid="celdas-por-isla">
+      <thead><tr><th>Isla</th><th>Celdas válidas</th></tr></thead>
+      <tbody>${filas}</tbody>
+    </table>
+    <p class="muted">${fuente}</p>`;
 }
 
 export function cajaExplica(titulo: string, cuerpo: string): string {
@@ -50,7 +110,7 @@ export function homeHTML(nivel: Nivel): string {
           <li>Por eso hay que leer los mapas <strong>continuos</strong> de δ, no un recuento de «cuánto de Ecuador es análogo».</li>
         </ul>`
         : `<ul class="pasos-home">
-          <li>v1 congelada (14 de noviembre de 2026, America/Guayaquil): ${term("std")}, firmas por ${term("bandas")} A–G (mediana e IQR), distancia euclídea con penalización ${term("iqr")}, modo <span class="mono">todas_min</span>, umbrales de ${term("youden")} congelados antes de Ecuador.</li>
+          <li>v1 congelada (14 de noviembre de 2026, America/Guayaquil): ${term("std")}, firmas por ${term("bandas")} A–G (mediana e IQR), distancia euclídea con penalización ${term("iqr")}, modo oficial <span class="mono">banda_propia</span> (la corrida se hizo después de ver el AUC de <span class="mono">todas_min</span>), umbrales de ${term("youden")} congelados antes de Ecuador y de Galápagos.</li>
           <li>Fuentes: MOLA MEGDR 64 ppd, LOLA LDEM_64 v3.1, Copernicus DEM GLO-90. Pendiente Horn y TRI Wilson recalculados en la grilla remuestreada.</li>
           <li>${term("auc")} Marte 0,09 (IC 95 % 0,00–0,29); Luna 0,25 (0,00–0,69). Aciertos 6/16. ${term("nulo")} de solo |lat|: AUC Marte 0,58. ${term("especificidad")} de Marte = 0.</li>
           <li>No se presentan porcentajes del mapa de clases. Una revisión v1.1 no fue aprobada y queda solo como trabajo futuro.</li>
@@ -98,7 +158,7 @@ export function homeHTML(nivel: Nivel): string {
       </button>
       <button type="button" class="home-card" data-action="ir" data-ir="visualizador">
         <span class="k">3D</span><strong>Visualizador 3D</strong>
-        <span>Vista 3D del terreno con los productos congelados de la v1.</span>
+        <span>Vista 3D del terreno con los productos congelados de la v1. Ecuador y Galápagos van en una sola grilla; no hay una vista aparte.</span>
       </button>
     </div>
   </section>`;
@@ -139,7 +199,7 @@ export const TOUR_PASOS: { vista: Vista; titulo: string; cuerpo: string }[] = [
     vista: "visualizador",
     titulo: "Visualizador 3D",
     cuerpo:
-      "Este visualizador 3D usa los mismos productos congelados de la v1. No consulta bases de datos en vivo. Puedes verlo a pantalla completa. Cuando termines, cierra el recorrido o repítelo cuando quieras.",
+      "Este visualizador 3D usa los mismos productos congelados de la v1, en una sola grilla de Ecuador y Galápagos (12 zonas). No hay una vista aparte de Galápagos. No consulta bases de datos en vivo. Puedes verlo a pantalla completa.",
   },
 ];
 
@@ -191,6 +251,8 @@ export function validationHTML(cat: Catalogo, sitios: SitioValidacion[], nivel: 
         "Un AUC menor que 0,5 no se «voltea»",
         "Significa que, en este conjunto, varios no análogos quedan más cerca de la firma típica que los análogos. El equipo acordó no invertir el índice ni retocar los pesos después de ver el número.",
       )}
+      <h3>Por qué el AUC de banda_propia coincide con el de todas_min</h3>
+      <p>Las dos corridas dan el mismo AUC (Marte 0,09, Luna 0,25). En la Luna, la banda propia ya era la ganadora en los 16 sitios, así que δ no cambia. En Marte δ sí se mueve en 5 de 16 sitios (el d_max pasa de 5,784 a 7,105), pero el orden entre análogos y no análogos no cambia: el U de Mann–Whitney sigue siendo 6 de 64 pares. Por eso el AUC no se mueve aunque el mapa de Marte sí.</p>
       <h3>Tabla de sitios</h3>
       ${tableHTML(sitios, "estudiante")}
     </section>`;
@@ -200,13 +262,15 @@ export function validationHTML(cat: Catalogo, sitios: SitioValidacion[], nivel: 
   return `<section class="prose" data-testid="validacion-oficial">
     <h2>Validación oficial de la v1 congelada</h2>
     ${avisoHonestidad()}
-    <p>Configuración por defecto, sin cambios: firmas por ${term("bandas")}, modo <strong>todas_min</strong>, vector con |lat|, elevación absoluta, pesos iguales y umbrales de ${term("youden")} congelados antes de Ecuador. ${term("std")} ajustados solo en el cuerpo de referencia.</p>
+    <p>Configuración oficial: firmas por ${term("bandas")}, modo <span class="mono">banda_propia</span>, vector con |lat|, elevación absoluta, pesos iguales y umbrales de ${term("youden")} congelados antes de Ecuador y de Galápagos. ${term("std")} ajustados solo en el cuerpo de referencia. <strong>La corrida con <span class="mono">banda_propia</span> se hizo después de ver el AUC de <span class="mono">todas_min</span>.</strong> Galápagos no entra al AUC ni al umbral.</p>
     <ul class="auc-lead">
       <li><strong>AUC Marte: 0,09</strong> (IC bootstrap 95 %: 0,00–0,29). Umbral 0,13; sensibilidad 1,00; precisión 0,50; especificidad 0,00.</li>
       <li><strong>AUC Luna: 0,25</strong> (IC bootstrap 95 %: 0,00–0,69). Umbral 0,79; sensibilidad 0,20; precisión 1,00; especificidad 1,00.</li>
-      <li>Aciertos de clase en los sitios del AUC: <strong>${aciertos} de ${n}</strong>.</li>
+      <li>Aciertos en los sitios del AUC: <strong>${aciertos} de ${n}</strong>.</li>
     </ul>
     <p>El índice no discrimina bien (ambos AUC &lt; 0,5). No se presentan porcentajes del mapa de clases de Ecuador.</p>
+    <h3>Por qué el AUC coincide con el de <span class="mono">todas_min</span></h3>
+    <p>El AUC es el mismo (Marte 0,09375, Luna 0,2545). No son cifras copiadas. En la Luna, la banda ganadora de <span class="mono">todas_min</span> ya era la propia en 16 de 16 sitios; δ Luna es idéntica (SHA-256 de <span class="mono">delta_luna.png</span>: <span class="mono">5eb786ef…</span>). En Marte la banda ganadora cambia en 5 de 16 y δ se mueve (<span class="mono">d_max</span> de 5,784 a 7,105); el mapa cambia (oficial <span class="mono">47839ad2…</span>, corrida previa <span class="mono">0152dfb6…</span>). El orden entre análogos y no análogos no cambia: U de Mann–Whitney = 6 de 64 pares, así que AUC = 6/64 = 0,09375.</p>
     <h3>Tabla de sitios</h3>
     ${tableHTML(sitios, "cientifico")}
     ${variantMetricsHTML(cat)}
@@ -225,9 +289,12 @@ function etiquetaAmiga(cls: string): string {
   return cls;
 }
 
-function pill(cls: string): string {
-  const lab = CLASS_LABELS[cls] ?? cls;
-  return `<span class="pill pill-${escapeHtml(cls)}">${escapeHtml(lab)}</span>`;
+function segunIndiceCelda(s: SitioValidacion, nivel: Nivel): string {
+  if (s.clase_predicha == null || s.clase_predicha === "" || s.excluido_auc) {
+    return "<span class='muted'>excluido del AUC</span>";
+  }
+  const con = nivel !== "explorador";
+  return `${escapeHtml(fraseParecido("Marte", s.delta_marte, con))}<br>${escapeHtml(fraseParecido("la Luna", s.delta_luna, con))}`;
 }
 
 function tableHTML(sitios: SitioValidacion[], nivel: Nivel): string {
@@ -235,16 +302,12 @@ function tableHTML(sitios: SitioValidacion[], nivel: Nivel): string {
   const rows = sitios
     .map((s) => {
       const fail = s.entra_al_auc !== false && !s.excluido_auc && !s.acierto;
-      const pred =
-        s.clase_predicha == null || s.clase_predicha === ""
-          ? "<span class='muted'>excluido del AUC</span>"
-          : pill(s.clase_predicha);
       return `<tr class="${fail ? "is-fail" : ""}">
         <td><button type="button" class="linkish" data-sitio-abrir="${escapeHtml(s.nombre)}" title="${escapeHtml(s.nombre)}">${escapeHtml(nombreCorto(s.nombre))}</button></td>
         ${compact ? "" : `<td class="mono">${s.lat.toFixed(3)}, ${s.lon.toFixed(3)}</td><td>${s.buffer_km}</td>
         <td>${escapeHtml(s.banda_latitud ?? "")} → M ${escapeHtml(s.banda_ganadora_marte ?? "—")} / L ${escapeHtml(s.banda_ganadora_luna ?? "—")}</td>`}
-        <td>${pill(s.clase_conocida)}</td>
-        <td>${pred}</td>
+        <td>${escapeHtml(etiquetaAmiga(s.clase_conocida))}</td>
+        <td>${segunIndiceCelda(s, nivel)}</td>
         <td class="mono">${fmt(s.delta_marte, 2)}</td>
         <td class="mono">${fmt(s.delta_luna, 2)}</td>
         <td class="${s.excluido_auc ? "" : s.acierto ? "ok" : "fail"}">${s.excluido_auc ? "fuera del AUC" : s.acierto ? "sí" : "no"}</td>
@@ -254,9 +317,9 @@ function tableHTML(sitios: SitioValidacion[], nivel: Nivel): string {
     })
     .join("");
   const head = compact
-    ? `<th>Sitio</th><th>Clase conocida</th><th>Predicha</th><th>δ Marte</th><th>δ Luna</th><th>Acierto</th>`
+    ? `<th>Sitio</th><th>Etiqueta conocida</th><th>Según el índice</th><th>δ Marte</th><th>δ Luna</th><th>Acierto</th>`
     : `<th>Sitio</th><th>Lat, lon</th><th>Buf. km</th><th>Banda propia → ganadora</th>
-      <th>Clase conocida</th><th>Predicha</th><th>δ Marte</th><th>δ Luna</th>
+      <th>Etiqueta conocida</th><th>Según el índice</th><th>δ Marte</th><th>δ Luna</th>
       <th>Acierto</th><th>Cita</th><th>AUC</th>`;
   return `<div class="tabla-wrap"><table class="validacion" data-testid="tabla-validacion">
     <thead><tr>${head}</tr></thead>
@@ -331,6 +394,9 @@ export function diagnosisHTML(nivel: Nivel): string {
         "Entonces, ¿para qué sirve el mapa?",
         "Sirve para ver un retrato honesto de la superficie a 1 km, no para declarar que un porcentaje de Ecuador «es Marte». El mapa de clases no se usa como inventario, porque el corte de Marte dejó entrar a todos los no análogos.",
       )}
+      <h3>Yasuní, un control en selva plana</h3>
+      <p>En el Parque Nacional Yasuní, selva casi plana (pendiente mediana 0,3°), la similitud a Marte sale en 0,96. Un valor alto, aquí, indica sobre todo terreno llano a 1 km.</p>
+      ${islasGalapagosHTML("explorador")}
     </section>`;
   }
   if (nivel === "estudiante") {
@@ -346,12 +412,15 @@ export function diagnosisHTML(nivel: Nivel): string {
       <p>Meteor Crater (~1,2 km) e Inferno Chasm quedan casi planos en la grilla. Eso es un límite de resolución, no una sentencia sobre el sitio a otra escala.</p>
       <h3>Muestra pequeña y decisión de no retocar</h3>
       <p>n = 16, intervalos anchos. No se invirtió el índice ni se retocaron pesos o umbrales después del AUC, ni con Ecuador. El umbral de Marte (0,13) tiene ${term("especificidad")} 0: el mapa de clases no es un inventario y no se dan porcentajes de cobertura.</p>
+      <h3>Control en Yasuní</h3>
+      <p>En el polígono oficial del Parque Nacional Yasuní (n = 10 272 celdas; pendiente 0,30°) la mediana de δ Marte es 0,963 con <span class="mono">banda_propia</span> (0,954 en la corrida previa). Un δ alto indica sobre todo terreno llano a 1 km.</p>
+      ${islasGalapagosHTML("estudiante")}
     </section>`;
   }
   return `<section class="prose" data-testid="diagnostico">
     <h2>Diagnóstico: por qué falló la v1</h2>
     ${avisoHonestidad()}
-    <p>El índice v1, en datos reales y con la configuración congelada (todas_min, vector con |lat|, elevación absoluta, pesos iguales), <strong>no discrimina</strong> los análogos etiquetados de los no análogos. El AUC de Marte es <strong>0,09</strong> (IC 95 % 0,00–0,29) y el de la Luna, <strong>0,25</strong> (IC 95 % 0,00–0,69), ambos por debajo de 0,5. El modelo nulo que usa solo |lat| obtiene un AUC de Marte de <strong>0,58</strong>, mayor que el del índice completo.</p>
+    <p>El índice v1, en datos reales y con la configuración congelada (<span class="mono">banda_propia</span>, vector con |lat|, elevación absoluta, pesos iguales), <strong>no discrimina</strong> los análogos etiquetados de los no análogos. El AUC de Marte es <strong>0,09</strong> (IC 95 % 0,00–0,29) y el de la Luna, <strong>0,25</strong> (IC 95 % 0,00–0,69), ambos por debajo de 0,5. El modelo nulo que usa solo |lat| obtiene un AUC de Marte de <strong>0,58</strong>, mayor que el del índice completo.</p>
     <h3>El terreno planetario típico a 1 km es suave</h3>
     <p>A ~1 km, Marte en el MEGDR es muy suave: la mediana de pendiente de la banda A es 0,79° (IQR 0,34–1,90°) y la de TRI, 12 m. Los no análogos terrestres del conjunto (llanura agrícola de Bondville, bosque de Tapajós, Hyytiälä, etc.) también son casi planos a esta escala (pendientes 0,1–0,7°, TRI de unos pocos metros). En ese espacio, Tapajós llega a δ Marte = 0,98, más alto que Yungay, Askja o Haughton.</p>
     <h3>Los análogos aceptados son sobre todo geológicos y mineralógicos, y más rugosos</h3>
@@ -362,6 +431,9 @@ export function diagnosisHTML(nivel: Nivel): string {
     <p>El umbral y el AUC se fijaron solo sobre 16 sitios. Los intervalos de confianza son anchos. No se invirtió el índice, no se retocaron los pesos y no se reajustó el umbral después de ver el AUC ni con Ecuador.</p>
     <h3>Cómo hay que leer el resultado</h3>
     <p>El umbral de Youden de Marte queda en 0,13, con sensibilidad 1,0 y <strong>especificidad 0,0</strong>: todos los no análogos también lo superan. Por eso el mapa de clases no es un inventario fiable y no se presentan porcentajes de Ecuador como «análogo de Marte». Los mapas que hay que leer son los continuos de δ Marte y δ Luna, junto con esta validación y la nota de incertidumbre.</p>
+    <h3>Control en Yasuní</h3>
+    <p>En el polígono oficial del Parque Nacional Yasuní (WDPA/WDPCA site_id 186; n = 10 272; pendiente mediana 0,30°, TRI 5,38 m) la mediana de δ Marte es 0,9628 con <span class="mono">banda_propia</span> y 0,9543 en la corrida previa <span class="mono">todas_min</span>. Un δ alto indica sobre todo terreno llano a 1 km. Detalle: <span class="mono">docs/control_yasuni.md</span>.</p>
+    ${islasGalapagosHTML("cientifico")}
   </section>`;
 }
 
@@ -382,8 +454,8 @@ export function uncertaintyHTML(cat: Catalogo, nivel: Nivel): string {
         <li>No podemos señalar un porcentaje de Ecuador como «análogo de Marte» o «de la Luna». El corte usado para pintar clases dejó pasar a todos los no análogos de la prueba.</li>
         <li>No publicamos un mapa de clima, para no confundirlo con un dato real de este trabajo.</li>
       </ul>
-      <h3>Una regla que no está en el método original</h3>
-      <p>Para cada lugar, la v1 mira las siete franjas de latitud y se queda con la más cercana. El §5 del método pide muestrear Marte y la Luna en las mismas franjas de los sitios terrestres. Ronald no aprobó esa diferencia. La v1 no se cambia.</p>
+      <h3>Cómo se compara cada lugar</h3>
+      <p>La corrida oficial usa la franja de latitud de cada lugar (<span class="mono">banda_propia</span>), como pide el §5 del método. Antes se corrió otra regla (<span class="mono">todas_min</span>: la franja más cercana de las siete). Esa corrida oficial se hizo después de ver el resultado de la primera. Las dos dan la misma nota.</p>
       ${cajaExplica(
         "Los datos no son perfectos",
         "Un kilómetro es un cuadrito grande: se pierde el detalle de un cráter pequeño o de una ladera andina. Las «alturas» de cada cuerpo no están en la misma referencia al metro. Y solo se probaron 16 lugares.",
@@ -400,7 +472,7 @@ export function uncertaintyHTML(cat: Catalogo, nivel: Nivel): string {
       <ol>
         <li>${term("std")} y firmas por ${term("bandas")} (mediana e ${term("iqr")}), solo sobre Marte (MOLA MEGDR 64 ppd) y la Luna (LOLA LDEM_64).</li>
         <li>En cada sitio, la mediana de las celdas válidas del buffer (haversina), no la «mejor» celda. Río Tinto, Ries y Sudbury se listan pero no entran al AUC.</li>
-        <li>Umbral de ${term("youden")} y modo <span class="mono">todas_min</span>, congelados antes de Ecuador.</li>
+        <li>Umbral de ${term("youden")} y modo oficial <span class="mono">banda_propia</span>, congelados antes de Ecuador y de Galápagos. Galápagos no entra al AUC ni al umbral.</li>
       </ol>
       <h3>Límites</h3>
       <ul>
@@ -409,8 +481,8 @@ export function uncertaintyHTML(cat: Catalogo, nivel: Nivel): string {
         <li>Muestra del AUC n = 16; banda A sin positivos terrestres (Ecuador se evalúa ahí, no se calibra).</li>
       </ul>
       <p>No se presentan porcentajes de cobertura por clase. No se publica capa climática.</p>
-      <h3>Modo <span class="mono">todas_min</span> y el §5</h3>
-      <p>La v1 compara cada celda con las siete bandas y toma el mínimo (<span class="mono">todas_min</span>). El modo <span class="mono">banda_propia</span> usaría nada más la banda de su |lat|. El §5 del método («Muestreo por latitud») pide extraer celdas planetarias «dentro de esas mismas bandas de latitud» de los sitios terrestres. Ronald no aprobó esa diferencia ni eligió entre las dos reglas. La v1 no se recalcula. Los horarios del 14 de noviembre de 2026 están en <span class="mono">docs/nota_incertidumbre.md</span>: no se afirma que la regla se haya fijado antes de ver el AUC.</p>
+      <h3>Modo oficial <span class="mono">banda_propia</span> y el §5</h3>
+      <p>La corrida oficial usa <span class="mono">banda_propia</span>: cada celda se compara solo con la firma de su propia banda de |lat|, como pide el §5 del método. Antes se corrió <span class="mono">todas_min</span> (la menor distancia a las siete bandas). <strong>La corrida con <span class="mono">banda_propia</span> se hizo después de ver el AUC de <span class="mono">todas_min</span>.</strong> El AUC no cambió (Marte 0,09; Luna 0,25; 6 de 16). <span class="mono">todas_min</span> queda como corrida previa, no se borra. Detalle en <span class="mono">docs/nota_incertidumbre.md</span>.</p>
       <p class="muted">${escapeHtml(cat.nota_de_incertidumbre ?? "")}</p>
     </section>`;
   }
@@ -422,7 +494,7 @@ export function uncertaintyHTML(cat: Catalogo, nivel: Nivel): string {
     <ol>
       <li>Los parámetros de estandarización y las firmas por banda A–G (mediana e IQR) se ajustaron solo sobre muestras estratificadas de Marte (MOLA MEGDR 64 ppd) y de la Luna (LOLA LDEM_64), sin mezclar los dos cuerpos ni usar celdas terrestres.</li>
       <li>En cada sitio de validación se tomó la mediana de las celdas válidas dentro del buffer oficial (distancia haversina). No se eligió la «mejor» celda, para no inflar el AUC. Río Tinto, Ries y Sudbury se listan pero no entran al AUC.</li>
-      <li>El umbral se fijó con la regla del mínimo entre bandas (<span class="mono">todas_min</span>) y el criterio de Youden, solo sobre los 16 sitios del AUC. Después se congeló. Ecuador no intervino en esa decisión.</li>
+      <li>El umbral se volvió a fijar con el criterio de Youden, en modo <span class="mono">banda_propia</span>, solo sobre los mismos 16 sitios del AUC, y se congeló. Ecuador y Galápagos no intervinieron en esa decisión. Galápagos es solo área de evaluación.</li>
     </ol>
     <p>Askja permanece en el AUC con la coordenada confirmada 65,060, −16,640 y buffer de 6 km (Blasizzo et al., 2022).</p>
     <h3>Resultado de la validación</h3>
@@ -449,8 +521,8 @@ export function uncertaintyHTML(cat: Catalogo, nivel: Nivel): string {
       <li>LOLA LDEM_64 v3.1 — <a href="https://pds-geosciences.wustl.edu/missions/lro/lola.htm" rel="noopener noreferrer">PDS Geosciences</a></li>
       <li>Copernicus DEM GLO-90 — DOI <a href="https://doi.org/10.5270/ESA-c5d3d65" rel="noopener noreferrer">10.5270/ESA-c5d3d65</a></li>
     </ul>
-    <h3>Modo <span class="mono">todas_min</span> y el §5 del método</h3>
-    <p>La v1 oficial usa <span class="mono">todas_min</span>: δ es la menor distancia a las firmas de las bandas A–G. <span class="mono">banda_propia</span> compararía solo con la banda de |lat| de la celda. El §5 de <span class="mono">proyecto_ronald.txt</span> («Muestreo por latitud») dice: «En Marte y en la Luna se extraen celdas dentro de esas mismas bandas de latitud». Ronald no aprobó la diferencia ni eligió entre las dos reglas. La v1 no se recalcula. El registro de tiempos (America/Guayaquil) no permite afirmar que <span class="mono">todas_min</span> se decidiera antes de ver el AUC: el código ya lo traía como defecto a las 13:22; el sello <span class="mono">congelado_en</span> y el AUC oficial son de las 13:40:40; el acta es de las 14:33. Detalle en <span class="mono">docs/nota_incertidumbre.md</span> y en el apéndice de <span class="mono">docs/version_congelada_v1.md</span>.</p>
+    <h3>Modo oficial <span class="mono">banda_propia</span> y el §5 del método</h3>
+    <p>La corrida oficial de la v1 usa <span class="mono">banda_propia</span>: δ se calcula solo con la firma de la banda de |lat| de la celda, como pide el §5 de <span class="mono">proyecto_ronald.txt</span> («En Marte y en la Luna se extraen celdas dentro de esas mismas bandas de latitud»). Antes se corrió <span class="mono">todas_min</span> (menor distancia a las firmas de las bandas A–G), congelada a las 13:40:40. <strong>La corrida con <span class="mono">banda_propia</span> se hizo después de ver el AUC de <span class="mono">todas_min</span></strong> (15:31:26). El AUC no cambió (Marte 0,09, IC 0,00–0,29; Luna 0,25, IC 0,00–0,69; 6 de 16). <span class="mono">todas_min</span> queda como corrida previa, no se borra. Actas: <span class="mono">docs/version_congelada_v1_banda_propia.md</span> (oficial) y <span class="mono">docs/version_congelada_v1.md</span> (corrida previa). Detalle en <span class="mono">docs/nota_incertidumbre.md</span>.</p>
     <p class="muted">${escapeHtml(cat.nota_de_incertidumbre ?? "")}</p>
   </section>`;
 }
@@ -466,8 +538,13 @@ export function futureWorkHTML(): string {
 
 export function cardHTML(z: ZonaPrioritaria, nivel: Nivel): string {
   const c = z.clima;
-  const humana = `<p class="lectura-delta">Según el índice, este lugar es <strong>${fraseDelta(z.delta_marte)}</strong> a Marte (δ = ${fmt(z.delta_marte, 2)}) y <strong>${fraseDelta(z.delta_luna)}</strong> a la Luna (δ = ${fmt(z.delta_luna, 2)}).</p>
-    <p class="muted">Como la validación general no se aprobó, tómalo como una pista del mapa, no como una certeza.</p>`;
+  const conNum = nivel !== "explorador";
+  const umbral =
+    nivel === "cientifico"
+      ? `<p class="muted">Umbral congelado (número, no una etiqueta de clase): Marte 0,13; Luna 0,79.</p>`
+      : "";
+  const humana = `<p class="lectura-delta">${escapeHtml(fraseParecido("Marte", z.delta_marte, conNum))}. ${escapeHtml(fraseParecido("la Luna", z.delta_luna, conNum))}.</p>
+    <p class="muted">${NOTA_INDICE} Como la validación general no se aprobó, tómalo como una pista del mapa, no como una certeza.</p>${umbral}`;
   if (nivel === "explorador") {
     return `<article class="ficha" data-testid="ficha-zona">
       <h3>${escapeHtml(z.nombre)}</h3>
@@ -497,7 +574,7 @@ export function cardHTML(z: ZonaPrioritaria, nivel: Nivel): string {
     </div>`;
   return `<article class="ficha" data-testid="ficha-zona">
     <h3>${escapeHtml(z.nombre)}</h3>
-    <div class="meta">${pill(z.clase)} · ${z.lat.toFixed(3)}°, ${z.lon.toFixed(3)}°</div>
+    <div class="meta">${z.lat.toFixed(3)}°, ${z.lon.toFixed(3)}°</div>
     ${humana}
     <h2>Firma de superficie (entra al índice)</h2>
     ${vars}
@@ -509,15 +586,12 @@ export function cardHTML(z: ZonaPrioritaria, nivel: Nivel): string {
 }
 
 export function sitioCardHTML(s: SitioValidacion, nivel: Nivel): string {
-  const pred =
-    s.excluido_auc || s.clase_predicha == null || s.clase_predicha === ""
-      ? "excluido del AUC"
-      : etiquetaAmiga(s.clase_predicha);
+  const conNum = nivel !== "explorador";
   return `<article class="ficha" data-testid="ficha-sitio">
     <h3>${escapeHtml(s.nombre)}</h3>
     <div class="meta">${s.lat.toFixed(3)}°, ${s.lon.toFixed(3)}°${s.excluido_auc ? " · fuera del AUC" : s.acierto ? " · acierto" : " · no acierto"}</div>
-    <p>Etiqueta conocida: <strong>${etiquetaAmiga(s.clase_conocida)}</strong>. ${s.excluido_auc ? "No entra al cálculo del AUC." : `El índice lo clasificó como ${pred}.`}</p>
-    <p>Marte: ${fraseDelta(s.delta_marte)}${nivel === "explorador" ? "" : ` (δ = ${fmt(s.delta_marte, 2)})`}. Luna: ${fraseDelta(s.delta_luna)}${nivel === "explorador" ? "" : ` (δ = ${fmt(s.delta_luna, 2)})`}.</p>
+    <p>Etiqueta conocida (la del examen de validación, no una clase del mapa de Ecuador): <strong>${escapeHtml(etiquetaAmiga(s.clase_conocida))}</strong>. ${s.excluido_auc ? "No entra al cálculo del AUC." : `${NOTA_INDICE}`}</p>
+    <p>${escapeHtml(fraseParecido("Marte", s.delta_marte, conNum))}. ${escapeHtml(fraseParecido("la Luna", s.delta_luna, conNum))}.</p>
     ${nivel === "cientifico" ? `<p class="muted">Buffer ${s.buffer_km} km · banda ${escapeHtml(s.banda_latitud ?? "—")} · ${escapeHtml(s.cita ?? s.fuente ?? "")}</p>` : ""}
   </article>`;
 }

@@ -2,7 +2,7 @@
   "mock": false,
   "aviso": "Datos reales de superficie: MOLA MEGDR 64 ppd (Marte), LOLA LDEM_64 v3.1 (Luna) y Copernicus DEM GLO-90 (Tierra: Ecuador, Galápagos y ventanas de validación), remuestreados a ~1 km. Pendiente y TRI recalculados sobre el DEM remuestreado. Askja entra al AUC con 65.060, −16.640 (buffer 6 km; Blasizzo et al., 2022). El clima no entra al índice y no se muestra un ráster climático en esta entrega.",
   "metric_version": "ANALOG/delta v1 real 2026-11-14",
-  "congelado_en": "2026-11-14T13:40:40-05:00",
+  "congelado_en": "2026-11-14T15:31:26-05:00",
   "agregacion_validacion": "Mediana de las celdas válidas cuyo centro cae dentro del buffer (distancia haversina, radio oficial, R=6378.137 km). Una celda es válida si elevación, pendiente y TRI son finitos y distintos de nodata (−9999). También se guarda la celda central (vecina más cercana al punto oficial) como referencia, pero el índice y el umbral usan la mediana del buffer. No se elige la «mejor» celda del buffer, para no inflar el AUC.",
   "grilla": {
     "resolucion_objetivo_m": 1000,
@@ -676,7 +676,7 @@
     ]
   },
   "d_max": {
-    "mars": 5.783924028253724,
+    "mars": 7.104575532239943,
     "moon": 1.651817219714007
   },
   "umbrales": {
@@ -688,7 +688,7 @@
       "auc": 0.09375,
       "agreement": 0.5,
       "metric": "youden",
-      "d_max": 5.783924028253724,
+      "d_max": 7.104575532239943,
       "n_pos": 8,
       "n_neg": 8
     },
@@ -720,28 +720,6 @@
       "auc": 0.2545454545454546,
       "agreement": 0.75
     },
-    "precision_por_clase": {
-      "marte": {
-        "precision": 0.3333333333333333,
-        "sensitivity": 1.0,
-        "support": 5
-      },
-      "luna": {
-        "precision": 0.0,
-        "sensitivity": 0.0,
-        "support": 2
-      },
-      "ambos": {
-        "precision": 1.0,
-        "sensitivity": 0.3333333333333333,
-        "support": 3
-      },
-      "ninguno": {
-        "precision": 0.0,
-        "sensitivity": 0.0,
-        "support": 6
-      }
-    },
     "aciertos": 6,
     "aciertos_auc": 6,
     "n_sitios_auc": 16,
@@ -749,7 +727,7 @@
   },
   "metricas_por_variante": {
     "todas_min_con_latitud": {
-      "etiqueta": "todas_min, vector con |lat|, elevación absoluta (defecto)",
+      "etiqueta": "todas_min, vector con |lat|, elevación absoluta (corrida previa)",
       "d_max": {
         "mars": 5.783924028253724,
         "moon": 1.651817219714007
@@ -786,7 +764,7 @@
       }
     },
     "banda_propia_con_latitud": {
-      "etiqueta": "banda_propia, vector con |lat|, elevación absoluta",
+      "etiqueta": "banda_propia, vector con |lat|, elevación absoluta (oficial)",
       "d_max": {
         "mars": 7.104575532239943,
         "moon": 1.651817219714007
@@ -1047,7 +1025,7 @@
   },
   "metricas_sensibilidad": {
     "todas_min_con_latitud": {
-      "etiqueta": "todas_min, vector con |lat|, elevación absoluta (defecto)",
+      "etiqueta": "todas_min, vector con |lat|, elevación absoluta (corrida previa)",
       "d_max": {
         "mars": 5.783924028253724,
         "moon": 1.651817219714007
@@ -1394,7 +1372,7 @@
       "n_bootstrap": 1990,
       "semilla": 2026
     },
-    "nota": "Modelo nulo: el puntaje es solo |lat|. Los positivos de este conjunto tienden a latitudes altas y podrían inflar el AUC del índice si la latitud domina."
+    "nota": "Modelo nulo: el puntaje es solo |lat|. No depende del modo de bandas."
   },
   "incluir_askja": true,
   "elevacion_modo": "absoluta",
@@ -1402,11 +1380,11 @@
     "absoluta",
     "relieve_relativo"
   ],
-  "modo_bandas": "todas_min",
-  "nota_modo_bandas": "todas_min es el defecto, pendiente de confirmación de Ronald sobre el §5. Solo es válida con distancia euclídea; si se usara Mahalanobis por banda, la latitud saldría del vector automáticamente.",
+  "modo_bandas": "banda_propia",
+  "nota_modo_bandas": "Oficial: banda_propia, como el §5 del método (cada celda se compara solo con la firma de su propia banda de |lat|). La corrida con banda_propia se hizo después de ver el AUC de todas_min. todas_min queda como corrida previa, no se borra.",
   "clases_ecuador": {
-    "ninguno": 43012,
-    "marte": 356828,
+    "ninguno": 23811,
+    "marte": 376029,
     "luna": 0,
     "ambos": 53535,
     "nodata": 975465
@@ -1531,7 +1509,7 @@
       "banda_latitud": "B",
       "banda_ganadora_marte": "B",
       "banda_ganadora_luna": "B",
-      "delta_marte": 0.8272,
+      "delta_marte": 0.8594,
       "delta_luna": 0.756,
       "distancia_marte": 0.9992,
       "distancia_luna": 0.403,
@@ -1542,7 +1520,7 @@
       "coordenada_no_verificada": false,
       "entra_al_auc": true,
       "es_mock_superficies": false,
-      "modo_bandas": "todas_min"
+      "modo_bandas": "banda_propia"
     },
     {
       "id": "haughton",
@@ -1605,7 +1583,7 @@
       "banda_latitud": "F",
       "banda_ganadora_marte": "F",
       "banda_ganadora_luna": "F",
-      "delta_marte": 0.8952,
+      "delta_marte": 0.9147,
       "delta_luna": 0.672,
       "distancia_marte": 0.6062,
       "distancia_luna": 0.5418,
@@ -1616,7 +1594,7 @@
       "coordenada_no_verificada": false,
       "entra_al_auc": true,
       "es_mock_superficies": false,
-      "modo_bandas": "todas_min"
+      "modo_bandas": "banda_propia"
     },
     {
       "id": "university_valley",
@@ -1677,11 +1655,11 @@
       },
       "es_provisional": false,
       "banda_latitud": "F",
-      "banda_ganadora_marte": "C",
+      "banda_ganadora_marte": "F",
       "banda_ganadora_luna": "F",
-      "delta_marte": 0.1746,
+      "delta_marte": 0.1304,
       "delta_luna": 0.4115,
-      "distancia_marte": 4.7741,
+      "distancia_marte": 6.1779,
       "distancia_luna": 0.9722,
       "clase_predicha": "marte",
       "clase_conocida": "marte",
@@ -1690,7 +1668,7 @@
       "coordenada_no_verificada": false,
       "entra_al_auc": true,
       "es_mock_superficies": false,
-      "modo_bandas": "todas_min"
+      "modo_bandas": "banda_propia"
     },
     {
       "id": "askja",
@@ -1751,11 +1729,11 @@
       },
       "es_provisional": false,
       "banda_latitud": "E",
-      "banda_ganadora_marte": "D",
+      "banda_ganadora_marte": "E",
       "banda_ganadora_luna": "E",
-      "delta_marte": 0.7741,
+      "delta_marte": 0.7841,
       "delta_luna": 0.6357,
-      "distancia_marte": 1.3064,
+      "distancia_marte": 1.5337,
       "distancia_luna": 0.6018,
       "clase_predicha": "marte",
       "clase_conocida": "marte",
@@ -1764,7 +1742,7 @@
       "coordenada_no_verificada": false,
       "entra_al_auc": true,
       "es_mock_superficies": false,
-      "modo_bandas": "todas_min"
+      "modo_bandas": "banda_propia"
     },
     {
       "id": "mauna_kea",
@@ -1825,11 +1803,11 @@
       },
       "es_provisional": false,
       "banda_latitud": "B",
-      "banda_ganadora_marte": "A",
+      "banda_ganadora_marte": "B",
       "banda_ganadora_luna": "B",
-      "delta_marte": 0.1304,
+      "delta_marte": 0.2208,
       "delta_luna": 0.1304,
-      "distancia_marte": 5.0295,
+      "distancia_marte": 5.5362,
       "distancia_luna": 1.4364,
       "clase_predicha": "marte",
       "clase_conocida": "ambos",
@@ -1838,7 +1816,7 @@
       "coordenada_no_verificada": false,
       "entra_al_auc": true,
       "es_mock_superficies": false,
-      "modo_bandas": "todas_min"
+      "modo_bandas": "banda_propia"
     },
     {
       "id": "sverrefjell",
@@ -1899,11 +1877,11 @@
       },
       "es_provisional": false,
       "banda_latitud": "F",
-      "banda_ganadora_marte": "C",
+      "banda_ganadora_marte": "F",
       "banda_ganadora_luna": "F",
-      "delta_marte": 0.3086,
+      "delta_marte": 0.2901,
       "delta_luna": 0.7082,
-      "distancia_marte": 3.9992,
+      "distancia_marte": 5.0439,
       "distancia_luna": 0.482,
       "clase_predicha": "marte",
       "clase_conocida": "marte",
@@ -1912,7 +1890,7 @@
       "coordenada_no_verificada": false,
       "entra_al_auc": true,
       "es_mock_superficies": false,
-      "modo_bandas": "todas_min"
+      "modo_bandas": "banda_propia"
     },
     {
       "id": "timanfaya",
@@ -1975,7 +1953,7 @@
       "banda_latitud": "B",
       "banda_ganadora_marte": "B",
       "banda_ganadora_luna": "B",
-      "delta_marte": 0.8939,
+      "delta_marte": 0.9136,
       "delta_luna": 0.7915,
       "distancia_marte": 0.6138,
       "distancia_luna": 0.3443,
@@ -1986,7 +1964,7 @@
       "coordenada_no_verificada": false,
       "entra_al_auc": true,
       "es_mock_superficies": false,
-      "modo_bandas": "todas_min"
+      "modo_bandas": "banda_propia"
     },
     {
       "id": "meteor_crater",
@@ -2049,7 +2027,7 @@
       "banda_latitud": "C",
       "banda_ganadora_marte": "C",
       "banda_ganadora_luna": "C",
-      "delta_marte": 0.9419,
+      "delta_marte": 0.9527,
       "delta_luna": 0.5109,
       "distancia_marte": 0.3362,
       "distancia_luna": 0.8079,
@@ -2060,7 +2038,7 @@
       "coordenada_no_verificada": false,
       "entra_al_auc": true,
       "es_mock_superficies": false,
-      "modo_bandas": "todas_min"
+      "modo_bandas": "banda_propia"
     },
     {
       "id": "sp_mountain",
@@ -2123,7 +2101,7 @@
       "banda_latitud": "C",
       "banda_ganadora_marte": "C",
       "banda_ganadora_luna": "C",
-      "delta_marte": 0.9231,
+      "delta_marte": 0.9374,
       "delta_luna": 0.5465,
       "distancia_marte": 0.4445,
       "distancia_luna": 0.7492,
@@ -2134,7 +2112,7 @@
       "coordenada_no_verificada": false,
       "entra_al_auc": true,
       "es_mock_superficies": false,
-      "modo_bandas": "todas_min"
+      "modo_bandas": "banda_propia"
     },
     {
       "id": "inferno_chasm",
@@ -2197,7 +2175,7 @@
       "banda_latitud": "C",
       "banda_ganadora_marte": "C",
       "banda_ganadora_luna": "C",
-      "delta_marte": 0.9426,
+      "delta_marte": 0.9533,
       "delta_luna": 0.5372,
       "distancia_marte": 0.332,
       "distancia_luna": 0.7644,
@@ -2208,7 +2186,7 @@
       "coordenada_no_verificada": false,
       "entra_al_auc": true,
       "es_mock_superficies": false,
-      "modo_bandas": "todas_min"
+      "modo_bandas": "banda_propia"
     },
     {
       "id": "tapajos",
@@ -2271,7 +2249,7 @@
       "banda_latitud": "A",
       "banda_ganadora_marte": "A",
       "banda_ganadora_luna": "A",
-      "delta_marte": 0.9778,
+      "delta_marte": 0.9819,
       "delta_luna": 0.7465,
       "distancia_marte": 0.1286,
       "distancia_luna": 0.4188,
@@ -2282,7 +2260,7 @@
       "coordenada_no_verificada": false,
       "entra_al_auc": true,
       "es_mock_superficies": false,
-      "modo_bandas": "todas_min"
+      "modo_bandas": "banda_propia"
     },
     {
       "id": "bondville",
@@ -2345,7 +2323,7 @@
       "banda_latitud": "C",
       "banda_ganadora_marte": "C",
       "banda_ganadora_luna": "C",
-      "delta_marte": 0.9591,
+      "delta_marte": 0.9667,
       "delta_luna": 0.6294,
       "distancia_marte": 0.2364,
       "distancia_luna": 0.6121,
@@ -2356,7 +2334,7 @@
       "coordenada_no_verificada": false,
       "entra_al_auc": true,
       "es_mock_superficies": false,
-      "modo_bandas": "todas_min"
+      "modo_bandas": "banda_propia"
     },
     {
       "id": "harvard_forest",
@@ -2419,7 +2397,7 @@
       "banda_latitud": "C",
       "banda_ganadora_marte": "C",
       "banda_ganadora_luna": "C",
-      "delta_marte": 0.9645,
+      "delta_marte": 0.9711,
       "delta_luna": 0.7096,
       "distancia_marte": 0.2054,
       "distancia_luna": 0.4798,
@@ -2430,7 +2408,7 @@
       "coordenada_no_verificada": false,
       "entra_al_auc": true,
       "es_mock_superficies": false,
-      "modo_bandas": "todas_min"
+      "modo_bandas": "banda_propia"
     },
     {
       "id": "tumbarumba",
@@ -2493,7 +2471,7 @@
       "banda_latitud": "C",
       "banda_ganadora_marte": "C",
       "banda_ganadora_luna": "C",
-      "delta_marte": 0.8765,
+      "delta_marte": 0.8995,
       "delta_luna": 0.6836,
       "distancia_marte": 0.7141,
       "distancia_luna": 0.5227,
@@ -2504,7 +2482,7 @@
       "coordenada_no_verificada": false,
       "entra_al_auc": true,
       "es_mock_superficies": false,
-      "modo_bandas": "todas_min"
+      "modo_bandas": "banda_propia"
     },
     {
       "id": "hainich",
@@ -2565,11 +2543,11 @@
       },
       "es_provisional": false,
       "banda_latitud": "D",
-      "banda_ganadora_marte": "C",
+      "banda_ganadora_marte": "D",
       "banda_ganadora_luna": "D",
-      "delta_marte": 0.8636,
+      "delta_marte": 0.8764,
       "delta_luna": 0.7213,
-      "distancia_marte": 0.7886,
+      "distancia_marte": 0.878,
       "distancia_luna": 0.4604,
       "clase_predicha": "marte",
       "clase_conocida": "ninguno",
@@ -2578,7 +2556,7 @@
       "coordenada_no_verificada": false,
       "entra_al_auc": true,
       "es_mock_superficies": false,
-      "modo_bandas": "todas_min"
+      "modo_bandas": "banda_propia"
     },
     {
       "id": "hyytiala",
@@ -2641,7 +2619,7 @@
       "banda_latitud": "E",
       "banda_ganadora_marte": "E",
       "banda_ganadora_luna": "E",
-      "delta_marte": 0.9383,
+      "delta_marte": 0.9498,
       "delta_luna": 0.5983,
       "distancia_marte": 0.3569,
       "distancia_luna": 0.6635,
@@ -2652,7 +2630,7 @@
       "coordenada_no_verificada": false,
       "entra_al_auc": true,
       "es_mock_superficies": false,
-      "modo_bandas": "todas_min"
+      "modo_bandas": "banda_propia"
     },
     {
       "id": "rio_tinto",
@@ -2687,7 +2665,7 @@
       "coordenada_no_verificada": false,
       "entra_al_auc": false,
       "es_mock_superficies": false,
-      "modo_bandas": "todas_min"
+      "modo_bandas": "banda_propia"
     },
     {
       "id": "ries",
@@ -2722,7 +2700,7 @@
       "coordenada_no_verificada": false,
       "entra_al_auc": false,
       "es_mock_superficies": false,
-      "modo_bandas": "todas_min"
+      "modo_bandas": "banda_propia"
     },
     {
       "id": "sudbury",
@@ -2757,145 +2735,10 @@
       "coordenada_no_verificada": true,
       "entra_al_auc": false,
       "es_mock_superficies": false,
-      "modo_bandas": "todas_min"
+      "modo_bandas": "banda_propia"
     }
   ],
   "zonas_prioritarias": [
-    {
-      "id": "max_marte",
-      "nombre": "Máxima similitud a Marte (-4.9275°, -80.9685°)",
-      "lat": -4.9275,
-      "lon": -80.9685,
-      "banda_latitud": "A",
-      "banda_ganadora_marte": "A",
-      "banda_ganadora_luna": "A",
-      "elevacion_m": 19.1,
-      "pendiente_deg": 0.76,
-      "rugosidad_tri": 11.67,
-      "relieve_relativo_m": -58.15,
-      "delta_marte": 0.9906,
-      "delta_luna": 0.761,
-      "clase": "marte",
-      "firma_superficie": {
-        "latitud": -4.9275,
-        "elevacion_m": 19.1,
-        "pendiente_deg": 0.76,
-        "rugosidad_tri": 11.67
-      },
-      "clima": {
-        "disponible": false,
-        "advertencia": "Capa de interpretación no publicada en esta entrega. No hay un producto climático homologable incluido; no se muestra un ejemplo sintético para no confundirlo con un dato real. El clima no entra al índice.",
-        "nota": "El índice ANALOG/delta es solo de superficie (latitud, elevación, pendiente y rugosidad)."
-      }
-    },
-    {
-      "id": "quilotoa",
-      "nombre": "Quilotoa",
-      "lat": -0.85,
-      "lon": -78.9,
-      "banda_latitud": "A",
-      "banda_ganadora_marte": "A",
-      "banda_ganadora_luna": "A",
-      "elevacion_m": 3620.3,
-      "pendiente_deg": 0.53,
-      "rugosidad_tri": 66.38,
-      "relieve_relativo_m": 120.83,
-      "delta_marte": 0.7383,
-      "delta_luna": 0.4004,
-      "clase": "marte",
-      "firma_superficie": {
-        "latitud": -0.85,
-        "elevacion_m": 3620.3,
-        "pendiente_deg": 0.53,
-        "rugosidad_tri": 66.38
-      },
-      "clima": {
-        "disponible": false,
-        "advertencia": "Capa de interpretación no publicada en esta entrega. No hay un producto climático homologable incluido; no se muestra un ejemplo sintético para no confundirlo con un dato real. El clima no entra al índice.",
-        "nota": "El índice ANALOG/delta es solo de superficie (latitud, elevación, pendiente y rugosidad)."
-      }
-    },
-    {
-      "id": "sincholagua",
-      "nombre": "Sincholagua",
-      "lat": -0.54,
-      "lon": -78.37,
-      "banda_latitud": "A",
-      "banda_ganadora_marte": "A",
-      "banda_ganadora_luna": "A",
-      "elevacion_m": 4448.2,
-      "pendiente_deg": 5.62,
-      "rugosidad_tri": 124.96,
-      "relieve_relativo_m": 409.52,
-      "delta_marte": 0.415,
-      "delta_luna": 0.1909,
-      "clase": "marte",
-      "firma_superficie": {
-        "latitud": -0.54,
-        "elevacion_m": 4448.2,
-        "pendiente_deg": 5.62,
-        "rugosidad_tri": 124.96
-      },
-      "clima": {
-        "disponible": false,
-        "advertencia": "Capa de interpretación no publicada en esta entrega. No hay un producto climático homologable incluido; no se muestra un ejemplo sintético para no confundirlo con un dato real. El clima no entra al índice.",
-        "nota": "El índice ANALOG/delta es solo de superficie (latitud, elevación, pendiente y rugosidad)."
-      }
-    },
-    {
-      "id": "el_altar",
-      "nombre": "El Altar",
-      "lat": -1.67,
-      "lon": -78.41,
-      "banda_latitud": "A",
-      "banda_ganadora_marte": "A",
-      "banda_ganadora_luna": "A",
-      "elevacion_m": 4740.2,
-      "pendiente_deg": 7.52,
-      "rugosidad_tri": 118.69,
-      "relieve_relativo_m": 795.54,
-      "delta_marte": 0.3784,
-      "delta_luna": 0.1469,
-      "clase": "marte",
-      "firma_superficie": {
-        "latitud": -1.67,
-        "elevacion_m": 4740.2,
-        "pendiente_deg": 7.52,
-        "rugosidad_tri": 118.69
-      },
-      "clima": {
-        "disponible": false,
-        "advertencia": "Capa de interpretación no publicada en esta entrega. No hay un producto climático homologable incluido; no se muestra un ejemplo sintético para no confundirlo con un dato real. El clima no entra al índice.",
-        "nota": "El índice ANALOG/delta es solo de superficie (latitud, elevación, pendiente y rugosidad)."
-      }
-    },
-    {
-      "id": "max_luna",
-      "nombre": "Máxima similitud a la Luna (-4.4145°, -81.2385°)",
-      "lat": -4.4145,
-      "lon": -81.2385,
-      "banda_latitud": "A",
-      "banda_ganadora_marte": "A",
-      "banda_ganadora_luna": "A",
-      "elevacion_m": 119.5,
-      "pendiente_deg": 3.49,
-      "rugosidad_tri": 54.49,
-      "relieve_relativo_m": 10.76,
-      "delta_marte": 0.7874,
-      "delta_luna": 0.9593,
-      "clase": "ambos",
-      "firma_superficie": {
-        "latitud": -4.4145,
-        "elevacion_m": 119.5,
-        "pendiente_deg": 3.49,
-        "rugosidad_tri": 54.49
-      },
-      "clima": {
-        "disponible": false,
-        "advertencia": "Capa de interpretación no publicada en esta entrega. No hay un producto climático homologable incluido; no se muestra un ejemplo sintético para no confundirlo con un dato real. El clima no entra al índice.",
-        "nota": "El índice ANALOG/delta es solo de superficie (latitud, elevación, pendiente y rugosidad)."
-      }
-    },
     {
       "id": "chimborazo",
       "nombre": "Chimborazo (arenal y páramo)",
@@ -2921,7 +2764,8 @@
         "disponible": false,
         "advertencia": "Capa de interpretación no publicada en esta entrega. No hay un producto climático homologable incluido; no se muestra un ejemplo sintético para no confundirlo con un dato real. El clima no entra al índice.",
         "nota": "El índice ANALOG/delta es solo de superficie (latitud, elevación, pendiente y rugosidad)."
-      }
+      },
+      "area": "ecuador_continental"
     },
     {
       "id": "cotopaxi",
@@ -2948,7 +2792,8 @@
         "disponible": false,
         "advertencia": "Capa de interpretación no publicada en esta entrega. No hay un producto climático homologable incluido; no se muestra un ejemplo sintético para no confundirlo con un dato real. El clima no entra al índice.",
         "nota": "El índice ANALOG/delta es solo de superficie (latitud, elevación, pendiente y rugosidad)."
-      }
+      },
+      "area": "ecuador_continental"
     },
     {
       "id": "antisana",
@@ -2975,7 +2820,64 @@
         "disponible": false,
         "advertencia": "Capa de interpretación no publicada en esta entrega. No hay un producto climático homologable incluido; no se muestra un ejemplo sintético para no confundirlo con un dato real. El clima no entra al índice.",
         "nota": "El índice ANALOG/delta es solo de superficie (latitud, elevación, pendiente y rugosidad)."
-      }
+      },
+      "area": "ecuador_continental"
+    },
+    {
+      "id": "el_altar",
+      "nombre": "El Altar",
+      "lat": -1.67,
+      "lon": -78.41,
+      "banda_latitud": "A",
+      "banda_ganadora_marte": "A",
+      "banda_ganadora_luna": "A",
+      "elevacion_m": 4740.2,
+      "pendiente_deg": 7.52,
+      "rugosidad_tri": 118.69,
+      "relieve_relativo_m": 795.54,
+      "delta_marte": 0.4939,
+      "delta_luna": 0.1469,
+      "clase": "marte",
+      "firma_superficie": {
+        "latitud": -1.67,
+        "elevacion_m": 4740.2,
+        "pendiente_deg": 7.52,
+        "rugosidad_tri": 118.69
+      },
+      "clima": {
+        "disponible": false,
+        "advertencia": "Capa de interpretación no publicada en esta entrega. No hay un producto climático homologable incluido; no se muestra un ejemplo sintético para no confundirlo con un dato real. El clima no entra al índice.",
+        "nota": "El índice ANALOG/delta es solo de superficie (latitud, elevación, pendiente y rugosidad)."
+      },
+      "area": "ecuador_continental"
+    },
+    {
+      "id": "quilotoa",
+      "nombre": "Quilotoa",
+      "lat": -0.85,
+      "lon": -78.9,
+      "banda_latitud": "A",
+      "banda_ganadora_marte": "A",
+      "banda_ganadora_luna": "A",
+      "elevacion_m": 3620.3,
+      "pendiente_deg": 0.53,
+      "rugosidad_tri": 66.38,
+      "relieve_relativo_m": 120.83,
+      "delta_marte": 0.7869,
+      "delta_luna": 0.4004,
+      "clase": "marte",
+      "firma_superficie": {
+        "latitud": -0.85,
+        "elevacion_m": 3620.3,
+        "pendiente_deg": 0.53,
+        "rugosidad_tri": 66.38
+      },
+      "clima": {
+        "disponible": false,
+        "advertencia": "Capa de interpretación no publicada en esta entrega. No hay un producto climático homologable incluido; no se muestra un ejemplo sintético para no confundirlo con un dato real. El clima no entra al índice.",
+        "nota": "El índice ANALOG/delta es solo de superficie (latitud, elevación, pendiente y rugosidad)."
+      },
+      "area": "ecuador_continental"
     },
     {
       "id": "fernandina",
@@ -3002,7 +2904,8 @@
         "disponible": false,
         "advertencia": "Capa de interpretación no publicada en esta entrega. No hay un producto climático homologable incluido; no se muestra un ejemplo sintético para no confundirlo con un dato real. El clima no entra al índice.",
         "nota": "El índice ANALOG/delta es solo de superficie (latitud, elevación, pendiente y rugosidad)."
-      }
+      },
+      "area": "galapagos"
     },
     {
       "id": "cayambe",
@@ -3029,7 +2932,148 @@
         "disponible": false,
         "advertencia": "Capa de interpretación no publicada en esta entrega. No hay un producto climático homologable incluido; no se muestra un ejemplo sintético para no confundirlo con un dato real. El clima no entra al índice.",
         "nota": "El índice ANALOG/delta es solo de superficie (latitud, elevación, pendiente y rugosidad)."
-      }
+      },
+      "area": "ecuador_continental"
+    },
+    {
+      "id": "sincholagua",
+      "nombre": "Sincholagua",
+      "lat": -0.54,
+      "lon": -78.37,
+      "banda_latitud": "A",
+      "banda_ganadora_marte": "A",
+      "banda_ganadora_luna": "A",
+      "elevacion_m": 4448.2,
+      "pendiente_deg": 5.62,
+      "rugosidad_tri": 124.96,
+      "relieve_relativo_m": 409.52,
+      "delta_marte": 0.5238,
+      "delta_luna": 0.1909,
+      "clase": "marte",
+      "firma_superficie": {
+        "latitud": -0.54,
+        "elevacion_m": 4448.2,
+        "pendiente_deg": 5.62,
+        "rugosidad_tri": 124.96
+      },
+      "clima": {
+        "disponible": false,
+        "advertencia": "Capa de interpretación no publicada en esta entrega. No hay un producto climático homologable incluido; no se muestra un ejemplo sintético para no confundirlo con un dato real. El clima no entra al índice.",
+        "nota": "El índice ANALOG/delta es solo de superficie (latitud, elevación, pendiente y rugosidad)."
+      },
+      "area": "ecuador_continental"
+    },
+    {
+      "id": "max_mars_ecuador_continental",
+      "nombre": "Máxima similitud a Marte",
+      "lat": -4.9275,
+      "lon": -80.9685,
+      "banda_latitud": "A",
+      "banda_ganadora_marte": "A",
+      "banda_ganadora_luna": "A",
+      "elevacion_m": 19.1,
+      "pendiente_deg": 0.76,
+      "rugosidad_tri": 11.67,
+      "relieve_relativo_m": -58.15,
+      "delta_marte": 0.9924,
+      "delta_luna": 0.761,
+      "clase": "marte",
+      "firma_superficie": {
+        "latitud": -4.9275,
+        "elevacion_m": 19.1,
+        "pendiente_deg": 0.76,
+        "rugosidad_tri": 11.67
+      },
+      "clima": {
+        "disponible": false,
+        "advertencia": "Capa de interpretación no publicada en esta entrega. No hay un producto climático homologable incluido; no se muestra un ejemplo sintético para no confundirlo con un dato real. El clima no entra al índice.",
+        "nota": "El índice ANALOG/delta es solo de superficie (latitud, elevación, pendiente y rugosidad)."
+      },
+      "area": "ecuador_continental"
+    },
+    {
+      "id": "max_moon_ecuador_continental",
+      "nombre": "Máxima similitud a la Luna",
+      "lat": -4.4145,
+      "lon": -81.2385,
+      "banda_latitud": "A",
+      "banda_ganadora_marte": "A",
+      "banda_ganadora_luna": "A",
+      "elevacion_m": 119.5,
+      "pendiente_deg": 3.49,
+      "rugosidad_tri": 54.49,
+      "relieve_relativo_m": 10.76,
+      "delta_marte": 0.8269,
+      "delta_luna": 0.9593,
+      "clase": "ambos",
+      "firma_superficie": {
+        "latitud": -4.4145,
+        "elevacion_m": 119.5,
+        "pendiente_deg": 3.49,
+        "rugosidad_tri": 54.49
+      },
+      "clima": {
+        "disponible": false,
+        "advertencia": "Capa de interpretación no publicada en esta entrega. No hay un producto climático homologable incluido; no se muestra un ejemplo sintético para no confundirlo con un dato real. El clima no entra al índice.",
+        "nota": "El índice ANALOG/delta es solo de superficie (latitud, elevación, pendiente y rugosidad)."
+      },
+      "area": "ecuador_continental"
+    },
+    {
+      "id": "max_mars_galapagos",
+      "nombre": "Máxima similitud a Marte (Galápagos)",
+      "lat": -1.3815,
+      "lon": -89.6895,
+      "banda_latitud": "A",
+      "banda_ganadora_marte": "A",
+      "banda_ganadora_luna": "A",
+      "elevacion_m": 127.5,
+      "pendiente_deg": 0.9,
+      "rugosidad_tri": 16.01,
+      "relieve_relativo_m": null,
+      "delta_marte": 0.9705,
+      "delta_luna": 0.7588,
+      "clase": "marte",
+      "firma_superficie": {
+        "latitud": -1.3815,
+        "elevacion_m": 127.5,
+        "pendiente_deg": 0.9,
+        "rugosidad_tri": 16.01
+      },
+      "clima": {
+        "disponible": false,
+        "advertencia": "Capa de interpretación no publicada en esta entrega. No hay un producto climático homologable incluido; no se muestra un ejemplo sintético para no confundirlo con un dato real. El clima no entra al índice.",
+        "nota": "El índice ANALOG/delta es solo de superficie (latitud, elevación, pendiente y rugosidad)."
+      },
+      "area": "galapagos"
+    },
+    {
+      "id": "max_moon_galapagos",
+      "nombre": "Máxima similitud a la Luna (Galápagos)",
+      "lat": -1.3005,
+      "lon": -90.4815,
+      "banda_latitud": "A",
+      "banda_ganadora_marte": "A",
+      "banda_ganadora_luna": "A",
+      "elevacion_m": 124.7,
+      "pendiente_deg": 3.75,
+      "rugosidad_tri": 52.71,
+      "relieve_relativo_m": -47.32,
+      "delta_marte": 0.8222,
+      "delta_luna": 0.8777,
+      "clase": "ambos",
+      "firma_superficie": {
+        "latitud": -1.3005,
+        "elevacion_m": 124.7,
+        "pendiente_deg": 3.75,
+        "rugosidad_tri": 52.71
+      },
+      "clima": {
+        "disponible": false,
+        "advertencia": "Capa de interpretación no publicada en esta entrega. No hay un producto climático homologable incluido; no se muestra un ejemplo sintético para no confundirlo con un dato real. El clima no entra al índice.",
+        "nota": "El índice ANALOG/delta es solo de superficie (latitud, elevación, pendiente y rugosidad)."
+      },
+      "area": "galapagos"
     }
   ],
   "capas": {
@@ -3066,13 +3110,299 @@
     "Albedo e inercia térmica no entran al índice v1 (veredicto de Expertos) y no se descargaron.",
     "Pendiente y TRI en proyección equirrectangular cerca de los polos son más inciertos (banda G).",
     "No hay un ráster global terrestre: solo Ecuador/Galápagos y las ventanas de validación.",
-    "Modo de bandas por defecto: todas_min (pendiente de confirmación de Ronald sobre el §5). Los umbrales se fijaron con la misma regla y se congelaron antes de Ecuador.",
+    "Modo de bandas oficial: banda_propia (cada celda se compara solo con la firma de su propia banda de |lat|), como el §5 del método. La corrida con banda_propia se hizo después de ver el AUC de todas_min. todas_min queda como corrida previa, no se borra. Los umbrales se volvieron a fijar con Youden sobre los mismos 16 sitios y se congelaron antes de Ecuador y de Galápagos. Galápagos es solo área de evaluación: no entra al AUC ni al umbral.",
     "Río Tinto, Ries y Sudbury se listan pero no entran al AUC (análogos no de superficie o cobertura actual no comparable); no hay ventanas GLO-90 suyas en esta entrega."
   ],
-  "nota_de_incertidumbre": "Índice v1 solo de superficie (latitud, elevación, pendiente, rugosidad). Datums verticales no homologables al metro; la variante de relieve relativo está calculada y no es el defecto. Resolución ~1 km suaviza Meteor Crater, conos y el relieve andino. Askja entra al AUC (65.060, −16.640, buffer 6 km). Banda A sin positivos terrestres (Ecuador se evalúa, no se calibra ahí). Banda D débil; banda G sin estaciones, añadida por el polo sur lunar. Umbrales fijados con la regla del mínimo entre bandas en validación y congelados antes de Ecuador. Ver docs/nota_incertidumbre.md.",
+  "nota_de_incertidumbre": "Índice v1 solo de superficie (latitud, elevación, pendiente, rugosidad). Modo oficial banda_propia (la corrida se hizo después de ver el AUC de todas_min; todas_min queda como corrida previa). Datums verticales no homologables al metro; la variante de relieve relativo está calculada y no es el defecto. Resolución ~1 km suaviza Meteor Crater, conos y el relieve andino. Askja entra al AUC (65.060, −16.640, buffer 6 km). Banda A sin positivos terrestres (Ecuador se evalúa, no se calibra ahí). Banda D débil; banda G sin estaciones, añadida por el polo sur lunar. Umbrales de Youden de la corrida oficial banda_propia, fijados sobre los 16 sitios del AUC y congelados antes de Ecuador y de Galápagos. Galápagos no entra al AUC ni al umbral. Ver docs/nota_incertidumbre.md.",
   "fuentes": {
     "mars": "MGS MOLA MEGDR 64 ppd, areoide GMM3/mgm1025",
     "moon": "LRO LOLA LDEM_64 v3.1, esfera 1737.4 km",
     "earth": "Copernicus DEM GLO-90 (EGM2008)"
+  },
+  "comparacion_modos": {
+    "nota": "La corrida con banda_propia se hizo después de ver el AUC de todas_min.",
+    "todas_min": {
+      "auc_marte": 0.09375,
+      "ic95_marte": [
+        0.0,
+        0.2857142857142857
+      ],
+      "auc_luna": 0.2545454545454546,
+      "ic95_luna": [
+        0.0,
+        0.6923076923076923
+      ],
+      "aciertos": 6,
+      "n": 16,
+      "threshold_marte": 0.13043478260869557,
+      "threshold_luna": 0.7915472614686689,
+      "congelado_en": "2026-11-14T13:40:40-05:00"
+    },
+    "banda_propia": {
+      "auc_marte": 0.09375,
+      "ic95_marte": [
+        0.0,
+        0.2857142857142857
+      ],
+      "auc_luna": 0.2545454545454546,
+      "ic95_luna": [
+        0.0,
+        0.6923076923076923
+      ],
+      "aciertos": 6,
+      "n": 16,
+      "threshold_marte": 0.13043478260869557,
+      "threshold_luna": 0.7915472614686689,
+      "congelado_en": "2026-11-14T15:31:26-05:00"
+    },
+    "delong_pareado": {
+      "marte_todas_min_vs_banda_propia": {
+        "auc_a": 0.09375,
+        "auc_b": 0.09375,
+        "diferencia": 0.0,
+        "z": null,
+        "p_valor": null,
+        "varianza_diferencia": 0.0,
+        "nota": "La diferencia de AUC es 0; el estadístico de DeLong no está definido (varianza 0)."
+      },
+      "luna_todas_min_vs_banda_propia": {
+        "auc_a": 0.2545454545454545,
+        "auc_b": 0.2545454545454545,
+        "diferencia": 0.0,
+        "z": null,
+        "p_valor": null,
+        "varianza_diferencia": 0.0,
+        "nota": "La diferencia de AUC es 0; el estadístico de DeLong no está definido (varianza 0)."
+      }
+    }
+  },
+  "delong_pareado_modos": {
+    "marte_todas_min_vs_banda_propia": {
+      "auc_a": 0.09375,
+      "auc_b": 0.09375,
+      "diferencia": 0.0,
+      "z": null,
+      "p_valor": null,
+      "varianza_diferencia": 0.0,
+      "nota": "La diferencia de AUC es 0; el estadístico de DeLong no está definido (varianza 0)."
+    },
+    "luna_todas_min_vs_banda_propia": {
+      "auc_a": 0.2545454545454545,
+      "auc_b": 0.2545454545454545,
+      "diferencia": 0.0,
+      "z": null,
+      "p_valor": null,
+      "varianza_diferencia": 0.0,
+      "nota": "La diferencia de AUC es 0; el estadístico de DeLong no está definido (varianza 0)."
+    }
+  },
+  "areas": {
+    "galapagos": {
+      "oeste": -91.8,
+      "sur": -1.54,
+      "este": -89.12,
+      "norte": 0.78,
+      "etiqueta": "Galápagos",
+      "n_celdas_tierra": 6606,
+      "n_celdas_recorte": 77182,
+      "pct_nodata": 91.441,
+      "extension": {
+        "oeste": -91.80000000000001,
+        "sur": -1.5479999999999923,
+        "este": -89.11800000000001,
+        "norte": 0.7830000000000077
+      },
+      "ventana_pixeles": {
+        "col": 23,
+        "row": 102,
+        "ancho": 298,
+        "alto": 259
+      },
+      "delta_marte": {
+        "n": 6606,
+        "median": 0.8939380296560752,
+        "q1": 0.7159758735805206,
+        "q3": 0.9583271191073248,
+        "iqr": 0.2423512455268042,
+        "min": 0.0,
+        "max": 0.9704877496829202
+      },
+      "delta_luna": {
+        "n": 6606,
+        "median": 0.7657850976302043,
+        "q1": 0.7033492988449009,
+        "q3": 0.8165425677806093,
+        "iqr": 0.11319326893570836,
+        "min": 0.0,
+        "max": 0.8776542365782734
+      },
+      "elevacion_m": {
+        "n": 6606,
+        "median": 185.21910095214844,
+        "q1": 74.1754035949707,
+        "q3": 425.9092788696289,
+        "iqr": 351.7338752746582,
+        "min": 3.5714807510375977,
+        "max": 1634.0523681640625
+      },
+      "pendiente_deg": {
+        "n": 6606,
+        "median": 2.652805209159851,
+        "q1": 1.182721495628357,
+        "q3": 5.153391003608704,
+        "iqr": 3.9706695079803467,
+        "min": 0.00484582781791687,
+        "max": 26.7995662689209
+      },
+      "tri_m": {
+        "n": 6606,
+        "median": 38.096426010131836,
+        "q1": 17.07541561126709,
+        "q3": 72.79594612121582,
+        "iqr": 55.72053050994873,
+        "min": 0.5662527084350586,
+        "max": 366.0659484863281
+      },
+      "clases": {
+        "ninguno": 193,
+        "marte": 3977,
+        "luna": 0,
+        "ambos": 2436
+      },
+      "capas": {
+        "similitud-marte": {
+          "archivo": "/productos/galapagos/delta_marte.png",
+          "tipo": "png"
+        },
+        "similitud-luna": {
+          "archivo": "/productos/galapagos/delta_luna.png",
+          "tipo": "png"
+        },
+        "clases": {
+          "archivo": "/productos/galapagos/clases.png",
+          "tipo": "png"
+        }
+      }
+    },
+    "ecuador_continental": {
+      "oeste": -81.25,
+      "sur": -5.103,
+      "este": -74.997,
+      "norte": 1.701,
+      "etiqueta": "Ecuador continental",
+      "n_celdas_tierra": 446657,
+      "n_celdas_recorte": 525420,
+      "pct_nodata": 14.9905,
+      "extension": {
+        "oeste": -81.25200000000001,
+        "sur": -5.102999999999992,
+        "este": -74.99700000000001,
+        "norte": 1.7010000000000076
+      },
+      "ventana_pixeles": {
+        "col": 1195,
+        "row": 0,
+        "ancho": 695,
+        "alto": 756
+      },
+      "delta_marte": {
+        "n": 446657,
+        "median": 0.9552603828823935,
+        "q1": 0.656942360618514,
+        "q3": 0.9647836692343947,
+        "iqr": 0.30784130861588077,
+        "min": 0.0,
+        "max": 0.9923681000119134
+      },
+      "delta_luna": {
+        "n": 446657,
+        "median": 0.6845136808456416,
+        "q1": 0.6013851222111607,
+        "q3": 0.7242801418616265,
+        "iqr": 0.12289501965046579,
+        "min": 0.0,
+        "max": 0.959308888599683
+      },
+      "elevacion_m": {
+        "n": 446657,
+        "median": 269.32415771484375,
+        "q1": 191.71005249023438,
+        "q3": 1164.38427734375,
+        "iqr": 972.6742248535156,
+        "min": -0.4705711901187897,
+        "max": 6018.81201171875
+      },
+      "pendiente_deg": {
+        "n": 446657,
+        "median": 0.7534775733947754,
+        "q1": 0.22211182117462158,
+        "q3": 4.970222473144531,
+        "iqr": 4.74811065196991,
+        "min": 0.00012465960753615946,
+        "max": 33.05157470703125
+      },
+      "tri_m": {
+        "n": 446657,
+        "median": 13.700996398925781,
+        "q1": 4.456647872924805,
+        "q3": 89.85868835449219,
+        "iqr": 85.40204048156738,
+        "min": 0.008026123046875,
+        "max": 518.236328125
+      },
+      "clases": {
+        "ninguno": 23618,
+        "marte": 371957,
+        "luna": 0,
+        "ambos": 51082
+      },
+      "capas": {
+        "similitud-marte": {
+          "archivo": "/productos/ecuador_continental/delta_marte.png",
+          "tipo": "png"
+        },
+        "similitud-luna": {
+          "archivo": "/productos/ecuador_continental/delta_luna.png",
+          "tipo": "png"
+        },
+        "clases": {
+          "archivo": "/productos/ecuador_continental/clases.png",
+          "tipo": "png"
+        }
+      }
+    }
+  },
+  "corrida_previa": {
+    "modo_bandas": "todas_min",
+    "ruta": "web/public/productos/corrida_previa_todas_min/",
+    "acta": "docs/version_congelada_v1.md",
+    "congelado_en": "2026-11-14T13:40:40-05:00"
+  },
+  "huellas_sha256": {
+    "delta_marte.png": "47839ad203cccc08fb0e8cdb0d9f2e7aaf08f3abebb0fdaa3bdd2cadd9685982",
+    "delta_marte.tif": "1fac4f7418cca4c28462ecc4354aba2e64352b551a85c4529c7ffc62d7d0d011",
+    "delta_luna.png": "5eb786ef217863e0f022127c5d3e1ee1c07099ccc1646b26d750cda00e684dc6",
+    "delta_luna.tif": "daf00ed5e74e6308f2a9f46a4077075e335726c278e901c1a18bef24a67372c7",
+    "clases.png": "72ec3e247e950e3f42a6ad4e97951ebcb2d7b833a7a37b5253ba6ae212d90272",
+    "clases.tif": "c00ec958e12dfb55cc46fad62306328670b79760102c026a3365a779378a89a9",
+    "tabla_validacion.csv": "101f7a789ca7f7c1a9c61767ac78f06653410c4367bf5e54e3e6e7e5b046fcf8"
+  },
+  "huellas_areas_sha256": {
+    "galapagos": {
+      "delta_marte.png": "9213c6ed4030bdc0e25809b0a7af13499779510536c3a57a71c29ea6ac5a2e21",
+      "delta_marte.tif": "701f20dc173b4de6e28be5934a1b543397bb9243273f3385bc6272fe117e6359",
+      "delta_luna.png": "86d32247147ca64c7b4a4269e162f005b4823ee4949c369240b435d3fb9ca172",
+      "delta_luna.tif": "8b8a12829f60b96d6ca733454b096df7d5e99e4fc73b79744982d6218ba89355",
+      "clases.png": "8ba71b163f85e6a732bc8b47ff208a1dfa0d39142cf928c295f404a6ccfd0f46",
+      "clases.tif": "796877d9a4910fe9e0023c99da2b319cc8e506210b5428ad12067be29f2ba767"
+    },
+    "ecuador_continental": {
+      "delta_marte.png": "e62d28be782a76c879300c95d4a0fe343e3b1cc1b984260ae82bfab53b6dc7cd",
+      "delta_marte.tif": "b87cdb640a9ad1d901f11648224c1c3e9057d6fbe2d589244f22ca26070f07fd",
+      "delta_luna.png": "2b5762899fe7057157fe2d8976463fe75280b3a83f5779b9cd568ef08299564d",
+      "delta_luna.tif": "71ea93857cc559ed2374a3a9305f7b8bd818bf5ba55f11351daf2b1508fcca01",
+      "clases.png": "529552054dfd8ee0149d0736c79d83487dfdda2095e6a2b33528d9f93c83b42b",
+      "clases.tif": "fd6c2bac0ba5c124ee5c0ffc4eca9ae2c629ccb7b00899954b5d0b724d21eea7"
+    }
   }
 }

@@ -1,4 +1,4 @@
-> **NO APROBADO / TRABAJO FUTURO.** El 14 de noviembre de 2026 (America/Guayaquil, UTC-5) el cliente no aprobó la v1.1. Este documento y `config/v1_1_sitios_objetivo.json` se conservan solo como archivo. No es un resultado oficial, no se corre y no aparece en el tablero. El entregable congelado es la v1 por bandas (`todas_min`, vector con |lat|, elevación absoluta).
+> **NO APROBADO / TRABAJO FUTURO.** El 14 de noviembre de 2026 (America/Guayaquil, UTC-5) el cliente no aprobó la v1.1. Este documento y `config/v1_1_sitios_objetivo.json` se conservan solo como archivo. No es un resultado oficial, no se corre y no aparece en el tablero. El entregable congelado es la v1 por bandas (`banda_propia` oficial, vector con |lat|, elevación absoluta). `todas_min` queda como corrida previa.
 
 # Revisión §9 — firmas por sitios objetivo (v1.1)
 

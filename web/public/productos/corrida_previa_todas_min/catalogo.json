@@ -1,0 +1,3078 @@
+{
+  "mock": false,
+  "aviso": "Datos reales de superficie: MOLA MEGDR 64 ppd (Marte), LOLA LDEM_64 v3.1 (Luna) y Copernicus DEM GLO-90 (Tierra: Ecuador, Galápagos y ventanas de validación), remuestreados a ~1 km. Pendiente y TRI recalculados sobre el DEM remuestreado. Askja entra al AUC con 65.060, −16.640 (buffer 6 km; Blasizzo et al., 2022). El clima no entra al índice y no se muestra un ráster climático en esta entrega.",
+  "metric_version": "ANALOG/delta v1 real 2026-11-14",
+  "congelado_en": "2026-11-14T13:40:40-05:00",
+  "agregacion_validacion": "Mediana de las celdas válidas cuyo centro cae dentro del buffer (distancia haversina, radio oficial, R=6378.137 km). Una celda es válida si elevación, pendiente y TRI son finitos y distintos de nodata (−9999). También se guarda la celda central (vecina más cercana al punto oficial) como referencia, pero el índice y el umbral usan la mediana del buffer. No se elige la «mejor» celda del buffer, para no inflar el AUC.",
+  "grilla": {
+    "resolucion_objetivo_m": 1000,
+    "resolucion_deg": 0.009,
+    "resolucion_mock_deg": 0.009,
+    "nota": "Grilla geográfica de Ecuador+Galápagos a 0.01° (~1 km). Copernicus GLO-90 remuestreado; pendiente y TRI recalculados.",
+    "sistema": "EPSG:4326 (WGS84)",
+    "filas": 756,
+    "columnas": 1890,
+    "n_celdas_tierra": 453375,
+    "extension": {
+      "oeste": -92.007,
+      "norte": 1.7010000000000076,
+      "este": -74.99700000000001,
+      "sur": -5.102999999999992
+    }
+  },
+  "variables_indice": [
+    "latitude",
+    "elevation",
+    "slope",
+    "roughness"
+  ],
+  "pesos_por_defecto": {
+    "latitude": 0.25,
+    "elevation": 0.25,
+    "slope": 0.25,
+    "roughness": 0.25
+  },
+  "variables": [
+    {
+      "nombre": "latitude",
+      "unidad": "°",
+      "in_index": true,
+      "nota": "Entra como |lat|."
+    },
+    {
+      "nombre": "elevation",
+      "unidad": "m",
+      "in_index": true,
+      "nota": "Datum: areoide MOLA / esfera lunar 1737.4 km / geoide EGM2008. Modo por defecto: absoluta."
+    },
+    {
+      "nombre": "slope",
+      "unidad": "°",
+      "in_index": true,
+      "nota": "Horn 3×3 sobre el DEM remuestreado."
+    },
+    {
+      "nombre": "roughness",
+      "unidad": "m",
+      "in_index": true,
+      "nota": "TRI de Wilson 3×3 sobre el DEM remuestreado."
+    }
+  ],
+  "bandas_latitud": [
+    {
+      "nombre": "A",
+      "abs_lat_min": 0.0,
+      "abs_lat_max": 15.0
+    },
+    {
+      "nombre": "B",
+      "abs_lat_min": 15.0,
+      "abs_lat_max": 30.0
+    },
+    {
+      "nombre": "C",
+      "abs_lat_min": 30.0,
+      "abs_lat_max": 45.0
+    },
+    {
+      "nombre": "D",
+      "abs_lat_min": 45.0,
+      "abs_lat_max": 60.0
+    },
+    {
+      "nombre": "E",
+      "abs_lat_min": 60.0,
+      "abs_lat_max": 72.0
+    },
+    {
+      "nombre": "F",
+      "abs_lat_min": 72.0,
+      "abs_lat_max": 80.0
+    },
+    {
+      "nombre": "G",
+      "abs_lat_min": 80.0,
+      "abs_lat_max": 90.0
+    }
+  ],
+  "std_params": {
+    "mars": [
+      {
+        "body_ref": "mars",
+        "variable": "latitude",
+        "center": 49.57211068931176,
+        "scale": 26.67221488707237,
+        "method": "zscore",
+        "frozen_at": "2026-11-14T13:40:41-05:00"
+      },
+      {
+        "body_ref": "mars",
+        "variable": "elevation",
+        "center": -772.2182149698841,
+        "scale": 3012.534571811103,
+        "method": "zscore",
+        "frozen_at": "2026-11-14T13:40:41-05:00"
+      },
+      {
+        "body_ref": "mars",
+        "variable": "slope",
+        "center": 1.505702126225174,
+        "scale": 2.75544000189209,
+        "method": "zscore",
+        "frozen_at": "2026-11-14T13:40:41-05:00"
+      },
+      {
+        "body_ref": "mars",
+        "variable": "roughness",
+        "center": 16.722178957351616,
+        "scale": 30.57567108977358,
+        "method": "zscore",
+        "frozen_at": "2026-11-14T13:40:41-05:00"
+      }
+    ],
+    "moon": [
+      {
+        "body_ref": "moon",
+        "variable": "latitude",
+        "center": 49.57229256902778,
+        "scale": 26.670664024835006,
+        "method": "zscore",
+        "frozen_at": "2026-11-14T13:40:41-05:00"
+      },
+      {
+        "body_ref": "moon",
+        "variable": "elevation",
+        "center": -594.4515257440986,
+        "scale": 2148.7744864183214,
+        "method": "zscore",
+        "frozen_at": "2026-11-14T13:40:41-05:00"
+      },
+      {
+        "body_ref": "moon",
+        "variable": "slope",
+        "center": 6.342606744279029,
+        "scale": 6.160244229373758,
+        "method": "zscore",
+        "frozen_at": "2026-11-14T13:40:41-05:00"
+      },
+      {
+        "body_ref": "moon",
+        "variable": "roughness",
+        "center": 71.24090788658602,
+        "scale": 68.2962190777182,
+        "method": "zscore",
+        "frozen_at": "2026-11-14T13:40:41-05:00"
+      }
+    ]
+  },
+  "signatures": {
+    "mars": [
+      {
+        "body": "mars",
+        "lat_band": "A",
+        "variable": "latitude",
+        "median": 7.50773286819458,
+        "q1": 3.7454307079315186,
+        "q3": 11.25316333770752,
+        "n_cells": 8000
+      },
+      {
+        "body": "mars",
+        "lat_band": "A",
+        "variable": "elevation",
+        "median": -122.29877090454102,
+        "q1": -2048.252685546875,
+        "q3": 1738.9360656738281,
+        "n_cells": 8000
+      },
+      {
+        "body": "mars",
+        "lat_band": "A",
+        "variable": "slope",
+        "median": 0.7866553366184235,
+        "q1": 0.34112103283405304,
+        "q3": 1.90093332529068,
+        "n_cells": 8000
+      },
+      {
+        "body": "mars",
+        "lat_band": "A",
+        "variable": "roughness",
+        "median": 11.98969841003418,
+        "q1": 5.334101438522339,
+        "q3": 28.505142211914062,
+        "n_cells": 8000
+      },
+      {
+        "body": "mars",
+        "lat_band": "B",
+        "variable": "latitude",
+        "median": 22.50632667541504,
+        "q1": 18.760896682739258,
+        "q3": 26.25175666809082,
+        "n_cells": 8000
+      },
+      {
+        "body": "mars",
+        "lat_band": "B",
+        "variable": "elevation",
+        "median": 370.7421417236328,
+        "q1": -2007.1163940429688,
+        "q3": 1721.4112548828125,
+        "n_cells": 8000
+      },
+      {
+        "body": "mars",
+        "lat_band": "B",
+        "variable": "slope",
+        "median": 0.6519732177257538,
+        "q1": 0.2798762917518616,
+        "q3": 1.6193175911903381,
+        "n_cells": 8000
+      },
+      {
+        "body": "mars",
+        "lat_band": "B",
+        "variable": "roughness",
+        "median": 9.489387512207031,
+        "q1": 4.196495056152344,
+        "q3": 22.82458209991455,
+        "n_cells": 8000
+      },
+      {
+        "body": "mars",
+        "lat_band": "C",
+        "variable": "latitude",
+        "median": 37.504920959472656,
+        "q1": 33.759490966796875,
+        "q3": 41.25035095214844,
+        "n_cells": 8000
+      },
+      {
+        "body": "mars",
+        "lat_band": "C",
+        "variable": "elevation",
+        "median": -222.4283676147461,
+        "q1": -3791.9161987304688,
+        "q3": 1459.7865295410156,
+        "n_cells": 8000
+      },
+      {
+        "body": "mars",
+        "lat_band": "C",
+        "variable": "slope",
+        "median": 0.7079990208148956,
+        "q1": 0.3012402132153511,
+        "q3": 1.632125049829483,
+        "n_cells": 8000
+      },
+      {
+        "body": "mars",
+        "lat_band": "C",
+        "variable": "roughness",
+        "median": 9.466251373291016,
+        "q1": 4.272987365722656,
+        "q3": 21.404642581939697,
+        "n_cells": 8000
+      },
+      {
+        "body": "mars",
+        "lat_band": "D",
+        "variable": "latitude",
+        "median": 52.50351333618164,
+        "q1": 48.75808334350586,
+        "q3": 56.24894714355469,
+        "n_cells": 8000
+      },
+      {
+        "body": "mars",
+        "lat_band": "D",
+        "variable": "elevation",
+        "median": -2168.22998046875,
+        "q1": -4054.4173583984375,
+        "q3": 1334.0075378417969,
+        "n_cells": 8000
+      },
+      {
+        "body": "mars",
+        "lat_band": "D",
+        "variable": "slope",
+        "median": 0.5664799809455872,
+        "q1": 0.26674360781908035,
+        "q3": 1.3144484460353851,
+        "n_cells": 8000
+      },
+      {
+        "body": "mars",
+        "lat_band": "D",
+        "variable": "roughness",
+        "median": 6.6938629150390625,
+        "q1": 3.381927490234375,
+        "q3": 15.186847686767578,
+        "n_cells": 8000
+      },
+      {
+        "body": "mars",
+        "lat_band": "E",
+        "variable": "latitude",
+        "median": 66.00056457519531,
+        "q1": 62.99747085571289,
+        "q3": 69.00365447998047,
+        "n_cells": 8000
+      },
+      {
+        "body": "mars",
+        "lat_band": "E",
+        "variable": "elevation",
+        "median": -1846.2822570800781,
+        "q1": -4317.3487548828125,
+        "q3": 1331.1068115234375,
+        "n_cells": 8000
+      },
+      {
+        "body": "mars",
+        "lat_band": "E",
+        "variable": "slope",
+        "median": 0.491712749004364,
+        "q1": 0.2483052834868431,
+        "q3": 1.0367691814899445,
+        "n_cells": 8000
+      },
+      {
+        "body": "mars",
+        "lat_band": "E",
+        "variable": "roughness",
+        "median": 5.015716552734375,
+        "q1": 2.630706787109375,
+        "q3": 10.542064666748047,
+        "n_cells": 8000
+      },
+      {
+        "body": "mars",
+        "lat_band": "F",
+        "variable": "latitude",
+        "median": 76.0052490234375,
+        "q1": 73.99756622314453,
+        "q3": 77.99606323242188,
+        "n_cells": 8000
+      },
+      {
+        "body": "mars",
+        "lat_band": "F",
+        "variable": "elevation",
+        "median": -1938.5469207763672,
+        "q1": -4694.419677734375,
+        "q3": 1607.1171264648438,
+        "n_cells": 8000
+      },
+      {
+        "body": "mars",
+        "lat_band": "F",
+        "variable": "slope",
+        "median": 0.5331709980964661,
+        "q1": 0.2675982415676117,
+        "q3": 1.1552319824695587,
+        "n_cells": 8000
+      },
+      {
+        "body": "mars",
+        "lat_band": "F",
+        "variable": "roughness",
+        "median": 4.6610870361328125,
+        "q1": 2.4220046997070312,
+        "q3": 10.018421173095703,
+        "n_cells": 8000
+      },
+      {
+        "body": "mars",
+        "lat_band": "G",
+        "variable": "latitude",
+        "median": 84.98922348022461,
+        "q1": 82.48383331298828,
+        "q3": 87.49461364746094,
+        "n_cells": 8000
+      },
+      {
+        "body": "mars",
+        "lat_band": "G",
+        "variable": "elevation",
+        "median": -576.9295959472656,
+        "q1": -3232.70751953125,
+        "q3": 2851.6583251953125,
+        "n_cells": 8000
+      },
+      {
+        "body": "mars",
+        "lat_band": "G",
+        "variable": "slope",
+        "median": 0.740563839673996,
+        "q1": 0.3101767525076866,
+        "q3": 1.897189736366272,
+        "n_cells": 8000
+      },
+      {
+        "body": "mars",
+        "lat_band": "G",
+        "variable": "roughness",
+        "median": 4.1569671630859375,
+        "q1": 1.8690643310546875,
+        "q3": 9.449485778808594,
+        "n_cells": 8000
+      }
+    ],
+    "moon": [
+      {
+        "body": "moon",
+        "lat_band": "A",
+        "variable": "latitude",
+        "median": 7.502748489379883,
+        "q1": 3.743129253387451,
+        "q3": 11.262367248535156,
+        "n_cells": 8000
+      },
+      {
+        "body": "moon",
+        "lat_band": "A",
+        "variable": "elevation",
+        "median": -24.31922149658203,
+        "q1": -1335.6814270019531,
+        "q3": 2429.5624389648438,
+        "n_cells": 8000
+      },
+      {
+        "body": "moon",
+        "lat_band": "A",
+        "variable": "slope",
+        "median": 3.4512202739715576,
+        "q1": 0.9580756276845932,
+        "q3": 7.737995624542236,
+        "n_cells": 8000
+      },
+      {
+        "body": "moon",
+        "lat_band": "A",
+        "variable": "roughness",
+        "median": 53.68019104003906,
+        "q1": 16.313725471496582,
+        "q3": 109.00169372558594,
+        "n_cells": 8000
+      },
+      {
+        "body": "moon",
+        "lat_band": "B",
+        "variable": "latitude",
+        "median": 22.50824546813965,
+        "q1": 18.748626708984375,
+        "q3": 26.267864227294922,
+        "n_cells": 8000
+      },
+      {
+        "body": "moon",
+        "lat_band": "B",
+        "variable": "elevation",
+        "median": -426.2554168701172,
+        "q1": -1661.0648193359375,
+        "q3": 1299.6246032714844,
+        "n_cells": 8000
+      },
+      {
+        "body": "moon",
+        "lat_band": "B",
+        "variable": "slope",
+        "median": 3.7502106428146362,
+        "q1": 1.052209734916687,
+        "q3": 8.168745756149292,
+        "n_cells": 8000
+      },
+      {
+        "body": "moon",
+        "lat_band": "B",
+        "variable": "roughness",
+        "median": 55.437360763549805,
+        "q1": 17.721847534179688,
+        "q3": 111.58612632751465,
+        "n_cells": 8000
+      },
+      {
+        "body": "moon",
+        "lat_band": "C",
+        "variable": "latitude",
+        "median": 37.49725151062012,
+        "q1": 33.75412368774414,
+        "q3": 41.240379333496094,
+        "n_cells": 7982
+      },
+      {
+        "body": "moon",
+        "lat_band": "C",
+        "variable": "elevation",
+        "median": -713.66015625,
+        "q1": -2037.6400756835938,
+        "q3": 859.2410125732422,
+        "n_cells": 7982
+      },
+      {
+        "body": "moon",
+        "lat_band": "C",
+        "variable": "slope",
+        "median": 3.9914841651916504,
+        "q1": 1.3112948834896088,
+        "q3": 8.359904289245605,
+        "n_cells": 7982
+      },
+      {
+        "body": "moon",
+        "lat_band": "C",
+        "variable": "roughness",
+        "median": 55.05656814575195,
+        "q1": 20.188735961914062,
+        "q3": 106.59095001220703,
+        "n_cells": 7982
+      },
+      {
+        "body": "moon",
+        "lat_band": "D",
+        "variable": "latitude",
+        "median": 52.48625946044922,
+        "q1": 48.72663879394531,
+        "q3": 56.24587631225586,
+        "n_cells": 8018
+      },
+      {
+        "body": "moon",
+        "lat_band": "D",
+        "variable": "elevation",
+        "median": -1254.14208984375,
+        "q1": -2479.3594970703125,
+        "q3": 197.07698822021484,
+        "n_cells": 8018
+      },
+      {
+        "body": "moon",
+        "lat_band": "D",
+        "variable": "slope",
+        "median": 4.016823768615723,
+        "q1": 1.3942005634307861,
+        "q3": 8.378333330154419,
+        "n_cells": 8018
+      },
+      {
+        "body": "moon",
+        "lat_band": "D",
+        "variable": "roughness",
+        "median": 48.33641815185547,
+        "q1": 18.904823303222656,
+        "q3": 96.83095169067383,
+        "n_cells": 8018
+      },
+      {
+        "body": "moon",
+        "lat_band": "E",
+        "variable": "latitude",
+        "median": 65.99120712280273,
+        "q1": 62.998351097106934,
+        "q3": 69.00879669189453,
+        "n_cells": 8000
+      },
+      {
+        "body": "moon",
+        "lat_band": "E",
+        "variable": "elevation",
+        "median": -945.4588317871094,
+        "q1": -2134.4349975585938,
+        "q3": 100.82112312316895,
+        "n_cells": 8000
+      },
+      {
+        "body": "moon",
+        "lat_band": "E",
+        "variable": "slope",
+        "median": 5.110857248306274,
+        "q1": 2.3038663268089294,
+        "q3": 9.582851886749268,
+        "n_cells": 8000
+      },
+      {
+        "body": "moon",
+        "lat_band": "E",
+        "variable": "roughness",
+        "median": 52.34555625915527,
+        "q1": 24.977096557617188,
+        "q3": 95.75533676147461,
+        "n_cells": 8000
+      },
+      {
+        "body": "moon",
+        "lat_band": "F",
+        "variable": "latitude",
+        "median": 76.0003662109375,
+        "q1": 73.98863983154297,
+        "q3": 78.01209259033203,
+        "n_cells": 8000
+      },
+      {
+        "body": "moon",
+        "lat_band": "F",
+        "variable": "elevation",
+        "median": -860.6436157226562,
+        "q1": -2053.2792358398438,
+        "q3": 8.801372766494751,
+        "n_cells": 8000
+      },
+      {
+        "body": "moon",
+        "lat_band": "F",
+        "variable": "slope",
+        "median": 5.689130544662476,
+        "q1": 2.6935595870018005,
+        "q3": 10.22968316078186,
+        "n_cells": 8000
+      },
+      {
+        "body": "moon",
+        "lat_band": "F",
+        "variable": "roughness",
+        "median": 49.074134826660156,
+        "q1": 23.84955883026123,
+        "q3": 91.54045867919922,
+        "n_cells": 8000
+      },
+      {
+        "body": "moon",
+        "lat_band": "G",
+        "variable": "latitude",
+        "median": 84.98717498779297,
+        "q1": 82.49725341796875,
+        "q3": 87.47709655761719,
+        "n_cells": 8000
+      },
+      {
+        "body": "moon",
+        "lat_band": "G",
+        "variable": "elevation",
+        "median": -1016.3379516601562,
+        "q1": -1975.1817626953125,
+        "q3": -275.91236114501953,
+        "n_cells": 8000
+      },
+      {
+        "body": "moon",
+        "lat_band": "G",
+        "variable": "slope",
+        "median": 6.249683856964111,
+        "q1": 3.0813297629356384,
+        "q3": 11.30816912651062,
+        "n_cells": 8000
+      },
+      {
+        "body": "moon",
+        "lat_band": "G",
+        "variable": "roughness",
+        "median": 44.91878890991211,
+        "q1": 20.719552993774414,
+        "q3": 89.88610649108887,
+        "n_cells": 8000
+      }
+    ]
+  },
+  "d_max": {
+    "mars": 5.783924028253724,
+    "moon": 1.651817219714007
+  },
+  "umbrales": {
+    "mars": {
+      "threshold": 0.13043478260869557,
+      "sensitivity": 1.0,
+      "precision": 0.5,
+      "specificity": 0.0,
+      "auc": 0.09375,
+      "agreement": 0.5,
+      "metric": "youden",
+      "d_max": 5.783924028253724,
+      "n_pos": 8,
+      "n_neg": 8
+    },
+    "moon": {
+      "threshold": 0.7915472614686689,
+      "sensitivity": 0.2,
+      "precision": 1.0,
+      "specificity": 1.0,
+      "auc": 0.2545454545454546,
+      "agreement": 0.75,
+      "metric": "youden",
+      "d_max": 1.651817219714007,
+      "n_pos": 5,
+      "n_neg": 11
+    }
+  },
+  "metricas_validacion": {
+    "marte": {
+      "threshold": 0.13043478260869557,
+      "sensitivity": 1.0,
+      "precision": 0.5,
+      "auc": 0.09375,
+      "agreement": 0.5
+    },
+    "luna": {
+      "threshold": 0.7915472614686689,
+      "sensitivity": 0.2,
+      "precision": 1.0,
+      "auc": 0.2545454545454546,
+      "agreement": 0.75
+    },
+    "precision_por_clase": {
+      "marte": {
+        "precision": 0.3333333333333333,
+        "sensitivity": 1.0,
+        "support": 5
+      },
+      "luna": {
+        "precision": 0.0,
+        "sensitivity": 0.0,
+        "support": 2
+      },
+      "ambos": {
+        "precision": 1.0,
+        "sensitivity": 0.3333333333333333,
+        "support": 3
+      },
+      "ninguno": {
+        "precision": 0.0,
+        "sensitivity": 0.0,
+        "support": 6
+      }
+    },
+    "aciertos": 6,
+    "aciertos_auc": 6,
+    "n_sitios_auc": 16,
+    "n_sitios": 19
+  },
+  "metricas_por_variante": {
+    "todas_min_con_latitud": {
+      "etiqueta": "todas_min, vector con |lat|, elevación absoluta (defecto)",
+      "d_max": {
+        "mars": 5.783924028253724,
+        "moon": 1.651817219714007
+      },
+      "marte": {
+        "threshold": 0.13043478260869557,
+        "sensitivity": 1.0,
+        "precision": 0.5,
+        "specificity": 0.0,
+        "auc": 0.09375,
+        "agreement": 0.5,
+        "metric": "youden",
+        "d_max": 5.783924028253724,
+        "n_pos": 8,
+        "n_neg": 8,
+        "ic95_inferior": 0.0,
+        "ic95_superior": 0.2857142857142857,
+        "n_bootstrap": 2000
+      },
+      "luna": {
+        "threshold": 0.7915472614686689,
+        "sensitivity": 0.2,
+        "precision": 1.0,
+        "specificity": 1.0,
+        "auc": 0.2545454545454546,
+        "agreement": 0.75,
+        "metric": "youden",
+        "d_max": 1.651817219714007,
+        "n_pos": 5,
+        "n_neg": 11,
+        "ic95_inferior": 0.0,
+        "ic95_superior": 0.6923076923076923,
+        "n_bootstrap": 1990
+      }
+    },
+    "banda_propia_con_latitud": {
+      "etiqueta": "banda_propia, vector con |lat|, elevación absoluta",
+      "d_max": {
+        "mars": 7.104575532239943,
+        "moon": 1.651817219714007
+      },
+      "marte": {
+        "threshold": 0.13043478260869557,
+        "sensitivity": 1.0,
+        "precision": 0.5,
+        "specificity": 0.0,
+        "auc": 0.09375,
+        "agreement": 0.5,
+        "metric": "youden",
+        "d_max": 7.104575532239943,
+        "n_pos": 8,
+        "n_neg": 8,
+        "ic95_inferior": 0.0,
+        "ic95_superior": 0.2857142857142857,
+        "n_bootstrap": 2000
+      },
+      "luna": {
+        "threshold": 0.7915472614686689,
+        "sensitivity": 0.2,
+        "precision": 1.0,
+        "specificity": 1.0,
+        "auc": 0.2545454545454546,
+        "agreement": 0.75,
+        "metric": "youden",
+        "d_max": 1.651817219714007,
+        "n_pos": 5,
+        "n_neg": 11,
+        "ic95_inferior": 0.0,
+        "ic95_superior": 0.6923076923076923,
+        "n_bootstrap": 1990
+      }
+    },
+    "todas_min_sin_latitud": {
+      "etiqueta": "todas_min, sin latitud en el vector, elevación absoluta",
+      "d_max": {
+        "mars": 6.643383243468907,
+        "moon": 1.7956285774997034
+      },
+      "marte": {
+        "threshold": 0.13043478260869557,
+        "sensitivity": 1.0,
+        "precision": 0.5,
+        "specificity": 0.0,
+        "auc": 0.125,
+        "agreement": 0.5,
+        "metric": "youden",
+        "d_max": 6.643383243468907,
+        "n_pos": 8,
+        "n_neg": 8,
+        "ic95_inferior": 0.0,
+        "ic95_superior": 0.34379261363636343,
+        "n_bootstrap": 2000
+      },
+      "luna": {
+        "threshold": 0.8654922591410728,
+        "sensitivity": 0.2,
+        "precision": 1.0,
+        "specificity": 1.0,
+        "auc": 0.2727272727272727,
+        "agreement": 0.75,
+        "metric": "youden",
+        "d_max": 1.7956285774997034,
+        "n_pos": 5,
+        "n_neg": 11,
+        "ic95_inferior": 0.0,
+        "ic95_superior": 0.7090909090909091,
+        "n_bootstrap": 1990
+      }
+    },
+    "banda_propia_sin_latitud": {
+      "etiqueta": "banda_propia, sin latitud en el vector, elevación absoluta",
+      "d_max": {
+        "mars": 8.203526424860256,
+        "moon": 1.906187770292109
+      },
+      "marte": {
+        "threshold": 0.13043478260869557,
+        "sensitivity": 1.0,
+        "precision": 0.5,
+        "specificity": 0.0,
+        "auc": 0.09375,
+        "agreement": 0.5,
+        "metric": "youden",
+        "d_max": 8.203526424860256,
+        "n_pos": 8,
+        "n_neg": 8,
+        "ic95_inferior": 0.0,
+        "ic95_superior": 0.2857142857142857,
+        "n_bootstrap": 2000
+      },
+      "luna": {
+        "threshold": 0.8364194770297484,
+        "sensitivity": 0.2,
+        "precision": 1.0,
+        "specificity": 1.0,
+        "auc": 0.2545454545454546,
+        "agreement": 0.75,
+        "metric": "youden",
+        "d_max": 1.906187770292109,
+        "n_pos": 5,
+        "n_neg": 11,
+        "ic95_inferior": 0.0,
+        "ic95_superior": 0.6923076923076923,
+        "n_bootstrap": 1990
+      }
+    },
+    "todas_min_con_latitud_relieve_relativo": {
+      "etiqueta": "todas_min, vector con |lat|, relieve relativo",
+      "d_max": {
+        "mars": 8.922664138748729,
+        "moon": 2.191542068440192
+      },
+      "marte": {
+        "threshold": 0.13043478260869557,
+        "sensitivity": 1.0,
+        "precision": 0.5,
+        "specificity": 0.0,
+        "auc": 0.140625,
+        "agreement": 0.5,
+        "metric": "youden",
+        "d_max": 8.922664138748729,
+        "n_pos": 8,
+        "n_neg": 8,
+        "ic95_inferior": 0.0,
+        "ic95_superior": 0.38095238095238093,
+        "n_bootstrap": 2000
+      },
+      "luna": {
+        "threshold": 0.7680011377179934,
+        "sensitivity": 0.8,
+        "precision": 0.3333333333333333,
+        "specificity": 0.2727272727272727,
+        "auc": 0.36363636363636365,
+        "agreement": 0.4375,
+        "metric": "youden",
+        "d_max": 2.191542068440192,
+        "n_pos": 5,
+        "n_neg": 11,
+        "ic95_inferior": 0.0769230769230769,
+        "ic95_superior": 0.6912937062937061,
+        "n_bootstrap": 1990
+      }
+    },
+    "banda_propia_con_latitud_relieve_relativo": {
+      "etiqueta": "banda_propia, vector con |lat|, relieve relativo",
+      "d_max": {
+        "mars": 10.113025972656423,
+        "moon": 2.191542068440192
+      },
+      "marte": {
+        "threshold": 0.13043478260869557,
+        "sensitivity": 1.0,
+        "precision": 0.5,
+        "specificity": 0.0,
+        "auc": 0.140625,
+        "agreement": 0.5,
+        "metric": "youden",
+        "d_max": 10.113025972656423,
+        "n_pos": 8,
+        "n_neg": 8,
+        "ic95_inferior": 0.0,
+        "ic95_superior": 0.38095238095238093,
+        "n_bootstrap": 2000
+      },
+      "luna": {
+        "threshold": 0.7680011377179934,
+        "sensitivity": 0.8,
+        "precision": 0.3333333333333333,
+        "specificity": 0.2727272727272727,
+        "auc": 0.36363636363636365,
+        "agreement": 0.4375,
+        "metric": "youden",
+        "d_max": 2.191542068440192,
+        "n_pos": 5,
+        "n_neg": 11,
+        "ic95_inferior": 0.0769230769230769,
+        "ic95_superior": 0.6912937062937061,
+        "n_bootstrap": 1990
+      }
+    },
+    "todas_min_sin_latitud_relieve_relativo": {
+      "etiqueta": "todas_min, sin latitud, relieve relativo",
+      "d_max": {
+        "mars": 10.28014681205182,
+        "moon": 2.491673142960932
+      },
+      "marte": {
+        "threshold": 0.13043478260869568,
+        "sensitivity": 1.0,
+        "precision": 0.5,
+        "specificity": 0.0,
+        "auc": 0.171875,
+        "agreement": 0.5,
+        "metric": "youden",
+        "d_max": 10.28014681205182,
+        "n_pos": 8,
+        "n_neg": 8,
+        "ic95_inferior": 0.0,
+        "ic95_superior": 0.4363636363636364,
+        "n_bootstrap": 2000
+      },
+      "luna": {
+        "threshold": 0.8695807289211143,
+        "sensitivity": 0.4,
+        "precision": 0.4,
+        "specificity": 0.7272727272727273,
+        "auc": 0.4,
+        "agreement": 0.625,
+        "metric": "youden",
+        "d_max": 2.491673142960932,
+        "n_pos": 5,
+        "n_neg": 11,
+        "ic95_inferior": 0.0634920634920635,
+        "ic95_superior": 0.7916666666666666,
+        "n_bootstrap": 1990
+      }
+    },
+    "banda_propia_sin_latitud_relieve_relativo": {
+      "etiqueta": "banda_propia, sin latitud, relieve relativo",
+      "d_max": {
+        "mars": 11.677326361944601,
+        "moon": 2.529695731929779
+      },
+      "marte": {
+        "threshold": 0.13043478260869568,
+        "sensitivity": 1.0,
+        "precision": 0.5,
+        "specificity": 0.0,
+        "auc": 0.125,
+        "agreement": 0.5,
+        "metric": "youden",
+        "d_max": 11.677326361944601,
+        "n_pos": 8,
+        "n_neg": 8,
+        "ic95_inferior": 0.0,
+        "ic95_superior": 0.33374999999999777,
+        "n_bootstrap": 2000
+      },
+      "luna": {
+        "threshold": 0.8967986117725666,
+        "sensitivity": 0.2,
+        "precision": 0.5,
+        "specificity": 0.9090909090909091,
+        "auc": 0.4181818181818182,
+        "agreement": 0.6875,
+        "metric": "youden",
+        "d_max": 2.529695731929779,
+        "n_pos": 5,
+        "n_neg": 11,
+        "ic95_inferior": 0.07869352869352869,
+        "ic95_superior": 0.7948717948717947,
+        "n_bootstrap": 1990
+      }
+    }
+  },
+  "metricas_sensibilidad": {
+    "todas_min_con_latitud": {
+      "etiqueta": "todas_min, vector con |lat|, elevación absoluta (defecto)",
+      "d_max": {
+        "mars": 5.783924028253724,
+        "moon": 1.651817219714007
+      },
+      "marte": {
+        "threshold": 0.13043478260869557,
+        "sensitivity": 1.0,
+        "precision": 0.5,
+        "specificity": 0.0,
+        "auc": 0.09375,
+        "agreement": 0.5,
+        "metric": "youden",
+        "d_max": 5.783924028253724,
+        "n_pos": 8,
+        "n_neg": 8,
+        "ic95_inferior": 0.0,
+        "ic95_superior": 0.2857142857142857,
+        "n_bootstrap": 2000
+      },
+      "luna": {
+        "threshold": 0.7915472614686689,
+        "sensitivity": 0.2,
+        "precision": 1.0,
+        "specificity": 1.0,
+        "auc": 0.2545454545454546,
+        "agreement": 0.75,
+        "metric": "youden",
+        "d_max": 1.651817219714007,
+        "n_pos": 5,
+        "n_neg": 11,
+        "ic95_inferior": 0.0,
+        "ic95_superior": 0.6923076923076923,
+        "n_bootstrap": 1990
+      }
+    },
+    "banda_propia_con_latitud": {
+      "etiqueta": "banda_propia, vector con |lat|, elevación absoluta",
+      "d_max": {
+        "mars": 7.104575532239943,
+        "moon": 1.651817219714007
+      },
+      "marte": {
+        "threshold": 0.13043478260869557,
+        "sensitivity": 1.0,
+        "precision": 0.5,
+        "specificity": 0.0,
+        "auc": 0.09375,
+        "agreement": 0.5,
+        "metric": "youden",
+        "d_max": 7.104575532239943,
+        "n_pos": 8,
+        "n_neg": 8,
+        "ic95_inferior": 0.0,
+        "ic95_superior": 0.2857142857142857,
+        "n_bootstrap": 2000
+      },
+      "luna": {
+        "threshold": 0.7915472614686689,
+        "sensitivity": 0.2,
+        "precision": 1.0,
+        "specificity": 1.0,
+        "auc": 0.2545454545454546,
+        "agreement": 0.75,
+        "metric": "youden",
+        "d_max": 1.651817219714007,
+        "n_pos": 5,
+        "n_neg": 11,
+        "ic95_inferior": 0.0,
+        "ic95_superior": 0.6923076923076923,
+        "n_bootstrap": 1990
+      }
+    },
+    "todas_min_sin_latitud": {
+      "etiqueta": "todas_min, sin latitud en el vector, elevación absoluta",
+      "d_max": {
+        "mars": 6.643383243468907,
+        "moon": 1.7956285774997034
+      },
+      "marte": {
+        "threshold": 0.13043478260869557,
+        "sensitivity": 1.0,
+        "precision": 0.5,
+        "specificity": 0.0,
+        "auc": 0.125,
+        "agreement": 0.5,
+        "metric": "youden",
+        "d_max": 6.643383243468907,
+        "n_pos": 8,
+        "n_neg": 8,
+        "ic95_inferior": 0.0,
+        "ic95_superior": 0.34379261363636343,
+        "n_bootstrap": 2000
+      },
+      "luna": {
+        "threshold": 0.8654922591410728,
+        "sensitivity": 0.2,
+        "precision": 1.0,
+        "specificity": 1.0,
+        "auc": 0.2727272727272727,
+        "agreement": 0.75,
+        "metric": "youden",
+        "d_max": 1.7956285774997034,
+        "n_pos": 5,
+        "n_neg": 11,
+        "ic95_inferior": 0.0,
+        "ic95_superior": 0.7090909090909091,
+        "n_bootstrap": 1990
+      }
+    },
+    "banda_propia_sin_latitud": {
+      "etiqueta": "banda_propia, sin latitud en el vector, elevación absoluta",
+      "d_max": {
+        "mars": 8.203526424860256,
+        "moon": 1.906187770292109
+      },
+      "marte": {
+        "threshold": 0.13043478260869557,
+        "sensitivity": 1.0,
+        "precision": 0.5,
+        "specificity": 0.0,
+        "auc": 0.09375,
+        "agreement": 0.5,
+        "metric": "youden",
+        "d_max": 8.203526424860256,
+        "n_pos": 8,
+        "n_neg": 8,
+        "ic95_inferior": 0.0,
+        "ic95_superior": 0.2857142857142857,
+        "n_bootstrap": 2000
+      },
+      "luna": {
+        "threshold": 0.8364194770297484,
+        "sensitivity": 0.2,
+        "precision": 1.0,
+        "specificity": 1.0,
+        "auc": 0.2545454545454546,
+        "agreement": 0.75,
+        "metric": "youden",
+        "d_max": 1.906187770292109,
+        "n_pos": 5,
+        "n_neg": 11,
+        "ic95_inferior": 0.0,
+        "ic95_superior": 0.6923076923076923,
+        "n_bootstrap": 1990
+      }
+    },
+    "todas_min_con_latitud_relieve_relativo": {
+      "etiqueta": "todas_min, vector con |lat|, relieve relativo",
+      "d_max": {
+        "mars": 8.922664138748729,
+        "moon": 2.191542068440192
+      },
+      "marte": {
+        "threshold": 0.13043478260869557,
+        "sensitivity": 1.0,
+        "precision": 0.5,
+        "specificity": 0.0,
+        "auc": 0.140625,
+        "agreement": 0.5,
+        "metric": "youden",
+        "d_max": 8.922664138748729,
+        "n_pos": 8,
+        "n_neg": 8,
+        "ic95_inferior": 0.0,
+        "ic95_superior": 0.38095238095238093,
+        "n_bootstrap": 2000
+      },
+      "luna": {
+        "threshold": 0.7680011377179934,
+        "sensitivity": 0.8,
+        "precision": 0.3333333333333333,
+        "specificity": 0.2727272727272727,
+        "auc": 0.36363636363636365,
+        "agreement": 0.4375,
+        "metric": "youden",
+        "d_max": 2.191542068440192,
+        "n_pos": 5,
+        "n_neg": 11,
+        "ic95_inferior": 0.0769230769230769,
+        "ic95_superior": 0.6912937062937061,
+        "n_bootstrap": 1990
+      }
+    },
+    "banda_propia_con_latitud_relieve_relativo": {
+      "etiqueta": "banda_propia, vector con |lat|, relieve relativo",
+      "d_max": {
+        "mars": 10.113025972656423,
+        "moon": 2.191542068440192
+      },
+      "marte": {
+        "threshold": 0.13043478260869557,
+        "sensitivity": 1.0,
+        "precision": 0.5,
+        "specificity": 0.0,
+        "auc": 0.140625,
+        "agreement": 0.5,
+        "metric": "youden",
+        "d_max": 10.113025972656423,
+        "n_pos": 8,
+        "n_neg": 8,
+        "ic95_inferior": 0.0,
+        "ic95_superior": 0.38095238095238093,
+        "n_bootstrap": 2000
+      },
+      "luna": {
+        "threshold": 0.7680011377179934,
+        "sensitivity": 0.8,
+        "precision": 0.3333333333333333,
+        "specificity": 0.2727272727272727,
+        "auc": 0.36363636363636365,
+        "agreement": 0.4375,
+        "metric": "youden",
+        "d_max": 2.191542068440192,
+        "n_pos": 5,
+        "n_neg": 11,
+        "ic95_inferior": 0.0769230769230769,
+        "ic95_superior": 0.6912937062937061,
+        "n_bootstrap": 1990
+      }
+    },
+    "todas_min_sin_latitud_relieve_relativo": {
+      "etiqueta": "todas_min, sin latitud, relieve relativo",
+      "d_max": {
+        "mars": 10.28014681205182,
+        "moon": 2.491673142960932
+      },
+      "marte": {
+        "threshold": 0.13043478260869568,
+        "sensitivity": 1.0,
+        "precision": 0.5,
+        "specificity": 0.0,
+        "auc": 0.171875,
+        "agreement": 0.5,
+        "metric": "youden",
+        "d_max": 10.28014681205182,
+        "n_pos": 8,
+        "n_neg": 8,
+        "ic95_inferior": 0.0,
+        "ic95_superior": 0.4363636363636364,
+        "n_bootstrap": 2000
+      },
+      "luna": {
+        "threshold": 0.8695807289211143,
+        "sensitivity": 0.4,
+        "precision": 0.4,
+        "specificity": 0.7272727272727273,
+        "auc": 0.4,
+        "agreement": 0.625,
+        "metric": "youden",
+        "d_max": 2.491673142960932,
+        "n_pos": 5,
+        "n_neg": 11,
+        "ic95_inferior": 0.0634920634920635,
+        "ic95_superior": 0.7916666666666666,
+        "n_bootstrap": 1990
+      }
+    },
+    "banda_propia_sin_latitud_relieve_relativo": {
+      "etiqueta": "banda_propia, sin latitud, relieve relativo",
+      "d_max": {
+        "mars": 11.677326361944601,
+        "moon": 2.529695731929779
+      },
+      "marte": {
+        "threshold": 0.13043478260869568,
+        "sensitivity": 1.0,
+        "precision": 0.5,
+        "specificity": 0.0,
+        "auc": 0.125,
+        "agreement": 0.5,
+        "metric": "youden",
+        "d_max": 11.677326361944601,
+        "n_pos": 8,
+        "n_neg": 8,
+        "ic95_inferior": 0.0,
+        "ic95_superior": 0.33374999999999777,
+        "n_bootstrap": 2000
+      },
+      "luna": {
+        "threshold": 0.8967986117725666,
+        "sensitivity": 0.2,
+        "precision": 0.5,
+        "specificity": 0.9090909090909091,
+        "auc": 0.4181818181818182,
+        "agreement": 0.6875,
+        "metric": "youden",
+        "d_max": 2.529695731929779,
+        "n_pos": 5,
+        "n_neg": 11,
+        "ic95_inferior": 0.07869352869352869,
+        "ic95_superior": 0.7948717948717947,
+        "n_bootstrap": 1990
+      }
+    }
+  },
+  "delong_pareado": {
+    "marte_con_vs_sin_latitud": {
+      "auc_a": 0.09375,
+      "auc_b": 0.125,
+      "diferencia": -0.03125,
+      "z": -0.5188745216627708,
+      "p_valor": 0.6038482460673434,
+      "varianza_diferencia": 0.003627232142857144
+    },
+    "luna_con_vs_sin_latitud": {
+      "auc_a": 0.2545454545454545,
+      "auc_b": 0.2727272727272727,
+      "diferencia": -0.018181818181818188,
+      "z": -0.7071067811865496,
+      "p_valor": 0.4795001221869522,
+      "varianza_diferencia": 0.0006611570247933851
+    },
+    "marte_absoluta_vs_relieve_relativo": {
+      "auc_a": 0.09375,
+      "auc_b": 0.140625,
+      "diferencia": -0.046875,
+      "z": -1.1702842464082404,
+      "p_valor": 0.24188659940883106,
+      "varianza_diferencia": 0.0016043526785714298
+    },
+    "luna_absoluta_vs_relieve_relativo": {
+      "auc_a": 0.2545454545454545,
+      "auc_b": 0.36363636363636365,
+      "diferencia": -0.10909090909090913,
+      "z": -0.6289709020331512,
+      "p_valor": 0.5293681061847978,
+      "varianza_diferencia": 0.030082644628099175
+    }
+  },
+  "modelo_nulo_solo_abs_lat": {
+    "marte": {
+      "puntaje": "|lat|",
+      "auc": 0.578125,
+      "ic95_inferior": 0.24999999999999994,
+      "ic95_superior": 0.8834722222222214,
+      "n_bootstrap": 2000,
+      "semilla": 2026
+    },
+    "luna": {
+      "puntaje": "|lat|",
+      "auc": 0.21818181818181817,
+      "ic95_inferior": 0.0,
+      "ic95_superior": 0.48333333333333334,
+      "n_bootstrap": 1990,
+      "semilla": 2026
+    },
+    "nota": "Modelo nulo: el puntaje es solo |lat|. Los positivos de este conjunto tienden a latitudes altas y podrían inflar el AUC del índice si la latitud domina."
+  },
+  "incluir_askja": true,
+  "elevacion_modo": "absoluta",
+  "elevacion_modos_disponibles": [
+    "absoluta",
+    "relieve_relativo"
+  ],
+  "modo_bandas": "todas_min",
+  "nota_modo_bandas": "todas_min es el defecto, pendiente de confirmación de Ronald sobre el §5. Solo es válida con distancia euclídea; si se usara Mahalanobis por banda, la latitud saldría del vector automáticamente.",
+  "clases_ecuador": {
+    "ninguno": 43012,
+    "marte": 356828,
+    "luna": 0,
+    "ambos": 53535,
+    "nodata": 975465
+  },
+  "clases_ecuador_por_variante": {
+    "todas_min_con_latitud": {
+      "ninguno": 43012,
+      "marte": 356828,
+      "luna": 0,
+      "ambos": 53535,
+      "nodata": 975465
+    },
+    "banda_propia_con_latitud": {
+      "ninguno": 23811,
+      "marte": 376029,
+      "luna": 0,
+      "ambos": 53535,
+      "nodata": 975465
+    },
+    "todas_min_sin_latitud": {
+      "ninguno": 43520,
+      "marte": 382056,
+      "luna": 0,
+      "ambos": 27799,
+      "nodata": 975465
+    },
+    "banda_propia_sin_latitud": {
+      "ninguno": 23779,
+      "marte": 383662,
+      "luna": 0,
+      "ambos": 45934,
+      "nodata": 975465
+    },
+    "todas_min_con_latitud_relieve_relativo": {
+      "ninguno": 30246,
+      "marte": 230177,
+      "luna": 0,
+      "ambos": 192591,
+      "nodata": 975826
+    },
+    "banda_propia_con_latitud_relieve_relativo": {
+      "ninguno": 19626,
+      "marte": 240797,
+      "luna": 0,
+      "ambos": 192591,
+      "nodata": 975826
+    },
+    "todas_min_sin_latitud_relieve_relativo": {
+      "ninguno": 30439,
+      "marte": 378400,
+      "luna": 0,
+      "ambos": 44175,
+      "nodata": 975826
+    },
+    "banda_propia_sin_latitud_relieve_relativo": {
+      "ninguno": 19608,
+      "marte": 406839,
+      "luna": 0,
+      "ambos": 26567,
+      "nodata": 975826
+    }
+  },
+  "sitios_validacion": [
+    {
+      "id": "yungay",
+      "nombre": "Yungay, núcleo hiperárido del Atacama (Chile)",
+      "lat": -24.1,
+      "lon": -70.01,
+      "buffer_km": 20.0,
+      "etiqueta": "marciano",
+      "fuente": "Navarro-González et al. (2003), 10.1126/science.1089143; Ewing et al. (2006), 10.1016/j.gca.2006.08.020",
+      "cita": "Navarro-González et al. (2003), 10.1126/science.1089143; Ewing et al. (2006), 10.1016/j.gca.2006.08.020",
+      "elevacion_m": 1212.354248046875,
+      "pendiente_deg": 2.792600631713867,
+      "rugosidad_tri": 41.71320343017578,
+      "relieve_relativo_m": -10.76678466796875,
+      "agregacion": {
+        "metodo": "mediana_buffer",
+        "descripcion": "Mediana de las celdas válidas cuyo centro cae dentro del buffer (distancia haversina, radio oficial, R=6378.137 km). Una celda es válida si elevación, pendiente y TRI son finitos y distintos de nodata (−9999). También se guarda la celda central (vecina más cercana al punto oficial) como referencia, pero el índice y el umbral usan la mediana del buffer. No se elige la «mejor» celda del buffer, para no inflar el AUC.",
+        "detalle": {
+          "n_celdas_buffer": 1374,
+          "distancia_celda_central_km": 0.4516020677386391,
+          "elevation": {
+            "mediana_buffer": 1212.354248046875,
+            "q1_buffer": 1088.5509033203125,
+            "q3_buffer": 1313.194580078125,
+            "celda_central": 1012.8746948242188,
+            "n_celdas": 1374
+          },
+          "slope": {
+            "mediana_buffer": 2.792600631713867,
+            "q1_buffer": 1.6580544710159302,
+            "q3_buffer": 4.306001663208008,
+            "celda_central": 0.3793070614337921,
+            "n_celdas": 1374
+          },
+          "roughness": {
+            "mediana_buffer": 41.71320343017578,
+            "q1_buffer": 26.482051849365234,
+            "q3_buffer": 62.199737548828125,
+            "celda_central": 14.289649963378906,
+            "n_celdas": 1374
+          },
+          "relative_relief": {
+            "mediana_buffer": -10.76678466796875,
+            "q1_buffer": -47.22462463378906,
+            "q3_buffer": 67.39633178710938,
+            "celda_central": -121.59942626953125,
+            "n_celdas": 1374
+          },
+          "latitude_celda_central": -24.097499999999993,
+          "longitude_celda_central": -70.0065
+        },
+        "valores_celda_central_csv": {
+          "elevation": 1012.8746948242188,
+          "slope": 0.3793070614337921,
+          "roughness": 14.289649963378906,
+          "relative_relief": -121.59942626953125
+        }
+      },
+      "es_provisional": false,
+      "banda_latitud": "B",
+      "banda_ganadora_marte": "B",
+      "banda_ganadora_luna": "B",
+      "delta_marte": 0.8272,
+      "delta_luna": 0.756,
+      "distancia_marte": 0.9992,
+      "distancia_luna": 0.403,
+      "clase_predicha": "marte",
+      "clase_conocida": "marte",
+      "acierto": true,
+      "excluido_auc": false,
+      "coordenada_no_verificada": false,
+      "entra_al_auc": true,
+      "es_mock_superficies": false,
+      "modo_bandas": "todas_min"
+    },
+    {
+      "id": "haughton",
+      "nombre": "Estructura de impacto de Haughton, isla Devon (Nunavut, Canadá)",
+      "lat": 75.3667,
+      "lon": -89.6833,
+      "buffer_km": 12.0,
+      "etiqueta": "marciano",
+      "fuente": "Osinski et al. (2005), 10.1111/j.1945-5100.2005.tb00145.x",
+      "cita": "Osinski et al. (2005), 10.1111/j.1945-5100.2005.tb00145.x",
+      "elevacion_m": 240.03721618652344,
+      "pendiente_deg": 1.5525848865509033,
+      "rugosidad_tri": 16.0618896484375,
+      "relieve_relativo_m": -2.74163818359375,
+      "agregacion": {
+        "metodo": "mediana_buffer",
+        "descripcion": "Mediana de las celdas válidas cuyo centro cae dentro del buffer (distancia haversina, radio oficial, R=6378.137 km). Una celda es válida si elevación, pendiente y TRI son finitos y distintos de nodata (−9999). También se guarda la celda central (vecina más cercana al punto oficial) como referencia, pero el índice y el umbral usan la mediana del buffer. No se elige la «mejor» celda del buffer, para no inflar el AUC.",
+        "detalle": {
+          "n_celdas_buffer": 1789,
+          "distancia_celda_central_km": 0.43027890120219714,
+          "elevation": {
+            "mediana_buffer": 240.03721618652344,
+            "q1_buffer": 185.24380493164062,
+            "q3_buffer": 269.1029357910156,
+            "celda_central": 141.8409423828125,
+            "n_celdas": 1789
+          },
+          "slope": {
+            "mediana_buffer": 1.5525848865509033,
+            "q1_buffer": 0.9919637441635132,
+            "q3_buffer": 2.321223258972168,
+            "celda_central": 1.2543516159057617,
+            "n_celdas": 1789
+          },
+          "roughness": {
+            "mediana_buffer": 16.0618896484375,
+            "q1_buffer": 10.905914306640625,
+            "q3_buffer": 21.94441032409668,
+            "celda_central": 12.991235733032227,
+            "n_celdas": 1789
+          },
+          "relative_relief": {
+            "mediana_buffer": -2.74163818359375,
+            "q1_buffer": -24.216171264648438,
+            "q3_buffer": 11.995086669921875,
+            "celda_central": -26.786758422851562,
+            "n_celdas": 1789
+          },
+          "latitude_celda_central": 75.3705,
+          "longitude_celda_central": -89.6805
+        },
+        "valores_celda_central_csv": {
+          "elevation": 141.8409423828125,
+          "slope": 1.2543516159057617,
+          "roughness": 12.991235733032227,
+          "relative_relief": -26.786758422851562
+        }
+      },
+      "es_provisional": false,
+      "banda_latitud": "F",
+      "banda_ganadora_marte": "F",
+      "banda_ganadora_luna": "F",
+      "delta_marte": 0.8952,
+      "delta_luna": 0.672,
+      "distancia_marte": 0.6062,
+      "distancia_luna": 0.5418,
+      "clase_predicha": "marte",
+      "clase_conocida": "marte",
+      "acierto": true,
+      "excluido_auc": false,
+      "coordenada_no_verificada": false,
+      "entra_al_auc": true,
+      "es_mock_superficies": false,
+      "modo_bandas": "todas_min"
+    },
+    {
+      "id": "university_valley",
+      "nombre": "University Valley, Valles Secos de McMurdo (Antártida)",
+      "lat": -77.866,
+      "lon": 160.726,
+      "buffer_km": 3.0,
+      "etiqueta": "marciano",
+      "fuente": "Heldmann et al. (2013), 10.1016/j.pss.2013.05.019; Lapalme et al. (2017a), 10.1017/s0954102016000572",
+      "cita": "Heldmann et al. (2013), 10.1016/j.pss.2013.05.019; Lapalme et al. (2017a), 10.1017/s0954102016000572",
+      "elevacion_m": 1680.808349609375,
+      "pendiente_deg": 11.291202545166016,
+      "rugosidad_tri": 86.05311584472656,
+      "relieve_relativo_m": 29.84478759765625,
+      "agregacion": {
+        "metodo": "mediana_buffer",
+        "descripcion": "Mediana de las celdas válidas cuyo centro cae dentro del buffer (distancia haversina, radio oficial, R=6378.137 km). Una celda es válida si elevación, pendiente y TRI son finitos y distintos de nodata (−9999). También se guarda la celda central (vecina más cercana al punto oficial) como referencia, pero el índice y el umbral usan la mediana del buffer. No se elige la «mejor» celda del buffer, para no inflar el AUC.",
+        "detalle": {
+          "n_celdas_buffer": 134,
+          "distancia_celda_central_km": 0.27854459261353604,
+          "elevation": {
+            "mediana_buffer": 1680.808349609375,
+            "q1_buffer": 1569.2275390625,
+            "q3_buffer": 1826.568359375,
+            "celda_central": 1715.1268310546875,
+            "n_celdas": 134
+          },
+          "slope": {
+            "mediana_buffer": 11.291202545166016,
+            "q1_buffer": 7.1067399978637695,
+            "q3_buffer": 15.50155258178711,
+            "celda_central": 9.379080772399902,
+            "n_celdas": 134
+          },
+          "roughness": {
+            "mediana_buffer": 86.05311584472656,
+            "q1_buffer": 67.79022216796875,
+            "q3_buffer": 110.10711669921875,
+            "celda_central": 92.81446838378906,
+            "n_celdas": 134
+          },
+          "relative_relief": {
+            "mediana_buffer": 29.84478759765625,
+            "q1_buffer": -81.72149658203125,
+            "q3_buffer": 174.18450927734375,
+            "celda_central": 66.5447998046875,
+            "n_celdas": 134
+          },
+          "latitude_celda_central": -77.86349999999999,
+          "longitude_celda_central": 160.72649999999996
+        },
+        "valores_celda_central_csv": {
+          "elevation": 1715.1268310546875,
+          "slope": 9.379080772399902,
+          "roughness": 92.81446838378906,
+          "relative_relief": 66.5447998046875
+        }
+      },
+      "es_provisional": false,
+      "banda_latitud": "F",
+      "banda_ganadora_marte": "C",
+      "banda_ganadora_luna": "F",
+      "delta_marte": 0.1746,
+      "delta_luna": 0.4115,
+      "distancia_marte": 4.7741,
+      "distancia_luna": 0.9722,
+      "clase_predicha": "marte",
+      "clase_conocida": "marte",
+      "acierto": true,
+      "excluido_auc": false,
+      "coordenada_no_verificada": false,
+      "entra_al_auc": true,
+      "es_mock_superficies": false,
+      "modo_bandas": "todas_min"
+    },
+    {
+      "id": "askja",
+      "nombre": "Askja / colada basáltica Vikrahraun 1961 (Islandia)",
+      "lat": 65.06,
+      "lon": -16.64,
+      "buffer_km": 6.0,
+      "etiqueta": "marciano",
+      "fuente": "Blasizzo et al. (2022), 10.1186/s40623-022-01711-5, additional file 1, hoja '(1.1) Samples': punto medio de la colada Vikrahraun entre bocas (65.0647, -16.7247) y frente (65.0590, -16.5454). Se descarta el valor anterior 65.03, -16.78.",
+      "cita": "Blasizzo et al. (2022), 10.1186/s40623-022-01711-5, additional file 1, hoja '(1.1) Samples': punto medio de la colada Vikrahraun entre bocas (65.0647, -16.7247) y frente (65.0590, -16.5454). Se descarta el valor anterior 65.03, -16.78.",
+      "elevacion_m": 993.8707885742188,
+      "pendiente_deg": 2.9859511852264404,
+      "rugosidad_tri": 29.33938980102539,
+      "relieve_relativo_m": 35.207794189453125,
+      "agregacion": {
+        "metodo": "mediana_buffer",
+        "descripcion": "Mediana de las celdas válidas cuyo centro cae dentro del buffer (distancia haversina, radio oficial, R=6378.137 km). Una celda es válida si elevación, pendiente y TRI son finitos y distintos de nodata (−9999). También se guarda la celda central (vecina más cercana al punto oficial) como referencia, pero el índice y el umbral usan la mediana del buffer. No se elige la «mejor» celda del buffer, para no inflar el AUC.",
+        "detalle": {
+          "n_celdas_buffer": 270,
+          "distancia_celda_central_km": 0.42284402981027674,
+          "elevation": {
+            "mediana_buffer": 993.8707885742188,
+            "q1_buffer": 816.4906005859375,
+            "q3_buffer": 1095.444580078125,
+            "celda_central": 925.0698852539062,
+            "n_celdas": 270
+          },
+          "slope": {
+            "mediana_buffer": 2.9859511852264404,
+            "q1_buffer": 1.5946736335754395,
+            "q3_buffer": 6.270888328552246,
+            "celda_central": 4.146480560302734,
+            "n_celdas": 270
+          },
+          "roughness": {
+            "mediana_buffer": 29.33938980102539,
+            "q1_buffer": 16.423847198486328,
+            "q3_buffer": 58.91401672363281,
+            "celda_central": 47.314796447753906,
+            "n_celdas": 270
+          },
+          "relative_relief": {
+            "mediana_buffer": 35.207794189453125,
+            "q1_buffer": -2.6726837158203125,
+            "q3_buffer": 100.07232666015625,
+            "celda_central": -27.0953369140625,
+            "n_celdas": 270
+          },
+          "latitude_celda_central": 65.0565,
+          "longitude_celda_central": -16.6365
+        },
+        "valores_celda_central_csv": {
+          "elevation": 925.0698852539062,
+          "slope": 4.146480560302734,
+          "roughness": 47.314796447753906,
+          "relative_relief": -27.0953369140625
+        }
+      },
+      "es_provisional": false,
+      "banda_latitud": "E",
+      "banda_ganadora_marte": "D",
+      "banda_ganadora_luna": "E",
+      "delta_marte": 0.7741,
+      "delta_luna": 0.6357,
+      "distancia_marte": 1.3064,
+      "distancia_luna": 0.6018,
+      "clase_predicha": "marte",
+      "clase_conocida": "marte",
+      "acierto": true,
+      "excluido_auc": false,
+      "coordenada_no_verificada": false,
+      "entra_al_auc": true,
+      "es_mock_superficies": false,
+      "modo_bandas": "todas_min"
+    },
+    {
+      "id": "mauna_kea",
+      "nombre": "Conos de ceniza de la cumbre de Mauna Kea (Hawái, EE. UU.)",
+      "lat": 19.8291,
+      "lon": -155.4629,
+      "buffer_km": 10.0,
+      "etiqueta": "ambos",
+      "fuente": "Guinness et al. (2007), 10.1029/2006je002822; ten Kate et al. (2013), 10.1061/(asce)as.1943-5525.0000200; Graham et al. (2015), 10.1016/j.asr.2015.01.024",
+      "cita": "Guinness et al. (2007), 10.1029/2006je002822; ten Kate et al. (2013), 10.1061/(asce)as.1943-5525.0000200; Graham et al. (2015), 10.1016/j.asr.2015.01.024",
+      "elevacion_m": 2993.646484375,
+      "pendiente_deg": 11.217820167541504,
+      "rugosidad_tri": 152.42910766601562,
+      "relieve_relativo_m": 355.16455078125,
+      "agregacion": {
+        "metodo": "mediana_buffer",
+        "descripcion": "Mediana de las celdas válidas cuyo centro cae dentro del buffer (distancia haversina, radio oficial, R=6378.137 km). Una celda es válida si elevación, pendiente y TRI son finitos y distintos de nodata (−9999). También se guarda la celda central (vecina más cercana al punto oficial) como referencia, pero el índice y el umbral usan la mediana del buffer. No se elige la «mejor» celda del buffer, para no inflar el AUC.",
+        "detalle": {
+          "n_celdas_buffer": 333,
+          "distancia_celda_central_km": 0.3047479959495512,
+          "elevation": {
+            "mediana_buffer": 2993.646484375,
+            "q1_buffer": 2619.788330078125,
+            "q3_buffer": 3425.474365234375,
+            "celda_central": 3942.72705078125,
+            "n_celdas": 333
+          },
+          "slope": {
+            "mediana_buffer": 11.217820167541504,
+            "q1_buffer": 9.050485610961914,
+            "q3_buffer": 13.895352363586426,
+            "celda_central": 6.198721885681152,
+            "n_celdas": 333
+          },
+          "roughness": {
+            "mediana_buffer": 152.42910766601562,
+            "q1_buffer": 121.41574096679688,
+            "q3_buffer": 191.220703125,
+            "celda_central": 94.10015869140625,
+            "n_celdas": 333
+          },
+          "relative_relief": {
+            "mediana_buffer": 355.16455078125,
+            "q1_buffer": 187.966552734375,
+            "q3_buffer": 476.262939453125,
+            "celda_central": 664.58740234375,
+            "n_celdas": 333
+          },
+          "latitude_celda_central": 19.831500000000005,
+          "longitude_celda_central": -155.4615
+        },
+        "valores_celda_central_csv": {
+          "elevation": 3942.72705078125,
+          "slope": 6.198721885681152,
+          "roughness": 94.10015869140625,
+          "relative_relief": 664.58740234375
+        }
+      },
+      "es_provisional": false,
+      "banda_latitud": "B",
+      "banda_ganadora_marte": "A",
+      "banda_ganadora_luna": "B",
+      "delta_marte": 0.1304,
+      "delta_luna": 0.1304,
+      "distancia_marte": 5.0295,
+      "distancia_luna": 1.4364,
+      "clase_predicha": "marte",
+      "clase_conocida": "ambos",
+      "acierto": false,
+      "excluido_auc": false,
+      "coordenada_no_verificada": false,
+      "entra_al_auc": true,
+      "es_mock_superficies": false,
+      "modo_bandas": "todas_min"
+    },
+    {
+      "id": "sverrefjell",
+      "nombre": "Sverrefjell, complejo volcánico de Bockfjorden (Svalbard, Noruega)",
+      "lat": 79.4305,
+      "lon": 13.3072,
+      "buffer_km": 5.0,
+      "etiqueta": "marciano",
+      "fuente": "Treiman et al. (2002), 10.1016/s0012-821x(02)00998-6",
+      "cita": "Treiman et al. (2002), 10.1016/s0012-821x(02)00998-6",
+      "elevacion_m": 328.78790283203125,
+      "pendiente_deg": 8.784184455871582,
+      "rugosidad_tri": 78.50763702392578,
+      "relieve_relativo_m": -53.68994140625,
+      "agregacion": {
+        "metodo": "mediana_buffer",
+        "descripcion": "Mediana de las celdas válidas cuyo centro cae dentro del buffer (distancia haversina, radio oficial, R=6378.137 km). Una celda es válida si elevación, pendiente y TRI son finitos y distintos de nodata (−9999). También se guarda la celda central (vecina más cercana al punto oficial) como referencia, pero el índice y el umbral usan la mediana del buffer. No se elige la «mejor» celda del buffer, para no inflar el AUC.",
+        "detalle": {
+          "n_celdas_buffer": 319,
+          "distancia_celda_central_km": 0.11223345749934463,
+          "elevation": {
+            "mediana_buffer": 328.78790283203125,
+            "q1_buffer": 156.30239868164062,
+            "q3_buffer": 532.4609375,
+            "celda_central": 368.4132385253906,
+            "n_celdas": 319
+          },
+          "slope": {
+            "mediana_buffer": 8.784184455871582,
+            "q1_buffer": 5.762479305267334,
+            "q3_buffer": 12.863813400268555,
+            "celda_central": 2.6962971687316895,
+            "n_celdas": 319
+          },
+          "roughness": {
+            "mediana_buffer": 78.50763702392578,
+            "q1_buffer": 55.90875244140625,
+            "q3_buffer": 102.15228271484375,
+            "celda_central": 114.5906753540039,
+            "n_celdas": 319
+          },
+          "relative_relief": {
+            "mediana_buffer": -53.68994140625,
+            "q1_buffer": -99.58796691894531,
+            "q3_buffer": 36.00641632080078,
+            "celda_central": 69.35662841796875,
+            "n_celdas": 319
+          },
+          "latitude_celda_central": 79.4295,
+          "longitude_celda_central": 13.306499999999982
+        },
+        "valores_celda_central_csv": {
+          "elevation": 368.4132385253906,
+          "slope": 2.6962971687316895,
+          "roughness": 114.5906753540039,
+          "relative_relief": 69.35662841796875
+        }
+      },
+      "es_provisional": false,
+      "banda_latitud": "F",
+      "banda_ganadora_marte": "C",
+      "banda_ganadora_luna": "F",
+      "delta_marte": 0.3086,
+      "delta_luna": 0.7082,
+      "distancia_marte": 3.9992,
+      "distancia_luna": 0.482,
+      "clase_predicha": "marte",
+      "clase_conocida": "marte",
+      "acierto": true,
+      "excluido_auc": false,
+      "coordenada_no_verificada": false,
+      "entra_al_auc": true,
+      "es_mock_superficies": false,
+      "modo_bandas": "todas_min"
+    },
+    {
+      "id": "timanfaya",
+      "nombre": "Parque Nacional de Timanfaya, Lanzarote (España)",
+      "lat": 29.021,
+      "lon": -13.7744,
+      "buffer_km": 8.0,
+      "etiqueta": "ambos",
+      "fuente": "Martínez-Frías et al. (2017), 10.18814/epiiugs/2017/v40i4/017035; Alberquilla et al. (2022), 10.1038/s41598-022-20960-8",
+      "cita": "Martínez-Frías et al. (2017), 10.18814/epiiugs/2017/v40i4/017035; Alberquilla et al. (2022), 10.1038/s41598-022-20960-8",
+      "elevacion_m": 209.1766357421875,
+      "pendiente_deg": 2.1687958240509033,
+      "rugosidad_tri": 30.03564453125,
+      "relieve_relativo_m": -3.6920013427734375,
+      "agregacion": {
+        "metodo": "mediana_buffer",
+        "descripcion": "Mediana de las celdas válidas cuyo centro cae dentro del buffer (distancia haversina, radio oficial, R=6378.137 km). Una celda es válida si elevación, pendiente y TRI son finitos y distintos de nodata (−9999). También se guarda la celda central (vecina más cercana al punto oficial) como referencia, pero el índice y el umbral usan la mediana del buffer. No se elige la «mejor» celda del buffer, para no inflar el AUC.",
+        "detalle": {
+          "n_celdas_buffer": 140,
+          "distancia_celda_central_km": 0.05650454149458538,
+          "elevation": {
+            "mediana_buffer": 209.1766357421875,
+            "q1_buffer": 126.56507873535156,
+            "q3_buffer": 288.0402526855469,
+            "celda_central": 182.12416076660156,
+            "n_celdas": 140
+          },
+          "slope": {
+            "mediana_buffer": 2.1687958240509033,
+            "q1_buffer": 1.767753005027771,
+            "q3_buffer": 2.772224187850952,
+            "celda_central": 3.044051170349121,
+            "n_celdas": 140
+          },
+          "roughness": {
+            "mediana_buffer": 30.03564453125,
+            "q1_buffer": 23.981693267822266,
+            "q3_buffer": 38.429473876953125,
+            "celda_central": 39.13762283325195,
+            "n_celdas": 140
+          },
+          "relative_relief": {
+            "mediana_buffer": -3.6920013427734375,
+            "q1_buffer": -40.95305633544922,
+            "q3_buffer": 46.02919006347656,
+            "celda_central": 15.687446594238281,
+            "n_celdas": 140
+          },
+          "latitude_celda_central": 29.020500000000006,
+          "longitude_celda_central": -13.774500000000003
+        },
+        "valores_celda_central_csv": {
+          "elevation": 182.12416076660156,
+          "slope": 3.044051170349121,
+          "roughness": 39.13762283325195,
+          "relative_relief": 15.687446594238281
+        }
+      },
+      "es_provisional": false,
+      "banda_latitud": "B",
+      "banda_ganadora_marte": "B",
+      "banda_ganadora_luna": "B",
+      "delta_marte": 0.8939,
+      "delta_luna": 0.7915,
+      "distancia_marte": 0.6138,
+      "distancia_luna": 0.3443,
+      "clase_predicha": "ambos",
+      "clase_conocida": "ambos",
+      "acierto": true,
+      "excluido_auc": false,
+      "coordenada_no_verificada": false,
+      "entra_al_auc": true,
+      "es_mock_superficies": false,
+      "modo_bandas": "todas_min"
+    },
+    {
+      "id": "meteor_crater",
+      "nombre": "Meteor Crater (Barringer), Arizona (EE. UU.)",
+      "lat": 35.0275,
+      "lon": -111.0222,
+      "buffer_km": 3.0,
+      "etiqueta": "lunar",
+      "fuente": "Impact Earth (Western University), ficha Barringer; contexto en Osinski et al. (2023), 10.3389/fspas.2023.1186173",
+      "cita": "Impact Earth (Western University), ficha Barringer; contexto en Osinski et al. (2023), 10.3389/fspas.2023.1186173",
+      "elevacion_m": 1681.79345703125,
+      "pendiente_deg": 0.4758298993110657,
+      "rugosidad_tri": 6.459815979003906,
+      "relieve_relativo_m": 8.31182861328125,
+      "agregacion": {
+        "metodo": "mediana_buffer",
+        "descripcion": "Mediana de las celdas válidas cuyo centro cae dentro del buffer (distancia haversina, radio oficial, R=6378.137 km). Una celda es válida si elevación, pendiente y TRI son finitos y distintos de nodata (−9999). También se guarda la celda central (vecina más cercana al punto oficial) como referencia, pero el índice y el umbral usan la mediana del buffer. No se elige la «mejor» celda del buffer, para no inflar el AUC.",
+        "detalle": {
+          "n_celdas_buffer": 34,
+          "distancia_celda_central_km": 0.5087753064533014,
+          "elevation": {
+            "mediana_buffer": 1681.79345703125,
+            "q1_buffer": 1671.987060546875,
+            "q3_buffer": 1691.6065673828125,
+            "celda_central": 1666.6033935546875,
+            "n_celdas": 34
+          },
+          "slope": {
+            "mediana_buffer": 0.4758298993110657,
+            "q1_buffer": 0.3501664996147156,
+            "q3_buffer": 0.5501760840415955,
+            "celda_central": 0.48264703154563904,
+            "n_celdas": 34
+          },
+          "roughness": {
+            "mediana_buffer": 6.459815979003906,
+            "q1_buffer": 5.590217590332031,
+            "q3_buffer": 7.616977691650391,
+            "celda_central": 20.14849853515625,
+            "n_celdas": 34
+          },
+          "relative_relief": {
+            "mediana_buffer": 8.31182861328125,
+            "q1_buffer": 6.252899169921875,
+            "q3_buffer": 11.138671875,
+            "celda_central": -6.442626953125,
+            "n_celdas": 34
+          },
+          "latitude_celda_central": 35.023500000000006,
+          "longitude_celda_central": -111.01950000000001
+        },
+        "valores_celda_central_csv": {
+          "elevation": 1666.6033935546875,
+          "slope": 0.48264703154563904,
+          "roughness": 20.14849853515625,
+          "relative_relief": -6.442626953125
+        }
+      },
+      "es_provisional": false,
+      "banda_latitud": "C",
+      "banda_ganadora_marte": "C",
+      "banda_ganadora_luna": "C",
+      "delta_marte": 0.9419,
+      "delta_luna": 0.5109,
+      "distancia_marte": 0.3362,
+      "distancia_luna": 0.8079,
+      "clase_predicha": "marte",
+      "clase_conocida": "luna",
+      "acierto": false,
+      "excluido_auc": false,
+      "coordenada_no_verificada": false,
+      "entra_al_auc": true,
+      "es_mock_superficies": false,
+      "modo_bandas": "todas_min"
+    },
+    {
+      "id": "sp_mountain",
+      "nombre": "S P Mountain (S P Crater), campo volcánico de San Francisco, Arizona (EE. UU.)",
+      "lat": 35.5831,
+      "lon": -111.6336,
+      "buffer_km": 8.0,
+      "etiqueta": "ambos",
+      "fuente": "Gullikson y Rumpf (2021), USGS OFR 2021-1072, https://pubs.usgs.gov/of/2021/1072/ofr20211072.pdf",
+      "cita": "Gullikson y Rumpf (2021), USGS OFR 2021-1072, https://pubs.usgs.gov/of/2021/1072/ofr20211072.pdf",
+      "elevacion_m": 1839.7930908203125,
+      "pendiente_deg": 1.5125911235809326,
+      "rugosidad_tri": 21.959671020507812,
+      "relieve_relativo_m": 7.281494140625,
+      "agregacion": {
+        "metodo": "mediana_buffer",
+        "descripcion": "Mediana de las celdas válidas cuyo centro cae dentro del buffer (distancia haversina, radio oficial, R=6378.137 km). Una celda es válida si elevación, pendiente y TRI son finitos y distintos de nodata (−9999). También se guarda la celda central (vecina más cercana al punto oficial) como referencia, pero el índice y el umbral usan la mediana del buffer. No se elige la «mejor» celda del buffer, para no inflar el AUC.",
+        "detalle": {
+          "n_celdas_buffer": 245,
+          "distancia_celda_central_km": 0.26051818124639675,
+          "elevation": {
+            "mediana_buffer": 1839.7930908203125,
+            "q1_buffer": 1779.8773193359375,
+            "q3_buffer": 1937.750732421875,
+            "celda_central": 1984.85498046875,
+            "n_celdas": 245
+          },
+          "slope": {
+            "mediana_buffer": 1.5125911235809326,
+            "q1_buffer": 1.0113633871078491,
+            "q3_buffer": 2.211541175842285,
+            "celda_central": 2.9278054237365723,
+            "n_celdas": 245
+          },
+          "roughness": {
+            "mediana_buffer": 21.959671020507812,
+            "q1_buffer": 14.467010498046875,
+            "q3_buffer": 32.2711181640625,
+            "celda_central": 76.64471435546875,
+            "n_celdas": 245
+          },
+          "relative_relief": {
+            "mediana_buffer": 7.281494140625,
+            "q1_buffer": -13.9219970703125,
+            "q3_buffer": 25.3472900390625,
+            "celda_central": 137.531005859375,
+            "n_celdas": 245
+          },
+          "latitude_celda_central": 35.581500000000005,
+          "longitude_celda_central": -111.6315
+        },
+        "valores_celda_central_csv": {
+          "elevation": 1984.85498046875,
+          "slope": 2.9278054237365723,
+          "roughness": 76.64471435546875,
+          "relative_relief": 137.531005859375
+        }
+      },
+      "es_provisional": false,
+      "banda_latitud": "C",
+      "banda_ganadora_marte": "C",
+      "banda_ganadora_luna": "C",
+      "delta_marte": 0.9231,
+      "delta_luna": 0.5465,
+      "distancia_marte": 0.4445,
+      "distancia_luna": 0.7492,
+      "clase_predicha": "marte",
+      "clase_conocida": "ambos",
+      "acierto": false,
+      "excluido_auc": false,
+      "coordenada_no_verificada": false,
+      "entra_al_auc": true,
+      "es_mock_superficies": false,
+      "modo_bandas": "todas_min"
+    },
+    {
+      "id": "inferno_chasm",
+      "nombre": "Inferno Chasm, llanura de Snake River / entorno de Craters of the Moon, Idaho (EE. UU.)",
+      "lat": 42.9667,
+      "lon": -113.1903,
+      "buffer_km": 5.0,
+      "etiqueta": "lunar",
+      "fuente": "Garry et al. (2015), resumen LPSC 46, 1009 (coordenada de resumen, no de revista); Greeley (1971), 10.1126/science.172.3984.722",
+      "cita": "Garry et al. (2015), resumen LPSC 46, 1009 (coordenada de resumen, no de revista); Greeley (1971), 10.1126/science.172.3984.722",
+      "elevacion_m": 1511.631103515625,
+      "pendiente_deg": 0.6393835544586182,
+      "rugosidad_tri": 8.354164123535156,
+      "relieve_relativo_m": 0.53265380859375,
+      "agregacion": {
+        "metodo": "mediana_buffer",
+        "descripcion": "Mediana de las celdas válidas cuyo centro cae dentro del buffer (distancia haversina, radio oficial, R=6378.137 km). Una celda es válida si elevación, pendiente y TRI son finitos y distintos de nodata (−9999). También se guarda la celda central (vecina más cercana al punto oficial) como referencia, pero el índice y el umbral usan la mediana del buffer. No se elige la «mejor» celda del buffer, para no inflar el AUC.",
+        "detalle": {
+          "n_celdas_buffer": 106,
+          "distancia_celda_central_km": 0.44770336459803867,
+          "elevation": {
+            "mediana_buffer": 1511.631103515625,
+            "q1_buffer": 1504.01513671875,
+            "q3_buffer": 1530.289794921875,
+            "celda_central": 1524.0313720703125,
+            "n_celdas": 106
+          },
+          "slope": {
+            "mediana_buffer": 0.6393835544586182,
+            "q1_buffer": 0.4114628732204437,
+            "q3_buffer": 0.938326895236969,
+            "celda_central": 0.5012785196304321,
+            "n_celdas": 106
+          },
+          "roughness": {
+            "mediana_buffer": 8.354164123535156,
+            "q1_buffer": 5.236297607421875,
+            "q3_buffer": 13.550888061523438,
+            "celda_central": 8.02581787109375,
+            "n_celdas": 106
+          },
+          "relative_relief": {
+            "mediana_buffer": 0.53265380859375,
+            "q1_buffer": -6.75360107421875,
+            "q3_buffer": 17.172149658203125,
+            "celda_central": 9.8243408203125,
+            "n_celdas": 106
+          },
+          "latitude_celda_central": 42.97050000000001,
+          "longitude_celda_central": -113.1885
+        },
+        "valores_celda_central_csv": {
+          "elevation": 1524.0313720703125,
+          "slope": 0.5012785196304321,
+          "roughness": 8.02581787109375,
+          "relative_relief": 9.8243408203125
+        }
+      },
+      "es_provisional": false,
+      "banda_latitud": "C",
+      "banda_ganadora_marte": "C",
+      "banda_ganadora_luna": "C",
+      "delta_marte": 0.9426,
+      "delta_luna": 0.5372,
+      "distancia_marte": 0.332,
+      "distancia_luna": 0.7644,
+      "clase_predicha": "marte",
+      "clase_conocida": "luna",
+      "acierto": false,
+      "excluido_auc": false,
+      "coordenada_no_verificada": false,
+      "entra_al_auc": true,
+      "es_mock_superficies": false,
+      "modo_bandas": "todas_min"
+    },
+    {
+      "id": "tapajos",
+      "nombre": "FLONA Tapajós, torre LBA km 67 (BR-Sa1), Amazonía (Brasil)",
+      "lat": -2.8567,
+      "lon": -54.9589,
+      "buffer_km": 10.0,
+      "etiqueta": "no_analogo",
+      "fuente": "AmeriFlux BR-Sa1, https://ameriflux.lbl.gov/sites/siteinfo/BR-Sa1 ; IGBP EBF",
+      "cita": "AmeriFlux BR-Sa1, https://ameriflux.lbl.gov/sites/siteinfo/BR-Sa1 ; IGBP EBF",
+      "elevacion_m": 179.0418701171875,
+      "pendiente_deg": 0.7008637189865112,
+      "rugosidad_tri": 11.211112976074219,
+      "relieve_relativo_m": 9.195632934570312,
+      "agregacion": {
+        "metodo": "mediana_buffer",
+        "descripcion": "Mediana de las celdas válidas cuyo centro cae dentro del buffer (distancia haversina, radio oficial, R=6378.137 km). Una celda es válida si elevación, pendiente y TRI son finitos y distintos de nodata (−9999). También se guarda la celda central (vecina más cercana al punto oficial) como referencia, pero el índice y el umbral usan la mediana del buffer. No se elige la «mejor» celda del buffer, para no inflar el AUC.",
+        "detalle": {
+          "n_celdas_buffer": 312,
+          "distancia_celda_central_km": 0.09954243853530596,
+          "elevation": {
+            "mediana_buffer": 179.0418701171875,
+            "q1_buffer": 127.194580078125,
+            "q3_buffer": 193.83642578125,
+            "celda_central": 198.418701171875,
+            "n_celdas": 312
+          },
+          "slope": {
+            "mediana_buffer": 0.7008637189865112,
+            "q1_buffer": 0.18987832963466644,
+            "q3_buffer": 1.2484707832336426,
+            "celda_central": 0.05464485287666321,
+            "n_celdas": 312
+          },
+          "roughness": {
+            "mediana_buffer": 11.211112976074219,
+            "q1_buffer": 3.2754921913146973,
+            "q3_buffer": 18.913938522338867,
+            "celda_central": 1.2332038879394531,
+            "n_celdas": 312
+          },
+          "relative_relief": {
+            "mediana_buffer": 9.195632934570312,
+            "q1_buffer": -1.6330204010009766,
+            "q3_buffer": 16.740230560302734,
+            "celda_central": 12.294631958007812,
+            "n_celdas": 312
+          },
+          "latitude_celda_central": -2.8574999999999884,
+          "longitude_celda_central": -54.958500000000015
+        },
+        "valores_celda_central_csv": {
+          "elevation": 198.418701171875,
+          "slope": 0.05464485287666321,
+          "roughness": 1.2332038879394531,
+          "relative_relief": 12.294631958007812
+        }
+      },
+      "es_provisional": false,
+      "banda_latitud": "A",
+      "banda_ganadora_marte": "A",
+      "banda_ganadora_luna": "A",
+      "delta_marte": 0.9778,
+      "delta_luna": 0.7465,
+      "distancia_marte": 0.1286,
+      "distancia_luna": 0.4188,
+      "clase_predicha": "marte",
+      "clase_conocida": "ninguno",
+      "acierto": false,
+      "excluido_auc": false,
+      "coordenada_no_verificada": false,
+      "entra_al_auc": true,
+      "es_mock_superficies": false,
+      "modo_bandas": "todas_min"
+    },
+    {
+      "id": "bondville",
+      "nombre": "Bondville, Illinois (US-Bo1), llanura agrícola (EE. UU.)",
+      "lat": 40.0062,
+      "lon": -88.2904,
+      "buffer_km": 5.0,
+      "etiqueta": "no_analogo",
+      "fuente": "AmeriFlux US-Bo1, 10.17190/AMF/1246036 ; IGBP CRO",
+      "cita": "AmeriFlux US-Bo1, 10.17190/AMF/1246036 ; IGBP CRO",
+      "elevacion_m": 217.3289337158203,
+      "pendiente_deg": 0.11557985097169876,
+      "rugosidad_tri": 1.602351188659668,
+      "relieve_relativo_m": 3.0027618408203125,
+      "agregacion": {
+        "metodo": "mediana_buffer",
+        "descripcion": "Mediana de las celdas válidas cuyo centro cae dentro del buffer (distancia haversina, radio oficial, R=6378.137 km). Una celda es válida si elevación, pendiente y TRI son finitos y distintos de nodata (−9999). También se guarda la celda central (vecina más cercana al punto oficial) como referencia, pero el índice y el umbral usan la mediana del buffer. No se elige la «mejor» celda del buffer, para no inflar el AUC.",
+        "detalle": {
+          "n_celdas_buffer": 102,
+          "distancia_celda_central_km": 0.5071118410748592,
+          "elevation": {
+            "mediana_buffer": 217.3289337158203,
+            "q1_buffer": 210.1662139892578,
+            "q3_buffer": 223.2283935546875,
+            "celda_central": 216.44554138183594,
+            "n_celdas": 102
+          },
+          "slope": {
+            "mediana_buffer": 0.11557985097169876,
+            "q1_buffer": 0.044325850903987885,
+            "q3_buffer": 0.27653050422668457,
+            "celda_central": 0.460979700088501,
+            "n_celdas": 102
+          },
+          "roughness": {
+            "mediana_buffer": 1.602351188659668,
+            "q1_buffer": 0.773684024810791,
+            "q3_buffer": 3.0241222381591797,
+            "celda_central": 5.041688919067383,
+            "n_celdas": 102
+          },
+          "relative_relief": {
+            "mediana_buffer": 3.0027618408203125,
+            "q1_buffer": -1.5817375183105469,
+            "q3_buffer": 8.925628662109375,
+            "celda_central": 3.0446624755859375,
+            "n_celdas": 102
+          },
+          "latitude_celda_central": 40.0095,
+          "longitude_celda_central": -88.29450000000001
+        },
+        "valores_celda_central_csv": {
+          "elevation": 216.44554138183594,
+          "slope": 0.460979700088501,
+          "roughness": 5.041688919067383,
+          "relative_relief": 3.0446624755859375
+        }
+      },
+      "es_provisional": false,
+      "banda_latitud": "C",
+      "banda_ganadora_marte": "C",
+      "banda_ganadora_luna": "C",
+      "delta_marte": 0.9591,
+      "delta_luna": 0.6294,
+      "distancia_marte": 0.2364,
+      "distancia_luna": 0.6121,
+      "clase_predicha": "marte",
+      "clase_conocida": "ninguno",
+      "acierto": false,
+      "excluido_auc": false,
+      "coordenada_no_verificada": false,
+      "entra_al_auc": true,
+      "es_mock_superficies": false,
+      "modo_bandas": "todas_min"
+    },
+    {
+      "id": "harvard_forest",
+      "nombre": "Harvard Forest EMS (US-Ha1), Massachusetts (EE. UU.)",
+      "lat": 42.5378,
+      "lon": -72.1715,
+      "buffer_km": 5.0,
+      "etiqueta": "no_analogo",
+      "fuente": "AmeriFlux US-Ha1, 10.17190/AMF/1246059 ; IGBP DBF",
+      "cita": "AmeriFlux US-Ha1, 10.17190/AMF/1246059 ; IGBP DBF",
+      "elevacion_m": 341.0330505371094,
+      "pendiente_deg": 1.1071295738220215,
+      "rugosidad_tri": 15.372821807861328,
+      "relieve_relativo_m": 18.87408447265625,
+      "agregacion": {
+        "metodo": "mediana_buffer",
+        "descripcion": "Mediana de las celdas válidas cuyo centro cae dentro del buffer (distancia haversina, radio oficial, R=6378.137 km). Una celda es válida si elevación, pendiente y TRI son finitos y distintos de nodata (−9999). También se guarda la celda central (vecina más cercana al punto oficial) como referencia, pero el índice y el umbral usan la mediana del buffer. No se elige la «mejor» celda del buffer, para no inflar el AUC.",
+        "detalle": {
+          "n_celdas_buffer": 105,
+          "distancia_celda_central_km": 0.33721965362802847,
+          "elevation": {
+            "mediana_buffer": 341.0330505371094,
+            "q1_buffer": 307.7336120605469,
+            "q3_buffer": 359.3018493652344,
+            "celda_central": 376.3689880371094,
+            "n_celdas": 105
+          },
+          "slope": {
+            "mediana_buffer": 1.1071295738220215,
+            "q1_buffer": 0.6633180975914001,
+            "q3_buffer": 1.7233706712722778,
+            "celda_central": 0.8991848230361938,
+            "n_celdas": 105
+          },
+          "roughness": {
+            "mediana_buffer": 15.372821807861328,
+            "q1_buffer": 11.5224609375,
+            "q3_buffer": 20.455341339111328,
+            "celda_central": 14.813056945800781,
+            "n_celdas": 105
+          },
+          "relative_relief": {
+            "mediana_buffer": 18.87408447265625,
+            "q1_buffer": 5.052398681640625,
+            "q3_buffer": 42.7564697265625,
+            "celda_central": 52.954498291015625,
+            "n_celdas": 105
+          },
+          "latitude_celda_central": 42.538500000000006,
+          "longitude_celda_central": -72.17550000000001
+        },
+        "valores_celda_central_csv": {
+          "elevation": 376.3689880371094,
+          "slope": 0.8991848230361938,
+          "roughness": 14.813056945800781,
+          "relative_relief": 52.954498291015625
+        }
+      },
+      "es_provisional": false,
+      "banda_latitud": "C",
+      "banda_ganadora_marte": "C",
+      "banda_ganadora_luna": "C",
+      "delta_marte": 0.9645,
+      "delta_luna": 0.7096,
+      "distancia_marte": 0.2054,
+      "distancia_luna": 0.4798,
+      "clase_predicha": "marte",
+      "clase_conocida": "ninguno",
+      "acierto": false,
+      "excluido_auc": false,
+      "coordenada_no_verificada": false,
+      "entra_al_auc": true,
+      "es_mock_superficies": false,
+      "modo_bandas": "todas_min"
+    },
+    {
+      "id": "tumbarumba",
+      "nombre": "Tumbarumba (AU-Tum), Nueva Gales del Sur (Australia)",
+      "lat": -35.6566,
+      "lon": 148.1517,
+      "buffer_km": 5.0,
+      "etiqueta": "no_analogo",
+      "fuente": "FLUXNET AU-Tum, 10.18140/FLX/1440126 ; IGBP EBF",
+      "cita": "FLUXNET AU-Tum, 10.18140/FLX/1440126 ; IGBP EBF",
+      "elevacion_m": 1199.6182861328125,
+      "pendiente_deg": 2.2879128456115723,
+      "rugosidad_tri": 32.34852600097656,
+      "relieve_relativo_m": 57.929443359375,
+      "agregacion": {
+        "metodo": "mediana_buffer",
+        "descripcion": "Mediana de las celdas válidas cuyo centro cae dentro del buffer (distancia haversina, radio oficial, R=6378.137 km). Una celda es válida si elevación, pendiente y TRI son finitos y distintos de nodata (−9999). También se guarda la celda central (vecina más cercana al punto oficial) como referencia, pero el índice y el umbral usan la mediana del buffer. No se elige la «mejor» celda del buffer, para no inflar el AUC.",
+        "detalle": {
+          "n_celdas_buffer": 97,
+          "distancia_celda_central_km": 0.38156974145734707,
+          "elevation": {
+            "mediana_buffer": 1199.6182861328125,
+            "q1_buffer": 1157.400634765625,
+            "q3_buffer": 1234.7855224609375,
+            "celda_central": 1241.8172607421875,
+            "n_celdas": 97
+          },
+          "slope": {
+            "mediana_buffer": 2.2879128456115723,
+            "q1_buffer": 1.5553950071334839,
+            "q3_buffer": 3.254434823989868,
+            "celda_central": 1.1904569864273071,
+            "n_celdas": 97
+          },
+          "roughness": {
+            "mediana_buffer": 32.34852600097656,
+            "q1_buffer": 24.305923461914062,
+            "q3_buffer": 41.03977966308594,
+            "celda_central": 20.137161254882812,
+            "n_celdas": 97
+          },
+          "relative_relief": {
+            "mediana_buffer": 57.929443359375,
+            "q1_buffer": 21.2491455078125,
+            "q3_buffer": 82.298583984375,
+            "celda_central": 71.27978515625,
+            "n_celdas": 97
+          },
+          "latitude_celda_central": -35.653499999999994,
+          "longitude_celda_central": 148.1535
+        },
+        "valores_celda_central_csv": {
+          "elevation": 1241.8172607421875,
+          "slope": 1.1904569864273071,
+          "roughness": 20.137161254882812,
+          "relative_relief": 71.27978515625
+        }
+      },
+      "es_provisional": false,
+      "banda_latitud": "C",
+      "banda_ganadora_marte": "C",
+      "banda_ganadora_luna": "C",
+      "delta_marte": 0.8765,
+      "delta_luna": 0.6836,
+      "distancia_marte": 0.7141,
+      "distancia_luna": 0.5227,
+      "clase_predicha": "marte",
+      "clase_conocida": "ninguno",
+      "acierto": false,
+      "excluido_auc": false,
+      "coordenada_no_verificada": false,
+      "entra_al_auc": true,
+      "es_mock_superficies": false,
+      "modo_bandas": "todas_min"
+    },
+    {
+      "id": "hainich",
+      "nombre": "Hainich (DE-Hai), Turingia (Alemania)",
+      "lat": 51.0792,
+      "lon": 10.4522,
+      "buffer_km": 5.0,
+      "etiqueta": "no_analogo",
+      "fuente": "FLUXNET DE-Hai, 10.18140/FLX/1440148 ; IGBP DBF",
+      "cita": "FLUXNET DE-Hai, 10.18140/FLX/1440148 ; IGBP DBF",
+      "elevacion_m": 405.54559326171875,
+      "pendiente_deg": 2.170347213745117,
+      "rugosidad_tri": 27.07904052734375,
+      "relieve_relativo_m": 66.53225708007812,
+      "agregacion": {
+        "metodo": "mediana_buffer",
+        "descripcion": "Mediana de las celdas válidas cuyo centro cae dentro del buffer (distancia haversina, radio oficial, R=6378.137 km). Una celda es válida si elevación, pendiente y TRI son finitos y distintos de nodata (−9999). También se guarda la celda central (vecina más cercana al punto oficial) como referencia, pero el índice y el umbral usan la mediana del buffer. No se elige la «mejor» celda del buffer, para no inflar el AUC.",
+        "detalle": {
+          "n_celdas_buffer": 121,
+          "distancia_celda_central_km": 0.09685601331958657,
+          "elevation": {
+            "mediana_buffer": 405.54559326171875,
+            "q1_buffer": 350.6274719238281,
+            "q3_buffer": 438.5423889160156,
+            "celda_central": 461.3709411621094,
+            "n_celdas": 121
+          },
+          "slope": {
+            "mediana_buffer": 2.170347213745117,
+            "q1_buffer": 1.6002269983291626,
+            "q3_buffer": 2.706709623336792,
+            "celda_central": 2.0801665782928467,
+            "n_celdas": 121
+          },
+          "roughness": {
+            "mediana_buffer": 27.07904052734375,
+            "q1_buffer": 19.835006713867188,
+            "q3_buffer": 35.13443374633789,
+            "celda_central": 27.814006805419922,
+            "n_celdas": 121
+          },
+          "relative_relief": {
+            "mediana_buffer": 66.53225708007812,
+            "q1_buffer": 19.03411865234375,
+            "q3_buffer": 97.134765625,
+            "celda_central": 102.87429809570312,
+            "n_celdas": 121
+          },
+          "latitude_celda_central": 51.0795,
+          "longitude_celda_central": 10.453499999999991
+        },
+        "valores_celda_central_csv": {
+          "elevation": 461.3709411621094,
+          "slope": 2.0801665782928467,
+          "roughness": 27.814006805419922,
+          "relative_relief": 102.87429809570312
+        }
+      },
+      "es_provisional": false,
+      "banda_latitud": "D",
+      "banda_ganadora_marte": "C",
+      "banda_ganadora_luna": "D",
+      "delta_marte": 0.8636,
+      "delta_luna": 0.7213,
+      "distancia_marte": 0.7886,
+      "distancia_luna": 0.4604,
+      "clase_predicha": "marte",
+      "clase_conocida": "ninguno",
+      "acierto": false,
+      "excluido_auc": false,
+      "coordenada_no_verificada": false,
+      "entra_al_auc": true,
+      "es_mock_superficies": false,
+      "modo_bandas": "todas_min"
+    },
+    {
+      "id": "hyytiala",
+      "nombre": "Hyytiälä / SMEAR II (FI-Hyy), Finlandia",
+      "lat": 61.8474,
+      "lon": 24.2948,
+      "buffer_km": 5.0,
+      "etiqueta": "no_analogo",
+      "fuente": "FLUXNET FI-Hyy, 10.18140/FLX/1440158 ; IGBP ENF",
+      "cita": "FLUXNET FI-Hyy, 10.18140/FLX/1440158 ; IGBP ENF",
+      "elevacion_m": 162.31289672851562,
+      "pendiente_deg": 0.48152685165405273,
+      "rugosidad_tri": 6.321673393249512,
+      "relieve_relativo_m": 0.18489837646484375,
+      "agregacion": {
+        "metodo": "mediana_buffer",
+        "descripcion": "Mediana de las celdas válidas cuyo centro cae dentro del buffer (distancia haversina, radio oficial, R=6378.137 km). Una celda es válida si elevación, pendiente y TRI son finitos y distintos de nodata (−9999). También se guarda la celda central (vecina más cercana al punto oficial) como referencia, pero el índice y el umbral usan la mediana del buffer. No se elige la «mejor» celda del buffer, para no inflar el AUC.",
+        "detalle": {
+          "n_celdas_buffer": 168,
+          "distancia_celda_central_km": 0.4357002134814757,
+          "elevation": {
+            "mediana_buffer": 162.31289672851562,
+            "q1_buffer": 152.96405029296875,
+            "q3_buffer": 172.1945037841797,
+            "celda_central": 168.505615234375,
+            "n_celdas": 168
+          },
+          "slope": {
+            "mediana_buffer": 0.48152685165405273,
+            "q1_buffer": 0.25400465726852417,
+            "q3_buffer": 0.7140759825706482,
+            "celda_central": 1.3556327819824219,
+            "n_celdas": 168
+          },
+          "roughness": {
+            "mediana_buffer": 6.321673393249512,
+            "q1_buffer": 4.5098419189453125,
+            "q3_buffer": 8.709929466247559,
+            "celda_central": 14.158994674682617,
+            "n_celdas": 168
+          },
+          "relative_relief": {
+            "mediana_buffer": 0.18489837646484375,
+            "q1_buffer": -4.259468078613281,
+            "q3_buffer": 6.650276184082031,
+            "celda_central": 7.1974639892578125,
+            "n_celdas": 168
+          },
+          "latitude_celda_central": 61.843500000000006,
+          "longitude_celda_central": 24.295499999999986
+        },
+        "valores_celda_central_csv": {
+          "elevation": 168.505615234375,
+          "slope": 1.3556327819824219,
+          "roughness": 14.158994674682617,
+          "relative_relief": 7.1974639892578125
+        }
+      },
+      "es_provisional": false,
+      "banda_latitud": "E",
+      "banda_ganadora_marte": "E",
+      "banda_ganadora_luna": "E",
+      "delta_marte": 0.9383,
+      "delta_luna": 0.5983,
+      "distancia_marte": 0.3569,
+      "distancia_luna": 0.6635,
+      "clase_predicha": "marte",
+      "clase_conocida": "ninguno",
+      "acierto": false,
+      "excluido_auc": false,
+      "coordenada_no_verificada": false,
+      "entra_al_auc": true,
+      "es_mock_superficies": false,
+      "modo_bandas": "todas_min"
+    },
+    {
+      "id": "rio_tinto",
+      "nombre": "Peña de Hierro / cabecera del Río Tinto (Huelva, España)",
+      "lat": 37.7267,
+      "lon": -6.5532,
+      "buffer_km": 5,
+      "etiqueta": "marciano",
+      "fuente": "Amils et al. (2014), 10.3390/life4030511; Fernández-Remolar et al. (2005), 10.1016/j.epsl.2005.09.043. Análogo solo geoquímico/mineralógico; excluido del AUC de superficie. Sin ventana GLO-90 en esta entrega.",
+      "cita": "Amils et al. (2014), 10.3390/life4030511; Fernández-Remolar et al. (2005), 10.1016/j.epsl.2005.09.043. Análogo solo geoquímico/mineralógico; excluido del AUC de superficie. Sin ventana GLO-90 en esta entrega.",
+      "elevacion_m": null,
+      "pendiente_deg": null,
+      "rugosidad_tri": null,
+      "relieve_relativo_m": null,
+      "agregacion": {
+        "metodo": null,
+        "descripcion": "Sin ventana GLO-90; excluido del AUC.",
+        "detalle": null
+      },
+      "es_provisional": false,
+      "banda_latitud": "C",
+      "banda_ganadora_marte": "",
+      "banda_ganadora_luna": "",
+      "delta_marte": null,
+      "delta_luna": null,
+      "distancia_marte": null,
+      "distancia_luna": null,
+      "clase_predicha": "",
+      "clase_conocida": "marte",
+      "acierto": false,
+      "excluido_auc": true,
+      "coordenada_no_verificada": false,
+      "entra_al_auc": false,
+      "es_mock_superficies": false,
+      "modo_bandas": "todas_min"
+    },
+    {
+      "id": "ries",
+      "nombre": "Ries (Nördlinger Ries), Alemania",
+      "lat": 48.8842,
+      "lon": 10.5569,
+      "buffer_km": 13,
+      "etiqueta": "lunar",
+      "fuente": "Stöffler et al. (2013), 10.1111/maps.12086; IUGS Geoheritage. Cubeta con ciudad y agricultura; no usar como positivo de superficie. Sin ventana GLO-90 en esta entrega.",
+      "cita": "Stöffler et al. (2013), 10.1111/maps.12086; IUGS Geoheritage. Cubeta con ciudad y agricultura; no usar como positivo de superficie. Sin ventana GLO-90 en esta entrega.",
+      "elevacion_m": null,
+      "pendiente_deg": null,
+      "rugosidad_tri": null,
+      "relieve_relativo_m": null,
+      "agregacion": {
+        "metodo": null,
+        "descripcion": "Sin ventana GLO-90; excluido del AUC.",
+        "detalle": null
+      },
+      "es_provisional": false,
+      "banda_latitud": "D",
+      "banda_ganadora_marte": "",
+      "banda_ganadora_luna": "",
+      "delta_marte": null,
+      "delta_luna": null,
+      "distancia_marte": null,
+      "distancia_luna": null,
+      "clase_predicha": "",
+      "clase_conocida": "luna",
+      "acierto": false,
+      "excluido_auc": true,
+      "coordenada_no_verificada": false,
+      "entra_al_auc": false,
+      "es_mock_superficies": false,
+      "modo_bandas": "todas_min"
+    },
+    {
+      "id": "sudbury",
+      "nombre": "Cuenca de Sudbury, Ontario (Canadá)",
+      "lat": 46.6,
+      "lon": -81.183,
+      "buffer_km": 5,
+      "etiqueta": "lunar",
+      "fuente": "Lowman (1992), 10.1029/92rg00755. Análogo geológico de cuenca tipo mare; cubierta de bosque, lagos y área urbana. Coordenada de catálogo no verificada en ficha PASSC. Excluido del AUC de superficie. Sin ventana GLO-90 en esta entrega.",
+      "cita": "Lowman (1992), 10.1029/92rg00755. Análogo geológico de cuenca tipo mare; cubierta de bosque, lagos y área urbana. Coordenada de catálogo no verificada en ficha PASSC. Excluido del AUC de superficie. Sin ventana GLO-90 en esta entrega.",
+      "elevacion_m": null,
+      "pendiente_deg": null,
+      "rugosidad_tri": null,
+      "relieve_relativo_m": null,
+      "agregacion": {
+        "metodo": null,
+        "descripcion": "Sin ventana GLO-90; excluido del AUC.",
+        "detalle": null
+      },
+      "es_provisional": false,
+      "banda_latitud": "D",
+      "banda_ganadora_marte": "",
+      "banda_ganadora_luna": "",
+      "delta_marte": null,
+      "delta_luna": null,
+      "distancia_marte": null,
+      "distancia_luna": null,
+      "clase_predicha": "",
+      "clase_conocida": "luna",
+      "acierto": false,
+      "excluido_auc": true,
+      "coordenada_no_verificada": true,
+      "entra_al_auc": false,
+      "es_mock_superficies": false,
+      "modo_bandas": "todas_min"
+    }
+  ],
+  "zonas_prioritarias": [
+    {
+      "id": "max_marte",
+      "nombre": "Máxima similitud a Marte (-4.9275°, -80.9685°)",
+      "lat": -4.9275,
+      "lon": -80.9685,
+      "banda_latitud": "A",
+      "banda_ganadora_marte": "A",
+      "banda_ganadora_luna": "A",
+      "elevacion_m": 19.1,
+      "pendiente_deg": 0.76,
+      "rugosidad_tri": 11.67,
+      "relieve_relativo_m": -58.15,
+      "delta_marte": 0.9906,
+      "delta_luna": 0.761,
+      "clase": "marte",
+      "firma_superficie": {
+        "latitud": -4.9275,
+        "elevacion_m": 19.1,
+        "pendiente_deg": 0.76,
+        "rugosidad_tri": 11.67
+      },
+      "clima": {
+        "disponible": false,
+        "advertencia": "Capa de interpretación no publicada en esta entrega. No hay un producto climático homologable incluido; no se muestra un ejemplo sintético para no confundirlo con un dato real. El clima no entra al índice.",
+        "nota": "El índice ANALOG/delta es solo de superficie (latitud, elevación, pendiente y rugosidad)."
+      }
+    },
+    {
+      "id": "quilotoa",
+      "nombre": "Quilotoa",
+      "lat": -0.85,
+      "lon": -78.9,
+      "banda_latitud": "A",
+      "banda_ganadora_marte": "A",
+      "banda_ganadora_luna": "A",
+      "elevacion_m": 3620.3,
+      "pendiente_deg": 0.53,
+      "rugosidad_tri": 66.38,
+      "relieve_relativo_m": 120.83,
+      "delta_marte": 0.7383,
+      "delta_luna": 0.4004,
+      "clase": "marte",
+      "firma_superficie": {
+        "latitud": -0.85,
+        "elevacion_m": 3620.3,
+        "pendiente_deg": 0.53,
+        "rugosidad_tri": 66.38
+      },
+      "clima": {
+        "disponible": false,
+        "advertencia": "Capa de interpretación no publicada en esta entrega. No hay un producto climático homologable incluido; no se muestra un ejemplo sintético para no confundirlo con un dato real. El clima no entra al índice.",
+        "nota": "El índice ANALOG/delta es solo de superficie (latitud, elevación, pendiente y rugosidad)."
+      }
+    },
+    {
+      "id": "sincholagua",
+      "nombre": "Sincholagua",
+      "lat": -0.54,
+      "lon": -78.37,
+      "banda_latitud": "A",
+      "banda_ganadora_marte": "A",
+      "banda_ganadora_luna": "A",
+      "elevacion_m": 4448.2,
+      "pendiente_deg": 5.62,
+      "rugosidad_tri": 124.96,
+      "relieve_relativo_m": 409.52,
+      "delta_marte": 0.415,
+      "delta_luna": 0.1909,
+      "clase": "marte",
+      "firma_superficie": {
+        "latitud": -0.54,
+        "elevacion_m": 4448.2,
+        "pendiente_deg": 5.62,
+        "rugosidad_tri": 124.96
+      },
+      "clima": {
+        "disponible": false,
+        "advertencia": "Capa de interpretación no publicada en esta entrega. No hay un producto climático homologable incluido; no se muestra un ejemplo sintético para no confundirlo con un dato real. El clima no entra al índice.",
+        "nota": "El índice ANALOG/delta es solo de superficie (latitud, elevación, pendiente y rugosidad)."
+      }
+    },
+    {
+      "id": "el_altar",
+      "nombre": "El Altar",
+      "lat": -1.67,
+      "lon": -78.41,
+      "banda_latitud": "A",
+      "banda_ganadora_marte": "A",
+      "banda_ganadora_luna": "A",
+      "elevacion_m": 4740.2,
+      "pendiente_deg": 7.52,
+      "rugosidad_tri": 118.69,
+      "relieve_relativo_m": 795.54,
+      "delta_marte": 0.3784,
+      "delta_luna": 0.1469,
+      "clase": "marte",
+      "firma_superficie": {
+        "latitud": -1.67,
+        "elevacion_m": 4740.2,
+        "pendiente_deg": 7.52,
+        "rugosidad_tri": 118.69
+      },
+      "clima": {
+        "disponible": false,
+        "advertencia": "Capa de interpretación no publicada en esta entrega. No hay un producto climático homologable incluido; no se muestra un ejemplo sintético para no confundirlo con un dato real. El clima no entra al índice.",
+        "nota": "El índice ANALOG/delta es solo de superficie (latitud, elevación, pendiente y rugosidad)."
+      }
+    },
+    {
+      "id": "max_luna",
+      "nombre": "Máxima similitud a la Luna (-4.4145°, -81.2385°)",
+      "lat": -4.4145,
+      "lon": -81.2385,
+      "banda_latitud": "A",
+      "banda_ganadora_marte": "A",
+      "banda_ganadora_luna": "A",
+      "elevacion_m": 119.5,
+      "pendiente_deg": 3.49,
+      "rugosidad_tri": 54.49,
+      "relieve_relativo_m": 10.76,
+      "delta_marte": 0.7874,
+      "delta_luna": 0.9593,
+      "clase": "ambos",
+      "firma_superficie": {
+        "latitud": -4.4145,
+        "elevacion_m": 119.5,
+        "pendiente_deg": 3.49,
+        "rugosidad_tri": 54.49
+      },
+      "clima": {
+        "disponible": false,
+        "advertencia": "Capa de interpretación no publicada en esta entrega. No hay un producto climático homologable incluido; no se muestra un ejemplo sintético para no confundirlo con un dato real. El clima no entra al índice.",
+        "nota": "El índice ANALOG/delta es solo de superficie (latitud, elevación, pendiente y rugosidad)."
+      }
+    },
+    {
+      "id": "chimborazo",
+      "nombre": "Chimborazo (arenal y páramo)",
+      "lat": -1.47,
+      "lon": -78.82,
+      "banda_latitud": "A",
+      "banda_ganadora_marte": "A",
+      "banda_ganadora_luna": "A",
+      "elevacion_m": 6018.8,
+      "pendiente_deg": 10.08,
+      "rugosidad_tri": 416.59,
+      "relieve_relativo_m": 1681.19,
+      "delta_marte": 0.0,
+      "delta_luna": 0.0,
+      "clase": "ninguno",
+      "firma_superficie": {
+        "latitud": -1.47,
+        "elevacion_m": 6018.8,
+        "pendiente_deg": 10.08,
+        "rugosidad_tri": 416.59
+      },
+      "clima": {
+        "disponible": false,
+        "advertencia": "Capa de interpretación no publicada en esta entrega. No hay un producto climático homologable incluido; no se muestra un ejemplo sintético para no confundirlo con un dato real. El clima no entra al índice.",
+        "nota": "El índice ANALOG/delta es solo de superficie (latitud, elevación, pendiente y rugosidad)."
+      }
+    },
+    {
+      "id": "cotopaxi",
+      "nombre": "Cotopaxi (páramo)",
+      "lat": -0.68,
+      "lon": -78.44,
+      "banda_latitud": "A",
+      "banda_ganadora_marte": "A",
+      "banda_ganadora_luna": "A",
+      "elevacion_m": 5589.7,
+      "pendiente_deg": 10.87,
+      "rugosidad_tri": 355.8,
+      "relieve_relativo_m": 1494.69,
+      "delta_marte": 0.0,
+      "delta_luna": 0.0,
+      "clase": "ninguno",
+      "firma_superficie": {
+        "latitud": -0.68,
+        "elevacion_m": 5589.7,
+        "pendiente_deg": 10.87,
+        "rugosidad_tri": 355.8
+      },
+      "clima": {
+        "disponible": false,
+        "advertencia": "Capa de interpretación no publicada en esta entrega. No hay un producto climático homologable incluido; no se muestra un ejemplo sintético para no confundirlo con un dato real. El clima no entra al índice.",
+        "nota": "El índice ANALOG/delta es solo de superficie (latitud, elevación, pendiente y rugosidad)."
+      }
+    },
+    {
+      "id": "antisana",
+      "nombre": "Antisana",
+      "lat": -0.48,
+      "lon": -78.14,
+      "banda_latitud": "A",
+      "banda_ganadora_marte": "A",
+      "banda_ganadora_luna": "A",
+      "elevacion_m": 5501.4,
+      "pendiente_deg": 10.12,
+      "rugosidad_tri": 378.02,
+      "relieve_relativo_m": 1413.86,
+      "delta_marte": 0.0,
+      "delta_luna": 0.0,
+      "clase": "ninguno",
+      "firma_superficie": {
+        "latitud": -0.48,
+        "elevacion_m": 5501.4,
+        "pendiente_deg": 10.12,
+        "rugosidad_tri": 378.02
+      },
+      "clima": {
+        "disponible": false,
+        "advertencia": "Capa de interpretación no publicada en esta entrega. No hay un producto climático homologable incluido; no se muestra un ejemplo sintético para no confundirlo con un dato real. El clima no entra al índice.",
+        "nota": "El índice ANALOG/delta es solo de superficie (latitud, elevación, pendiente y rugosidad)."
+      }
+    },
+    {
+      "id": "fernandina",
+      "nombre": "Fernandina (Galápagos)",
+      "lat": -0.37,
+      "lon": -91.55,
+      "banda_latitud": "A",
+      "banda_ganadora_marte": "A",
+      "banda_ganadora_luna": "A",
+      "elevacion_m": 621.5,
+      "pendiente_deg": 13.66,
+      "rugosidad_tri": 236.1,
+      "relieve_relativo_m": 29.91,
+      "delta_marte": 0.0,
+      "delta_luna": 0.0,
+      "clase": "ninguno",
+      "firma_superficie": {
+        "latitud": -0.37,
+        "elevacion_m": 621.5,
+        "pendiente_deg": 13.66,
+        "rugosidad_tri": 236.1
+      },
+      "clima": {
+        "disponible": false,
+        "advertencia": "Capa de interpretación no publicada en esta entrega. No hay un producto climático homologable incluido; no se muestra un ejemplo sintético para no confundirlo con un dato real. El clima no entra al índice.",
+        "nota": "El índice ANALOG/delta es solo de superficie (latitud, elevación, pendiente y rugosidad)."
+      }
+    },
+    {
+      "id": "cayambe",
+      "nombre": "Cayambe",
+      "lat": 0.03,
+      "lon": -77.99,
+      "banda_latitud": "A",
+      "banda_ganadora_marte": "A",
+      "banda_ganadora_luna": "A",
+      "elevacion_m": 5321.4,
+      "pendiente_deg": 18.43,
+      "rugosidad_tri": 263.49,
+      "relieve_relativo_m": 1354.46,
+      "delta_marte": 0.0,
+      "delta_luna": 0.0,
+      "clase": "ninguno",
+      "firma_superficie": {
+        "latitud": 0.03,
+        "elevacion_m": 5321.4,
+        "pendiente_deg": 18.43,
+        "rugosidad_tri": 263.49
+      },
+      "clima": {
+        "disponible": false,
+        "advertencia": "Capa de interpretación no publicada en esta entrega. No hay un producto climático homologable incluido; no se muestra un ejemplo sintético para no confundirlo con un dato real. El clima no entra al índice.",
+        "nota": "El índice ANALOG/delta es solo de superficie (latitud, elevación, pendiente y rugosidad)."
+      }
+    }
+  ],
+  "capas": {
+    "similitud-marte": {
+      "archivo": "/productos/delta_marte.png",
+      "tipo": "png",
+      "cuerpo": "mars"
+    },
+    "similitud-luna": {
+      "archivo": "/productos/delta_luna.png",
+      "tipo": "png",
+      "cuerpo": "moon"
+    },
+    "clases": {
+      "archivo": "/productos/clases.png",
+      "tipo": "png"
+    }
+  },
+  "capa_clima": {
+    "disponible": false,
+    "etiqueta": "interpretación, no entra al índice",
+    "nota": "No se publica un ráster climático en esta entrega para no presentar un ejemplo sintético como si fuera real."
+  },
+  "limitaciones": [
+    "La analogía es solo de superficie y únicamente con las variables comparables. No se puede llamar «clima análogo» al índice.",
+    "La resolución única de ~1 km suaviza el relieve local (Andes, Meteor Crater ~1.2 km de diámetro, University Valley con buffer de 3 km).",
+    "Marte se remuestrea de ~926 m (64 ppd) a ~1 km; no se usó el MEGDR de 128 ppd.",
+    "Luna: de ~474 m (LDEM_64) a ~1 km; no se descargó el LDEM de 128 ppd.",
+    "Cobertura MOLA: interpolación entre huellas y datos más pobres por encima de ~87° de latitud.",
+    "LDEM 64: posibles artefactos en los bordes de las bandas de 45°. Datum vertical = esfera, no geoide lunar.",
+    "Los datums verticales no son homologables al metro (areoide MOLA, esfera lunar de 1737.4 km, geoide EGM2008). La variante relieve_relativo está calculada pero no es el modo por defecto (pendiente de decisión del equipo, §3).",
+    "En Tierra, el 0 m exacto de GLO-90 se enmascaró; costa y agua interior pueden perder celdas.",
+    "Inferno Chasm usa una coordenada de resumen LPSC, no de revista.",
+    "Albedo e inercia térmica no entran al índice v1 (veredicto de Expertos) y no se descargaron.",
+    "Pendiente y TRI en proyección equirrectangular cerca de los polos son más inciertos (banda G).",
+    "No hay un ráster global terrestre: solo Ecuador/Galápagos y las ventanas de validación.",
+    "Modo de bandas por defecto: todas_min (pendiente de confirmación de Ronald sobre el §5). Los umbrales se fijaron con la misma regla y se congelaron antes de Ecuador.",
+    "Río Tinto, Ries y Sudbury se listan pero no entran al AUC (análogos no de superficie o cobertura actual no comparable); no hay ventanas GLO-90 suyas en esta entrega."
+  ],
+  "nota_de_incertidumbre": "Índice v1 solo de superficie (latitud, elevación, pendiente, rugosidad). Datums verticales no homologables al metro; la variante de relieve relativo está calculada y no es el defecto. Resolución ~1 km suaviza Meteor Crater, conos y el relieve andino. Askja entra al AUC (65.060, −16.640, buffer 6 km). Banda A sin positivos terrestres (Ecuador se evalúa, no se calibra ahí). Banda D débil; banda G sin estaciones, añadida por el polo sur lunar. Umbrales fijados con la regla del mínimo entre bandas en validación y congelados antes de Ecuador. Ver docs/nota_incertidumbre.md.",
+  "fuentes": {
+    "mars": "MGS MOLA MEGDR 64 ppd, areoide GMM3/mgm1025",
+    "moon": "LRO LOLA LDEM_64 v3.1, esfera 1737.4 km",
+    "earth": "Copernicus DEM GLO-90 (EGM2008)"
+  }
+}

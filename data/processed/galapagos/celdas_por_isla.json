@@ -1,0 +1,170 @@
+{
+  "fuente_poligono": {
+    "nombre": "GADM version 4.1",
+    "capa": "gadm41_ECU_1.shp, provincia Galápagos, polígonos de isla explotados (53 partes)",
+    "url": "https://geodata.ucdavis.edu/gadm/gadm4.1/shp/gadm41_ECU_shp.zip",
+    "cita": "Global Administrative Areas (GADM), version 4.1 (18 July 2022). University of California, Davis. https://gadm.org/",
+    "nota_licencia": "GADM permite uso académico y no comercial; no se redistribuye el shapefile. En el repositorio solo van las cifras derivadas.",
+    "asignacion_de_nombres": "Cada parte se nombra por el punto-centro de la isla oficial más cercano (o que cae dentro). Darwin y Wolf se listan aunque tengan 0 celdas."
+  },
+  "regla": "Se cuenta una celda de 1 km si su centro está dentro del polígono y la celda es válida en la máscara oficial de pendiente/TRI/δ (v1 banda_propia). all_touched=False.",
+  "n_celdas_validas_galapagos_total": 6606,
+  "n_en_recorte_publicado_previo": 6606,
+  "nota_recorte": "El recorte publicado (−91.800, −1.548, −89.118, 0.783) no alcanza Darwin ni Wolf (están al norte de 0,78°). El conteo por isla usa la caja de GADM, que sí las incluye; ambas tienen 0 celdas válidas a 1 km.",
+  "islas": [
+    {
+      "isla": "Isabela",
+      "n_celdas_validas": 4128,
+      "n_en_recorte_previo": 4128,
+      "mediana_delta_marte": 0.8761,
+      "mediana_delta_luna": 0.746,
+      "mediana_pendiente_deg": 2.8964
+    },
+    {
+      "isla": "Santa Cruz",
+      "n_celdas_validas": 839,
+      "n_en_recorte_previo": 839,
+      "mediana_delta_marte": 0.9466,
+      "mediana_delta_luna": 0.7912,
+      "mediana_pendiente_deg": 1.8278
+    },
+    {
+      "isla": "Fernandina",
+      "n_celdas_validas": 527,
+      "n_en_recorte_previo": 527,
+      "mediana_delta_marte": 0.7642,
+      "mediana_delta_luna": 0.7557,
+      "mediana_pendiente_deg": 4.4203
+    },
+    {
+      "isla": "Santiago",
+      "n_celdas_validas": 451,
+      "n_en_recorte_previo": 451,
+      "mediana_delta_marte": 0.9163,
+      "mediana_delta_luna": 0.7812,
+      "mediana_pendiente_deg": 2.3644
+    },
+    {
+      "isla": "San Cristóbal",
+      "n_celdas_validas": 414,
+      "n_en_recorte_previo": 414,
+      "mediana_delta_marte": 0.9161,
+      "mediana_delta_luna": 0.7933,
+      "mediana_pendiente_deg": 2.3341
+    },
+    {
+      "isla": "Floreana",
+      "n_celdas_validas": 107,
+      "n_en_recorte_previo": 107,
+      "mediana_delta_marte": 0.855,
+      "mediana_delta_luna": 0.8648,
+      "mediana_pendiente_deg": 3.1806
+    },
+    {
+      "isla": "Marchena",
+      "n_celdas_validas": 80,
+      "n_en_recorte_previo": 80,
+      "mediana_delta_marte": 0.9125,
+      "mediana_delta_luna": 0.8138,
+      "mediana_pendiente_deg": 2.4909
+    },
+    {
+      "isla": "Española",
+      "n_celdas_validas": 24,
+      "n_en_recorte_previo": 24,
+      "mediana_delta_marte": 0.9484,
+      "mediana_delta_luna": 0.8046,
+      "mediana_pendiente_deg": 1.7198
+    },
+    {
+      "isla": "Pinta",
+      "n_celdas_validas": 24,
+      "n_en_recorte_previo": 24,
+      "mediana_delta_marte": 0.6214,
+      "mediana_delta_luna": 0.728,
+      "mediana_pendiente_deg": 6.0178
+    },
+    {
+      "isla": "Baltra",
+      "n_celdas_validas": 4,
+      "n_en_recorte_previo": 4,
+      "mediana_delta_marte": 0.9657,
+      "mediana_delta_luna": 0.7182,
+      "mediana_pendiente_deg": 0.7835
+    },
+    {
+      "isla": "Santa Fe",
+      "n_celdas_validas": 5,
+      "n_en_recorte_previo": 5,
+      "mediana_delta_marte": 0.9262,
+      "mediana_delta_luna": 0.7974,
+      "mediana_pendiente_deg": 1.6505
+    },
+    {
+      "isla": "Genovesa",
+      "n_celdas_validas": 1,
+      "n_en_recorte_previo": 1,
+      "mediana_delta_marte": 0.9631,
+      "mediana_delta_luna": 0.6957,
+      "mediana_pendiente_deg": 0.5498
+    },
+    {
+      "isla": "Pinzón",
+      "n_celdas_validas": 2,
+      "n_en_recorte_previo": 2,
+      "mediana_delta_marte": 0.6399,
+      "mediana_delta_luna": 0.6991,
+      "mediana_pendiente_deg": 3.6772
+    },
+    {
+      "isla": "Rábida",
+      "n_celdas_validas": 0,
+      "n_en_recorte_previo": 0,
+      "mediana_delta_marte": null,
+      "mediana_delta_luna": null,
+      "mediana_pendiente_deg": null
+    },
+    {
+      "isla": "Seymour Norte",
+      "n_celdas_validas": 0,
+      "n_en_recorte_previo": 0,
+      "mediana_delta_marte": null,
+      "mediana_delta_luna": null,
+      "mediana_pendiente_deg": null
+    },
+    {
+      "isla": "Plaza Sur",
+      "n_celdas_validas": 0,
+      "n_en_recorte_previo": 0,
+      "mediana_delta_marte": null,
+      "mediana_delta_luna": null,
+      "mediana_pendiente_deg": null
+    },
+    {
+      "isla": "Wolf",
+      "n_celdas_validas": 0,
+      "n_en_recorte_previo": 0,
+      "mediana_delta_marte": null,
+      "mediana_delta_luna": null,
+      "mediana_pendiente_deg": null
+    },
+    {
+      "isla": "Darwin",
+      "n_celdas_validas": 0,
+      "n_en_recorte_previo": 0,
+      "mediana_delta_marte": null,
+      "mediana_delta_luna": null,
+      "mediana_pendiente_deg": null
+    },
+    {
+      "isla": "otras islas",
+      "n_celdas_validas": 0,
+      "n_en_recorte_previo": 0,
+      "mediana_delta_marte": null,
+      "mediana_delta_luna": null,
+      "mediana_pendiente_deg": null
+    }
+  ],
+  "no_asignadas_en_caja": 0,
+  "n_celdas_validas_asignadas": 6606
+}

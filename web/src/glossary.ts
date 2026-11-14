@@ -96,9 +96,9 @@ export const GLOSARIO: Record<string, Termino> = {
     etiqueta: "bandas de latitud",
     corto: "Franjas del planeta según la distancia al ecuador, para comparar lugares en la misma «franja».",
     estudiante:
-      "Hay siete bandas (A a G). En cada una se guarda la mediana y el IQR de las variables en Marte y en la Luna. El modo todas_min toma la banda más cercana, aunque no sea la de la misma latitud.",
+      "Hay siete bandas (A a G). En cada una se guarda la mediana y el IQR de las variables en Marte y en la Luna. El modo oficial, banda_propia, compara cada lugar solo con la banda de su propia latitud. La corrida previa, todas_min, tomaba la banda más cercana de las siete.",
     cientifico:
-      "Firmas por banda A–G (mediana e IQR, 56 000 muestras estratificadas por cuerpo). modo_bandas = todas_min: distancia mínima sobre todas las bandas; se guarda la banda ganadora. No se mezclan cuerpos.",
+      "Firmas por banda A–G (mediana e IQR, 56 000 muestras estratificadas por cuerpo). Modo oficial modo_bandas = banda_propia: cada celda se compara solo con la firma de su propia banda de |lat|. La corrida previa todas_min usaba la distancia mínima sobre todas las bandas y guardaba la banda ganadora. No se mezclan cuerpos.",
   },
   especificidad: {
     id: "especificidad",

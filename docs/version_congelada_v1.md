@@ -4,7 +4,7 @@
 - **Fecha de congelación de parámetros, firmas y umbrales:** 14 de noviembre de 2026, 13:40:40 (America/Guayaquil, UTC-5), campo `congelado_en` del catálogo.
 - **Versión:** ANALOG/delta v1 real (firmas por bandas de latitud). Identificador en catálogo: `ANALOG/delta v1 real 2026-11-14`.
 
-Esta es la versión oficial del entregable. Los parámetros no se modifican después de esta acta.
+Esta acta es el registro histórico de la corrida previa `todas_min` (13:40:40). La corrida oficial de la v1 es `banda_propia`; su acta es `docs/version_congelada_v1_banda_propia.md`. Los hashes de la tabla de abajo no se modifican.
 
 ## Qué quedó congelado (sin cambios)
 
@@ -44,7 +44,7 @@ Los rásteres y la tabla de validación no se recalcularon para esta acta (mtime
 
 Este apéndice no modifica los parámetros, umbrales, productos ni huellas de arriba. Solo deja constancia de una diferencia con el documento de método.
 
-La v1 oficial usa `modo_bandas = todas_min`: δ se calcula como la menor distancia a las firmas de las siete bandas de latitud A–G. El otro modo ya programado, `banda_propia`, compararía cada lugar solo con la banda de su propia |lat|. Ronald no aprobó esa diferencia y no eligió entre las dos reglas. La v1 no se recalcula.
+En esta corrida, congelada a las 13:40:40, se usó `modo_bandas = todas_min`: δ se calcula como la menor distancia a las firmas de las siete bandas de latitud A–G. El otro modo ya programado, `banda_propia`, compara cada lugar solo con la banda de su propia |lat|. Esa diferencia con el §5 quedó anotada aquí. Más tarde, a las 15:31, Ronald eligió `banda_propia` como modo oficial; ver la nota posterior al final de esta acta.
 
 Esa regla no aparece en el §5 («Muestreo por latitud») de `proyecto_ronald.txt`. Ese apartado pide construir la muestra planetaria en las mismas bandas de latitud de las estaciones terrestres de referencia (y en franjas ya previstas), con muestreo estratificado dentro de cada banda: «En Marte y en la Luna se extraen celdas dentro de esas mismas bandas de latitud». La latitud, dice el texto, «alinea el muestreo; no sustituye al resto de variables de superficie».
 
@@ -58,3 +58,10 @@ Tiempos del 14 de noviembre de 2026 (America/Guayaquil, UTC-5), sin inferir más
 - 14:33 — esta acta; las huellas de la tabla anterior se calcularon sobre esos productos, sin recalcularlos.
 
 El código ya listaba el defecto 18 minutos antes del sello de congelación. Eso no basta para afirmar que `todas_min` se decidió antes de ver el AUC real. El detalle está en `docs/nota_incertidumbre.md`.
+
+
+## Nota posterior (14 de noviembre de 2026, 15:31, America/Guayaquil)
+
+Esta acta permanece como registro histórico de la corrida `todas_min` (13:40:40). Los hashes de la tabla de arriba no se modifican.
+
+Ronald decidió recalcular la v1 con `modo_bandas = banda_propia`, como indica el §5 del método. Esa corrida se hizo después de ver el AUC de `todas_min`. Los productos de `todas_min` se conservan en `data/processed/corrida_previa_todas_min/` y en `web/public/productos/corrida_previa_todas_min/`. El acta de la corrida oficial es `docs/version_congelada_v1_banda_propia.md`.

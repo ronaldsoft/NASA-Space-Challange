@@ -7,3 +7,11 @@ processed/**/*.npz
 processed/**/*.csv
 !processed/**/*.json
 !processed/**/*.md
+
+# Conservar la corrida previa todas_min y los controles (sí entran al repo).
+!processed/corrida_previa_todas_min/
+!processed/corrida_previa_todas_min/**
+!processed/corrida_banda_propia/
+!processed/corrida_banda_propia/**
+!processed/controles/
+!processed/controles/**

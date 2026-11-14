@@ -1,8 +1,8 @@
 {
-  "nombre": "ANALOG/delta v1 congelada — exportación Unity WebGL",
-  "version": "ANALOG/delta v1 real 2026-11-14",
-  "congelado_en": "2026-11-14T13:40:40-05:00",
-  "acta": "docs/version_congelada_v1.md",
+  "nombre": "ANALOG/delta v1 — exportación Unity WebGL",
+  "version": "ANALOG/delta v1 banda_propia 2026-11-14T15:31:26-05:00",
+  "congelado_en": "2026-11-14T15:31:26-05:00",
+  "acta": "docs/version_congelada_v1_banda_propia.md",
   "huella_catalogo_congelado_sha256": "369dd38593f76d46266d1cd86077ce4729fb7b1e3811adc66b74fe0be51c87dd",
   "huellas_productos_congelados_sha256": {
     "catalogo.json": "369dd38593f76d46266d1cd86077ce4729fb7b1e3811adc66b74fe0be51c87dd",
@@ -30,18 +30,18 @@
   "archivos": [
     {
       "archivo": "clases.json",
-      "bytes": 1795,
-      "sha256": "3cfc2ab00f981233256885952178979c04fab3703932ba290e8cfac0328bdbf5"
+      "bytes": 1746,
+      "sha256": "1fafda1fbeab74e681409678242e2c703613ef3466198ab128f7117abdae9ca4"
     },
     {
       "archivo": "clases.png",
-      "bytes": 80873,
-      "sha256": "09442e5c5f195955b2e477a173f81231a8b2f583e0a5e22db9f53fdab82dc927"
+      "bytes": 72923,
+      "sha256": "6cbff9dc02ac19878e7f86cea246e16502a2b8587abfdd2139daea6573b04b2c"
     },
     {
       "archivo": "delta_luna.json",
-      "bytes": 1065,
-      "sha256": "96e8a3fc603addf61987106c9e91128625fea03ff00952d4b934108bcba09fbd"
+      "bytes": 1116,
+      "sha256": "aa1e8e0ba5400ea5f82f98096fb619a9b162d8ef3f85e29ab4e920d7a545ff66"
     },
     {
       "archivo": "delta_luna.png",
@@ -55,23 +55,23 @@
     },
     {
       "archivo": "delta_marte.json",
-      "bytes": 1067,
-      "sha256": "d8deb962acaabe9e4904291e8fa4c23de2dad2b2e2f25e978e6d5e6999f9a198"
+      "bytes": 1118,
+      "sha256": "9031caa8b006d71613905ae17b2d9cab0dcd7db8073cc2a22f17db9f82baf178"
     },
     {
       "archivo": "delta_marte.png",
-      "bytes": 697029,
-      "sha256": "b973762d73b1aeaf5734bf195dee802c4d9fb6a67632443fbc306974013f2de8"
+      "bytes": 682906,
+      "sha256": "2f2d8c8249223dcba16eae272f26b4dd3c783fda039bda1e845cc7e92b18409f"
     },
     {
       "archivo": "delta_marte_preview.png",
-      "bytes": 793970,
-      "sha256": "be29a30c265a40d2a6e7b0d61e8fca7dd47fc12654da180e4a59fc27cd676f9e"
+      "bytes": 776380,
+      "sha256": "c75fb12572030eea8f57e5dfdbf9d4d0a9eb35d2f6ec563beb1cb68939bf3d24"
     },
     {
       "archivo": "hillshade.json",
-      "bytes": 847,
-      "sha256": "6a33199a141569b5e6cb130d278b311be6c85d2231efdd127eec7fec24842892"
+      "bytes": 865,
+      "sha256": "d60c2b7f8c63b9c8f409d61e0fb482df9e612106674569935b56062f1b5cc5e6"
     },
     {
       "archivo": "hillshade.png",
@@ -81,13 +81,98 @@
     {
       "archivo": "sitios_validacion.geojson",
       "bytes": 14073,
-      "sha256": "4c1b2e320790406ae99323279a0ee9f1218b6aaf7ac435eace3337bd4df55f76"
+      "sha256": "8c8fc85efee66d3a49363a306f83ee2c2a10e21fc6eabb025302a69978885b85"
     },
     {
       "archivo": "zonas_prioritarias.geojson",
-      "bytes": 4894,
-      "sha256": "4bd6e20a341e7b75f0b3a565ca5ad7faf7c96a3cf261a86909e9ca7754fbc454"
+      "bytes": 5887,
+      "sha256": "ec73a1570e0e382233742ef8c70067a709610314a236106dcc085ed6c213804b"
     }
   ],
-  "nota": "Estos archivos son una exportación de lectura de los productos v1 ya congelados. No recalculan el índice. El mapa de clases es secundario (especificidad de Marte = 0)."
+  "nota": "Estos archivos son una exportación de lectura de los productos v1 ya congelados. No recalculan el índice. El mapa de clases es secundario (especificidad de Marte = 0).",
+  "modo_bandas": "banda_propia",
+  "elevacion_modo": "absoluta",
+  "acta_corrida_previa": "docs/version_congelada_v1.md",
+  "huella_catalogo_oficial_sha256": "bf54d0c5d35ce0a0baf28cf4ad7c570724a413c2ce1e08700b29fd5796fa602f",
+  "huellas_productos_todas_min_sha256": {
+    "catalogo.json": "369dd38593f76d46266d1cd86077ce4729fb7b1e3811adc66b74fe0be51c87dd",
+    "tabla_validacion.csv": "7ff7856cc3581e31b1a55f32b5a5cc48191a5160bf677dd3437a0968e4a95218",
+    "delta_marte.png": "0152dfb637616e246d3c946f702ed251266c1a0db2c7d8bc6bfaf5fec30b0d4b",
+    "delta_marte.tif": "dba0f23685d35f5e6399be7ebfbc816e552e0e969a88a8e35821b39b2b1ed406",
+    "delta_luna.png": "5eb786ef217863e0f022127c5d3e1ee1c07099ccc1646b26d750cda00e684dc6",
+    "delta_luna.tif": "daf00ed5e74e6308f2a9f46a4077075e335726c278e901c1a18bef24a67372c7",
+    "clases.png": "c9fedb0c7931fda40311ccf1556266cb1165ceea9de12abfb0c519363e6997af",
+    "clases.tif": "a92f6781cc589d0de787e5ac74eae0042e56c6d89a16bd3abfa23968b0d9b886"
+  },
+  "huellas_productos_banda_propia_sha256": {
+    "delta_marte.png": "47839ad203cccc08fb0e8cdb0d9f2e7aaf08f3abebb0fdaa3bdd2cadd9685982",
+    "delta_marte.tif": "1fac4f7418cca4c28462ecc4354aba2e64352b551a85c4529c7ffc62d7d0d011",
+    "delta_luna.png": "5eb786ef217863e0f022127c5d3e1ee1c07099ccc1646b26d750cda00e684dc6",
+    "delta_luna.tif": "daf00ed5e74e6308f2a9f46a4077075e335726c278e901c1a18bef24a67372c7",
+    "clases.png": "72ec3e247e950e3f42a6ad4e97951ebcb2d7b833a7a37b5253ba6ae212d90272",
+    "clases.tif": "c00ec958e12dfb55cc46fad62306328670b79760102c026a3365a779378a89a9",
+    "tabla_validacion.csv": "101f7a789ca7f7c1a9c61767ac78f06653410c4367bf5e54e3e6e7e5b046fcf8",
+    "catalogo.json": "bf54d0c5d35ce0a0baf28cf4ad7c570724a413c2ce1e08700b29fd5796fa602f"
+  },
+  "archivos_galapagos": [
+    {
+      "archivo": "galapagos/clases.json",
+      "bytes": 1767,
+      "sha256": "3e2ecfd66ad4a3cac9f784e9af8377f15fc5f283d5fa2785c3ffaad19df02376"
+    },
+    {
+      "archivo": "galapagos/clases.png",
+      "bytes": 3283,
+      "sha256": "ffcb7c8c83ca6e915322664f816e9d85206b6ba9e7d15621108074a97be5f432"
+    },
+    {
+      "archivo": "galapagos/delta_luna.json",
+      "bytes": 1141,
+      "sha256": "ffa74e0e21b19fa8bd1380f463bceeb5ce81562225774689b28f4d292d2fd52c"
+    },
+    {
+      "archivo": "galapagos/delta_luna.png",
+      "bytes": 13152,
+      "sha256": "4dc4013e68a9af9eae6a7b7a5b42dfdc32a290755ab1f87ef2ba1788ce6ccc57"
+    },
+    {
+      "archivo": "galapagos/delta_luna_preview.png",
+      "bytes": 13728,
+      "sha256": "fb1f888730bb01341c3f3b9872d8a7a39566bc4d86a1c014caf3eb38bd3c6ca5"
+    },
+    {
+      "archivo": "galapagos/delta_marte.json",
+      "bytes": 1143,
+      "sha256": "ca7efaeb5bb2822ed556e9f8409d9cf5b7e458b7153c0c4fccd9b0895bcef761"
+    },
+    {
+      "archivo": "galapagos/delta_marte.png",
+      "bytes": 12878,
+      "sha256": "adde51674cbde5bde9533677e4f8694f9592d9fde88ddc2b1b29bb5feb0b9d5a"
+    },
+    {
+      "archivo": "galapagos/delta_marte_preview.png",
+      "bytes": 14923,
+      "sha256": "a433d7d1492474ab5bcb23e587c33842662b2823dede74bd6a5a0e1bed29ff5e"
+    },
+    {
+      "archivo": "galapagos/hillshade.json",
+      "bytes": 892,
+      "sha256": "a5a3675e9c9eeaa3d92e45f9c47dda3bf2f429d0af9a91d9e167f4bcd64050d1"
+    },
+    {
+      "archivo": "galapagos/hillshade.png",
+      "bytes": 10922,
+      "sha256": "8f82cad5f63cc07b722e42f784474d06083f434d373282472a84fb1df24ed02c"
+    }
+  ],
+  "corrida_previa_todas_min": {
+    "ruta": "/unity/corrida_previa_todas_min/",
+    "congelado_en": "2026-11-14T13:40:40-05:00"
+  },
+  "codificacion_delta": {
+    "tipo": "PNG RGBA 8 bits",
+    "valor": "byte = round(delta * 255); alpha 0 = nodata, 255 = válido"
+  },
+  "aviso_clases": "Mapa de clases secundario. No calcular porcentajes de cobertura."
 }

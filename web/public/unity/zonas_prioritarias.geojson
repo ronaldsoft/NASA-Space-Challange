@@ -13,111 +13,6 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -80.9685,
-          -4.9275
-        ]
-      },
-      "properties": {
-        "id": "max_marte",
-        "nombre": "Máxima similitud a Marte (-4.9275°, -80.9685°)",
-        "clase": "marte",
-        "delta_marte": 0.9906,
-        "delta_luna": 0.761,
-        "elevacion_m": 19.1,
-        "pendiente_deg": 0.76,
-        "rugosidad_tri": 11.67,
-        "banda_latitud": "A"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -78.9,
-          -0.85
-        ]
-      },
-      "properties": {
-        "id": "quilotoa",
-        "nombre": "Quilotoa",
-        "clase": "marte",
-        "delta_marte": 0.7383,
-        "delta_luna": 0.4004,
-        "elevacion_m": 3620.3,
-        "pendiente_deg": 0.53,
-        "rugosidad_tri": 66.38,
-        "banda_latitud": "A"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -78.37,
-          -0.54
-        ]
-      },
-      "properties": {
-        "id": "sincholagua",
-        "nombre": "Sincholagua",
-        "clase": "marte",
-        "delta_marte": 0.415,
-        "delta_luna": 0.1909,
-        "elevacion_m": 4448.2,
-        "pendiente_deg": 5.62,
-        "rugosidad_tri": 124.96,
-        "banda_latitud": "A"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -78.41,
-          -1.67
-        ]
-      },
-      "properties": {
-        "id": "el_altar",
-        "nombre": "El Altar",
-        "clase": "marte",
-        "delta_marte": 0.3784,
-        "delta_luna": 0.1469,
-        "elevacion_m": 4740.2,
-        "pendiente_deg": 7.52,
-        "rugosidad_tri": 118.69,
-        "banda_latitud": "A"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -81.2385,
-          -4.4145
-        ]
-      },
-      "properties": {
-        "id": "max_luna",
-        "nombre": "Máxima similitud a la Luna (-4.4145°, -81.2385°)",
-        "clase": "ambos",
-        "delta_marte": 0.7874,
-        "delta_luna": 0.9593,
-        "elevacion_m": 119.5,
-        "pendiente_deg": 3.49,
-        "rugosidad_tri": 54.49,
-        "banda_latitud": "A"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
           -78.82,
           -1.47
         ]
@@ -181,6 +76,48 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
+          -78.41,
+          -1.67
+        ]
+      },
+      "properties": {
+        "id": "el_altar",
+        "nombre": "El Altar",
+        "clase": "marte",
+        "delta_marte": 0.4939,
+        "delta_luna": 0.1469,
+        "elevacion_m": 4740.2,
+        "pendiente_deg": 7.52,
+        "rugosidad_tri": 118.69,
+        "banda_latitud": "A"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -78.9,
+          -0.85
+        ]
+      },
+      "properties": {
+        "id": "quilotoa",
+        "nombre": "Quilotoa",
+        "clase": "marte",
+        "delta_marte": 0.7869,
+        "delta_luna": 0.4004,
+        "elevacion_m": 3620.3,
+        "pendiente_deg": 0.53,
+        "rugosidad_tri": 66.38,
+        "banda_latitud": "A"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
           -91.55,
           -0.37
         ]
@@ -215,6 +152,111 @@
         "elevacion_m": 5321.4,
         "pendiente_deg": 18.43,
         "rugosidad_tri": 263.49,
+        "banda_latitud": "A"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -78.37,
+          -0.54
+        ]
+      },
+      "properties": {
+        "id": "sincholagua",
+        "nombre": "Sincholagua",
+        "clase": "marte",
+        "delta_marte": 0.5238,
+        "delta_luna": 0.1909,
+        "elevacion_m": 4448.2,
+        "pendiente_deg": 5.62,
+        "rugosidad_tri": 124.96,
+        "banda_latitud": "A"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80.9685,
+          -4.9275
+        ]
+      },
+      "properties": {
+        "id": "max_mars_ecuador_continental",
+        "nombre": "Máxima similitud a Marte",
+        "clase": "marte",
+        "delta_marte": 0.9924,
+        "delta_luna": 0.761,
+        "elevacion_m": 19.1,
+        "pendiente_deg": 0.76,
+        "rugosidad_tri": 11.67,
+        "banda_latitud": "A"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -81.2385,
+          -4.4145
+        ]
+      },
+      "properties": {
+        "id": "max_moon_ecuador_continental",
+        "nombre": "Máxima similitud a la Luna",
+        "clase": "ambos",
+        "delta_marte": 0.8269,
+        "delta_luna": 0.9593,
+        "elevacion_m": 119.5,
+        "pendiente_deg": 3.49,
+        "rugosidad_tri": 54.49,
+        "banda_latitud": "A"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -89.6895,
+          -1.3815
+        ]
+      },
+      "properties": {
+        "id": "max_mars_galapagos",
+        "nombre": "Máxima similitud a Marte (Galápagos)",
+        "clase": "marte",
+        "delta_marte": 0.9705,
+        "delta_luna": 0.7588,
+        "elevacion_m": 127.5,
+        "pendiente_deg": 0.9,
+        "rugosidad_tri": 16.01,
+        "banda_latitud": "A"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -90.4815,
+          -1.3005
+        ]
+      },
+      "properties": {
+        "id": "max_moon_galapagos",
+        "nombre": "Máxima similitud a la Luna (Galápagos)",
+        "clase": "ambos",
+        "delta_marte": 0.8222,
+        "delta_luna": 0.8777,
+        "elevacion_m": 124.7,
+        "pendiente_deg": 3.75,
+        "rugosidad_tri": 52.71,
         "banda_latitud": "A"
       }
     }

@@ -28,5 +28,5 @@
     "algoritmo": "Horn 3×3, acimut 315°, elevación solar 45°. Solo visual."
   },
   "fuente": "Copernicus DEM GLO-90 remuestreado a ~1 km (ecuador_elevation_1km.tif), no altera los productos congelados de δ.",
-  "version": "ANALOG/delta v1 congelada 2026-11-14"
+  "version": "ANALOG/delta v1 banda_propia 2026-11-14T15:31:26-05:00"
 }

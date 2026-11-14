@@ -79,12 +79,12 @@
   },
   "aviso": "Mapa de clases secundario. El umbral de Marte de la v1 tiene especificidad 0; no usar esta capa como inventario de análogos ni para calcular porcentajes de cobertura.",
   "n_celdas_por_clase": {
-    "ninguno": 43012,
-    "marte": 356828,
+    "ninguno": 23811,
+    "marte": 376029,
     "luna": 0,
     "ambos": 53535,
     "nodata": 975465
   },
-  "version": "ANALOG/delta v1 congelada 2026-11-14",
-  "sha256_producto_fuente_tif": "a92f6781cc589d0de787e5ac74eae0042e56c6d89a16bd3abfa23968b0d9b886"
+  "version": "ANALOG/delta v1 banda_propia 2026-11-14T15:31:26-05:00",
+  "modo_bandas": "banda_propia"
 }

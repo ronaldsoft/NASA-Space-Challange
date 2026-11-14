@@ -1,6 +1,6 @@
 # Nota de incertidumbre — ANALOG/delta v1 (datos reales)
 
-Fecha de congelación de parámetros, firmas y umbrales: 14 de noviembre de 2026 (America/Guayaquil, UTC-5).
+Parámetros y firmas: 14 de noviembre de 2026, 13:40 (America/Guayaquil, UTC-5). Corrida oficial con `banda_propia`: 15:31:26 del mismo día. Equipo: Devebug Industries.
 
 Esta nota acompaña los productos reales del índice de homología de superficie Tierra–Marte–Luna. El índice v1 usa solo **latitud (|lat|), elevación, pendiente y rugosidad (TRI 3×3)**, con pesos iguales. **No incluye albedo, inercia térmica ni ninguna variable meteorológica** (veredicto de Expertos). Por eso **no puede llamarse «clima análogo»** ni «análogo ambiental completo».
 
@@ -8,19 +8,36 @@ Esta nota acompaña los productos reales del índice de homología de superficie
 
 1. Los parámetros de estandarización (`std_params`) y las firmas por banda A–G (mediana e IQR) se ajustaron **solo** sobre las muestras estratificadas de Marte (MOLA MEGDR 64 ppd) y de la Luna (LOLA LDEM_64), 56 000 celdas por cuerpo, sin mezclar los dos cuerpos ni usar celdas terrestres.
 2. En cada sitio de validación se tomó la **mediana de las celdas válidas dentro del buffer** oficial (distancia haversina, radio de Expertos). No se eligió la «mejor» celda del buffer, para no inflar el AUC. También se archivó la celda central como referencia. Río Tinto, Ries y Sudbury se listan pero **no entran al AUC** (análogos no de superficie o cobertura actual no comparable) y no tienen ventana GLO-90 en esta entrega.
-3. El umbral se fijó con la regla del **mínimo entre bandas** (`todas_min`, distancia euclídea) y el criterio de Youden, **solo** sobre los 16 sitios del AUC. Después se congeló. Ecuador no intervino en esa decisión.
-4. Recién entonces se calculó δ Marte, δ Luna y el mapa de clases sobre Ecuador y Galápagos.
+3. El 14 de noviembre a las 13:40 se fijó un umbral de Youden con `todas_min` (mínimo entre las siete bandas), solo sobre los 16 sitios del AUC. Ecuador no intervino.
+4. Más tarde, a las 15:31, Ronald decidió usar `banda_propia` (la banda de |lat| de cada celda), como el §5 del método. Se volvió a fijar el umbral con el mismo procedimiento y los mismos 16 sitios, y se aplicó, ya congelado, a Ecuador continental y a Galápagos. **La corrida con `banda_propia` se hizo después de ver el AUC de `todas_min`.** Las firmas y los `std_params` no se tocaron. La corrida `todas_min` no se borra.
 
 Askja permanece en el AUC con la coordenada confirmada **65.060, −16.640** y buffer de 6 km (punto medio de la colada Vikrahraun; Blasizzo et al., 2022, additional file 1, hoja «(1.1) Samples»). Se descarta 65.03, −16.78.
 
 ## Resultado de la validación
 
-En datos reales el índice **no discrimina bien** los análogos etiquetados de los no análogos. Las cifras que siguen son del modo por defecto (`todas_min`, vector con |lat|, elevación absoluta). Los intervalos son el IC bootstrap al 95 %.
+En datos reales el índice **no discrimina bien** los análogos etiquetados de los no análogos, en ninguna de las dos corridas. La tabla compara `todas_min` (corrida previa, 13:40:40) y `banda_propia` (oficial, 15:31:26). Los intervalos son el IC bootstrap al 95 %. **La corrida con `banda_propia` se hizo después de ver el AUC de `todas_min`.** El AUC no cambió.
+
+| Corrida | AUC Marte (IC 95 %) | AUC Luna (IC 95 %) | Aciertos (de 16) | Umbral Marte | Umbral Luna |
+|---|---|---|---|---|---|
+| `todas_min` (previa, 13:40:40) | 0,09375 (0,00–0,29) | 0,2545 (0,00–0,69) | 6 | 0,1304 | 0,7915 |
+| `banda_propia` (oficial, 15:31:26) | 0,09375 (0,00–0,29) | 0,2545 (0,00–0,69) | 6 | 0,1304 | 0,7915 |
+
+El modelo nulo de solo |lat| da AUC Marte 0,58 (0,25–0,88) y AUC Luna 0,22 (0,00–0,48) en ambas, porque no usa el índice. El mapa de δ Marte y el de clases sí cambian (`d_max` de Marte pasa de 5,784 a 7,105); el de δ Luna es idéntico.
+
+### Por qué el AUC de `banda_propia` coincide con el de `todas_min`
+
+El AUC oficial es el mismo en las dos corridas: Marte **0,09375** (IC 95 % 0,00–0,29) y Luna **0,2545** (IC 95 % 0,00–0,69). No son cifras copiadas.
+
+- En la Luna, en los 16 sitios del AUC, la banda ganadora de `todas_min` ya era la banda propia (16 de 16). δ Luna no cambia. La huella SHA-256 de `delta_luna.png` es la misma en las dos corridas: `5eb786ef217863e0f022127c5d3e1ee1c07099ccc1646b26d750cda00e684dc6`.
+- En Marte la banda ganadora cambia en 5 de 16 sitios, y los valores de δ se mueven: el `d_max` de Marte pasa de 5,784 a 7,105. El mapa de δ Marte cambia (huella oficial `47839ad203cccc08fb0e8cdb0d9f2e7aaf08f3abebb0fdaa3bdd2cadd9685982`; corrida previa `0152dfb637616e246d3c946f702ed251266c1a0db2c7d8bc6bfaf5fec30b0d4b`).
+- El orden entre análogos y no análogos no cambia. El estadístico U de Mann–Whitney es el mismo: **6 de 64 pares** en Marte (8 positivos × 8 negativos). El AUC es U / (n₊ n₋) = 6/64 = 0,09375. Por eso el AUC no se mueve aunque el mapa sí.
+
+
 
 | Variante | AUC Marte (IC 95 %) | Sens. | Prec. | AUC Luna (IC 95 %) | Sens. | Prec. |
 |---|---|---|---|---|---|---|
-| todas_min, con \|lat\|, elevación absoluta (**defecto**) | **0.09** (0.00–0.29) | 1.00 | 0.50 | **0.25** (0.00–0.69) | 0.20 | 1.00 |
-| banda_propia, con \|lat\|, absoluta | 0.09 (0.00–0.29) | 1.00 | 0.50 | 0.25 (0.00–0.69) | 0.20 | 1.00 |
+| todas_min, con \|lat\|, elevación absoluta (**corrida previa**) | **0.09** (0.00–0.29) | 1.00 | 0.50 | **0.25** (0.00–0.69) | 0.20 | 1.00 |
+| banda_propia, con \|lat\|, absoluta (**oficial**) | **0.09** (0.00–0.29) | 1.00 | 0.50 | **0.25** (0.00–0.69) | 0.20 | 1.00 |
 | todas_min, sin latitud, absoluta | 0.13 (0.00–0.34) | 1.00 | 0.50 | 0.27 (0.00–0.71) | 0.20 | 1.00 |
 | banda_propia, sin latitud, absoluta | 0.09 (0.00–0.29) | 1.00 | 0.50 | 0.25 (0.00–0.69) | 0.20 | 1.00 |
 | todas_min, con \|lat\|, relieve relativo | 0.14 (0.00–0.38) | 1.00 | 0.50 | 0.36 (0.08–0.69) | 0.80 | 0.33 |
@@ -29,7 +46,7 @@ En datos reales el índice **no discrimina bien** los análogos etiquetados de l
 | banda_propia, sin latitud, relieve relativo | 0.13 (0.00–0.33) | 1.00 | 0.50 | 0.42 (0.08–0.79) | 0.20 | 0.50 |
 | **Modelo nulo (solo \|lat\|)** | **0.58** (0.25–0.88) | — | — | 0.22 (0.00–0.48) | — | — |
 
-- Aciertos de clase en el AUC (defecto): **6 de 16**.
+- Aciertos de clase en el AUC (oficial `banda_propia`): **6 de 16**.
 - DeLong pareado (con |lat| frente a sin latitud): Marte ΔAUC = −0.03, p = 0.60; Luna ΔAUC = −0.02, p = 0.48. No hay diferencia significativa.
 - DeLong (elevación absoluta frente a relieve relativo): Marte ΔAUC = −0.05, p = 0.24; Luna ΔAUC = −0.11, p = 0.53. El relieve relativo mejora un poco el AUC, pero sigue por debajo de 0.5 y la diferencia no es significativa en esta muestra.
 - El **modelo nulo de solo |lat|** obtiene un AUC de Marte **mayor** que el índice completo (0.58 frente a 0.09). Los positivos de Marte no están siendo ranqueados por su firma de superficie, y el índice invertido (AUC < 0.5) indica que varios no análogos quedan *más cerca* de la firma típica de Marte que los análogos etiquetados.
@@ -38,14 +55,16 @@ En datos reales el índice **no discrimina bien** los análogos etiquetados de l
 
 A ~1 km, **Marte es un planeta muy suave** en el MEGDR: la mediana de pendiente de la banda A es 0.79° (IQR 0.34–1.90°) y la de TRI, 12 m. Los no análogos terrestres del conjunto (llanura agrícola de Bondville, bosque de Tapajós, Hyytiälä, etc.) también son casi planos a 1 km (pendientes 0.1–0.7°, TRI de unos pocos metros). En ese espacio, **Tapajós llega a δ Marte = 0.98**, más alto que Yungay, Askja o Haughton.
 
+Control negativo en Ecuador: en el polígono oficial del Parque Nacional Yasuní (WDPA/WDPCA `site_id` 186, State Verified; celdas de 1 km cuyo centro cae dentro del polígono; n = 10 272, 0 % nodata) la mediana de δ Marte es **0,954** con `todas_min` (IQR 0,0096) y **0,963** con `banda_propia` (IQR 0,0078). La mediana de δ Luna es 0,685 en ambas. El terreno, a 1 km, es bajo y casi plano (elevación mediana 228 m, pendiente 0,30°, TRI 5,38 m). Tapajós, no análogo de la tabla de validación (FLONA Tapajós, torre LBA km 67, buffer 10 km, n = 312, pendiente 0,70°, TRI 11,2 m), da δ Marte 0,9778 (`todas_min`) y 0,9819 (`banda_propia`). Un δ alto, aquí, indica sobre todo terreno llano a 1 km, no un análogo de clima o de vegetación. El detalle está en `docs/control_yasuni.md`.
+
 Al contrario, análogos con más relieve a esta escala (University Valley, Mauna Kea, Sverrefjell) se alejan de la mediana marciana. Meteor Crater (~1.2 km de diámetro) e Inferno Chasm quedan **casi planos** en la grilla de 1 km (pendiente mediana del buffer ≈ 0.5°) y el índice los acerca a Marte, no a la Luna.
 
 Esto no se «arregló» tocando el umbral ni añadiendo clima: el método prohíbe reajustar con Ecuador y el índice v1 no admite meteorología. El mapa de clases es la consecuencia directa de un umbral de Youden congelado sobre un AUC invertido: el umbral de Marte queda en **0.13**, con sensibilidad 1.0 y **especificidad 0.0** (todos los no análogos también lo superan). El umbral lunar queda alto (0.79) y casi no hay celdas solo-Luna.
 
 
-## Regla de bandas (`todas_min`) y el §5 del método
+## Regla de bandas y el §5 del método
 
-La v1 congelada usa `modo_bandas = todas_min`: al calcular δ de un lugar, lo compara con las firmas de las **siete** bandas de latitud (A–G) y se queda con la distancia más baja. Guarda cuál banda «ganó». La otra regla ya programada, `banda_propia`, solo usaría la banda de la |lat| de ese lugar. La v1 no se recalcula: el modo oficial sigue siendo `todas_min`.
+La corrida oficial usa `modo_bandas = banda_propia`: al calcular δ de un lugar, lo compara solo con la firma de su propia banda de |lat|. Es la regla que pidió Ronald, alineada con el §5. La corrida previa, `todas_min`, comparaba con las siete bandas y se quedaba con la distancia más baja. **La corrida con `banda_propia` se hizo después de ver el AUC de `todas_min`.** Los productos de `todas_min` se conservan.
 
 El §5 del documento de método (`proyecto_ronald.txt`, «Muestreo por latitud») no describe esa regla de mínimo entre todas las bandas. El texto dice:
 
@@ -58,9 +77,7 @@ El §5 del documento de método (`proyecto_ronald.txt`, «Muestreo por latitud»
 >
 > La latitud alinea el muestreo; no sustituye al resto de variables de superficie.
 
-En resumen: el §5 alinea el muestreo de Marte y de la Luna con las mismas bandas de latitud de los sitios terrestres de referencia. Comparar un lugar con todas las bandas y quedarse con la más cercana (`todas_min`) no está en ese apartado. `banda_propia` se acerca más a «la misma banda de latitud», pero no es el modo oficial de la v1.
-
-Ronald no aprobó esta diferencia y no eligió entre `todas_min` y `banda_propia`. La v1 se deja como está.
+En resumen: el §5 alinea el muestreo de Marte y de la Luna con las mismas bandas de latitud de los sitios terrestres de referencia. Comparar un lugar con todas las bandas y quedarse con la más cercana (`todas_min`) no está en ese apartado. El 14 de noviembre a las 15:31 Ronald eligió `banda_propia` como modo oficial, después de ver el AUC de `todas_min`.
 
 ### Qué muestran los tiempos (America/Guayaquil, UTC-5)
 
@@ -77,17 +94,19 @@ Con este registro se puede decir que el código ya listaba `todas_min` como defe
 
 ## Ecuador, después del congelado
 
-Con el umbral por defecto ya congelado, sobre 453 375 celdas terrestres de Ecuador y Galápagos:
+Con el umbral oficial de `banda_propia` ya congelado, sobre 453 375 celdas terrestres de Ecuador y Galápagos (la grilla de 1 km ya incluía las islas principales; Darwin y Wolf no tienen celdas válidas a esta resolución):
 
-| Clase | Celdas (defecto) | Lectura |
+| Clase | Celdas (oficial `banda_propia`) | Lectura |
 |---|---|---|
-| Marte | 356 828 | Dominante: consecuencia del umbral bajo de Marte, no de una analogía contrastada |
+| Marte | 376 029 | Dominante: consecuencia del umbral bajo de Marte, no de una analogía contrastada |
 | Ambos | 53 535 | δ Marte y δ Luna por encima de sus umbrales |
 | Luna | 0 | Ninguna celda supera el umbral lunar sin superar también el de Marte |
-| Ninguno | 43 012 | Sobre todo relieve andino alto y laderas muy pendientes (p. ej. Chimborazo, Cotopaxi, Cayambe, Fernandina: δ = 0 porque su distancia supera d_max) |
+| Ninguno | 23 811 | Sobre todo relieve andino alto y laderas muy pendientes (p. ej. Chimborazo, Cotopaxi, Cayambe, Fernandina: δ = 0 porque su distancia supera d_max) |
 | Sin dato | 975 465 | Mar, nodata de GLO-90 (0 m exacto enmascarado) y bordes sin 8 vecinos para TRI |
 
-Las demás variantes (incluida `banda_propia` y el relieve relativo) también producen un Ecuador **casi todo «Marte» o «ambos» y cero «solo Luna»**. No se eligió otra variante para «arreglar» el mapa. El modo oficial de la v1 sigue siendo `todas_min`, con |lat| y elevación absoluta. Ronald no aprobó esa regla ni eligió entre `todas_min` y `banda_propia`; ver la sección siguiente. El relieve relativo queda a la espera de una decisión del equipo sobre el §3.
+Las demás variantes (incluida la corrida previa `todas_min` y el relieve relativo) también producen un Ecuador **casi todo «Marte» o «ambos» y cero «solo Luna»**. No se eligió otra variante para «arreglar» el mapa. El modo oficial de la v1 es `banda_propia`, con |lat| y elevación absoluta. **La corrida con `banda_propia` se hizo después de ver el AUC de `todas_min`.** El relieve relativo queda a la espera de una decisión del equipo sobre el §3.
+
+En la corrida previa `todas_min` las cifras eran 356 828 (Marte) y 43 012 (ninguno); ambos se mantenía en 53 535. Estas cuentas describen el recorte del umbral, no un inventario de análogos, y no se presentan como porcentajes de cobertura en el tablero.
 
 Los rásteres **continuos** de similitud (δ Marte y δ Luna) son más informativos que el mapa de clases recortado por un umbral poco fiable. La máxima δ Marte de este recorte cae en una llanura baja (~19 m, pendiente 0.8°), coherente con el sesgo hacia terrenos suaves.
 

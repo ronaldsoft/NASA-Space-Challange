@@ -1,0 +1,43 @@
+{
+  "crs": "EPSG:4326",
+  "width": 298,
+  "height": 259,
+  "bounds": {
+    "oeste": -91.80000000000001,
+    "sur": -1.5479999999999923,
+    "este": -89.11800000000001,
+    "norte": 0.7830000000000077
+  },
+  "cell_deg": 0.009,
+  "transform_affine": [
+    0.009,
+    0.0,
+    -91.80000000000001,
+    0.0,
+    -0.009,
+    0.7830000000000077
+  ],
+  "pixel_origin": "upper_left",
+  "axis_order": "row0_is_north",
+  "archivo": "delta_marte.png",
+  "vista_previa": "delta_marte_preview.png",
+  "codificacion": {
+    "tipo": "PNG RGBA 8 bits",
+    "canal": "R=G=B",
+    "valor": "byte = round(delta * 255); delta en [0, 1]",
+    "nodata": "alpha = 0 (el valor RGB no es significativo)",
+    "valido": "alpha = 255"
+  },
+  "rango_fisico": {
+    "min": 0.0,
+    "max": 1.0,
+    "unidad": "delta (adimensional)"
+  },
+  "nodata_fuente": -9999.0,
+  "n_celdas_validas": 6606,
+  "colormap_vista_previa": "rampa RGB documentada en README_UNITY.md",
+  "version": "ANALOG/delta v1 congelada 2026-11-14",
+  "sha256_producto_fuente_tif": "701f20dc173b4de6e28be5934a1b543397bb9243273f3385bc6272fe117e6359",
+  "area": "galapagos",
+  "modo_bandas": "banda_propia"
+}

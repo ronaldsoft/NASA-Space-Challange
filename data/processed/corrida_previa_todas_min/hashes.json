@@ -1,0 +1,16 @@
+{
+  "corrida": "todas_min (v1 histórica, 2026-11-14T13:40:40-05:00)",
+  "modo_bandas": "todas_min",
+  "elevacion_modo": "absoluta",
+  "sha256": {
+    "catalogo.json": "369dd38593f76d46266d1cd86077ce4729fb7b1e3811adc66b74fe0be51c87dd",
+    "tabla_validacion.csv": "7ff7856cc3581e31b1a55f32b5a5cc48191a5160bf677dd3437a0968e4a95218",
+    "delta_marte.png": "0152dfb637616e246d3c946f702ed251266c1a0db2c7d8bc6bfaf5fec30b0d4b",
+    "delta_marte.tif": "dba0f23685d35f5e6399be7ebfbc816e552e0e969a88a8e35821b39b2b1ed406",
+    "delta_luna.png": "5eb786ef217863e0f022127c5d3e1ee1c07099ccc1646b26d750cda00e684dc6",
+    "delta_luna.tif": "daf00ed5e74e6308f2a9f46a4077075e335726c278e901c1a18bef24a67372c7",
+    "clases.png": "c9fedb0c7931fda40311ccf1556266cb1165ceea9de12abfb0c519363e6997af",
+    "clases.tif": "a92f6781cc589d0de787e5ac74eae0042e56c6d89a16bd3abfa23968b0d9b886"
+  },
+  "nota": "Copia de los productos oficiales de la corrida todas_min. No borrar. La v1 histórica queda documentada en docs/version_congelada_v1.md."
+}

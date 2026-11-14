@@ -1,0 +1,30 @@
+{
+  "fuente_expertos": " /workspace/validacion_space_apps.md sección 10.1 (no §9; el §9 es bibliografía APA). No se editó ese archivo.",
+  "corrida_nueva": {
+    "congelado_en": "2026-11-14T15:31:26-05:00",
+    "modo": "banda_propia",
+    "auc_marte": 0.09375,
+    "ic95_marte": [
+      0.0,
+      0.2857142857142857
+    ],
+    "auc_luna": 0.2545454545454546,
+    "ic95_luna": [
+      0.0,
+      0.6923076923076923
+    ],
+    "aciertos": "6 de 16",
+    "umbral_marte": 0.13043478260869557,
+    "umbral_luna": 0.7915472614686689,
+    "d_max_marte": 7.104575532239943,
+    "d_max_luna": 1.651817219714007
+  },
+  "coincide_con_tabla_10_1": true,
+  "por_que": {
+    "luna_sitios_winner_distinto_de_propia": "0 de 16 (0%). Los δ lunares de los 16 sitios son idénticos entre modos. d_max lunar idéntico (1,6518). El PNG de δ Luna es el mismo (misma huella).",
+    "marte_sitios_winner_distinto_de_propia": "5 de 16 (31,2%): University Valley F→C, Askja E→D, Mauna Kea B→A, Sverrefjell F→C, Hainich D→C.",
+    "marte_deltas_sitios": "Ninguno de los 16 δ de Marte es idéntico (máxima |dif| = 0,090). El ranking de los 16 tampoco es el mismo. El AUC coincide porque el estadístico U de Mann–Whitney es el mismo (U = 6 de 8×8 = 64 pares).",
+    "pixeles_ecuador_galapagos": "Las 453 375 celdas de tierra caen en la banda A. Con todas_min, la banda ganadora es la propia en el 100 % (Marte y Luna). El mapa de δ Marte igual cambia porque d_max de Marte pasa de 5,784 a 7,105; el de δ Luna no cambia.",
+    "13_40_fue_calculado": "Sí. La corrida de las 13:40 calculó de verdad banda_propia (no copió las cifras de todas_min): d_max de Marte distinto, PNG de δ Marte distinto (30,7 % de píxeles), conteo de clases distinto, y los PNG de productos/banda_propia/ coinciden bit a bit con esta corrida nueva. Las métricas de metricas_por_variante.banda_propia_con_latitud del catálogo 13:40 coinciden exactamente con el recálculo independiente (mismos std_params y firmas, mismo evaluar())."
+  }
+}

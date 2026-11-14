@@ -36,6 +36,7 @@
   "nodata_fuente": -9999.0,
   "n_celdas_validas": 453375,
   "colormap_vista_previa": "rampa RGB documentada en README_UNITY.md",
-  "version": "ANALOG/delta v1 congelada 2026-11-14",
-  "sha256_producto_fuente_tif": "dba0f23685d35f5e6399be7ebfbc816e552e0e969a88a8e35821b39b2b1ed406"
+  "version": "ANALOG/delta v1 banda_propia 2026-11-14T15:31:26-05:00",
+  "sha256_producto_fuente_tif": "1fac4f7418cca4c28462ecc4354aba2e64352b551a85c4529c7ffc62d7d0d011",
+  "modo_bandas": "banda_propia"
 }
