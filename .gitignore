@@ -57,3 +57,5 @@ screenshots/*.csv
 !screenshots/final/**
 !screenshots/v2/
 !screenshots/v2/**
+!screenshots/globo/
+!screenshots/globo/**

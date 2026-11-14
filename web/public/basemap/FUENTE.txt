@@ -1,0 +1,6 @@
+ne_110m_land.geojson: Natural Earth 1:110m Physical Land, public domain.
+https://www.naturalearthdata.com/  version in shapefile VERSION.txt.
+Hillshade de Ecuador: Copernicus GLO-90 (EGM2008) remuestreado a 1 km, Horn 315°/45°.
+Hillshade Luna: LOLA LDEM_64 v3.1 remuestreado.
+Hillshade Marte: MOLA MEGDR 64 ppd remuestreado.
+Hillshade global de la Tierra: Natural Earth SR_50M (public domain), remuestreado a 2048×1024 y con el contraste subido para que el relieve se lea en el globo.

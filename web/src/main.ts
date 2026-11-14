@@ -22,7 +22,19 @@ import {
 } from "./content";
 import { createDataSource } from "./dataSource";
 import { defTermino, GLOSARIO } from "./glossary";
-import { createEcuadorMap, escapeHtml, nearestZone, setMarkers, setOverlay, setOverlayOpacity } from "./maps";
+import {
+  applyGlobeState,
+  AREA_BOUNDS,
+  flyToSitios,
+  clearMarkers,
+  createGlobeMap,
+  escapeHtml,
+  nearestZone,
+  setMarkers,
+  setOverlayOpacity,
+  type AreaTierra,
+  type CuerpoGlobo,
+} from "./maps";
 import { recomputeValidation } from "./scoring";
 import {
   DEFAULT_WEIGHTS,
@@ -79,6 +91,9 @@ const state = {
   sitios: [] as SitioValidacion[],
   opacity: 0.82,
   tour: null as number | null,
+  cuerpoGlobo: "tierra" as CuerpoGlobo,
+  areaTierra: "ecuador_continental" as AreaTierra,
+  unityAbierto: false,
 };
 
 function metricsStrip(cat: Catalogo, nivel: Nivel): string {
@@ -133,16 +148,27 @@ function legendHTML(vista: Vista, nivel: Nivel): string {
     <p class="note">${tech}La rampa de color es la del producto congelado v1 (no se modificó el archivo). Úsala junto con las palabras de la leyenda. El índice no pasó la validación: un color «más parecido» es una pista, no una certeza.</p>`;
 }
 
-function captionHTML(vista: Vista, cat: Catalogo, nivel: Nivel): string {
-  const ext = cat.grilla.extension;
+function captionHTML(vista: Vista, cat: Catalogo, nivel: Nivel, cuerpo: CuerpoGlobo, area: AreaTierra): string {
+  if (cuerpo === "luna") {
+    return `<strong>Luna</strong> · relieve LOLA LDEM_64 (sombreado). El índice δ se calcula en la Tierra, no sobre este globo. El terreno 3D no está activo (pesa en móviles).`;
+  }
+  if (cuerpo === "marte") {
+    return `<strong>Marte</strong> · relieve MOLA MEGDR 64 ppd (sombreado). El índice δ se calcula en la Tierra, no sobre este globo. El terreno 3D no está activo (pesa en móviles).`;
+  }
+  const ext = AREA_BOUNDS[area];
+  const areaNom = area === "galapagos" ? "Galápagos" : "Ecuador continental";
+  const isla =
+    area === "galapagos"
+      ? " · 6 606 celdas válidas de 1 km (Isabela 4 128; Darwin y Wolf: 0)"
+      : " · 446 657 celdas válidas de 1 km";
   if (nivel === "explorador") {
-    const cuerpo = vista === "similitud-luna" ? "la Luna" : vista === "clases" ? "las clases (vista secundaria)" : "Marte";
-    return `<strong>Ecuador y Galápagos</strong> · parecido a ${cuerpo}, en cuadrados de unos 1 km`;
+    const dest = vista === "similitud-luna" ? "la Luna" : vista === "clases" ? "los umbrales congelados (vista secundaria)" : "Marte";
+    return `<strong>${areaNom}</strong> · parecido a ${dest}, en cuadrados de unos 1 km${isla}. Relieve en sombreado.`;
   }
   const res = cat.grilla.resolucion_deg ?? cat.grilla.resolucion_objetivo_m;
-  const base = `<strong>Ecuador + Galápagos</strong> · lon ${ext.oeste.toFixed(2)}° a ${ext.este.toFixed(2)}° · lat ${ext.sur.toFixed(2)}° a ${ext.norte.toFixed(2)}° · ~1 km (${res}) · MOLA / LOLA / GLO-90 · v1 congelada`;
+  const base = `<strong>${areaNom}</strong> · lon ${ext.oeste.toFixed(2)}° a ${ext.este.toFixed(2)}° · lat ${ext.sur.toFixed(2)}° a ${ext.norte.toFixed(2)}° · ~1 km (${res}) · MOLA / LOLA / GLO-90 · v1 congelada · relieve en sombreado; el terreno 3D no está activo${isla}`;
   if (vista === "clima") return `${base} · capa no publicada, el clima no entra al índice`;
-  if (vista === "clases") return `${base} · mapa de clases <strong>secundario</strong>: especificidad 0, sin porcentajes de cobertura`;
+  if (vista === "clases") return `${base} · vista <strong>secundaria</strong> del umbral congelado: especificidad 0, sin porcentajes de cobertura`;
   return base;
 }
 
@@ -206,20 +232,38 @@ async function main(): Promise<void> {
     <div class="main" id="contenido">
       <div class="map-col">
         <div class="map-caption" id="map-caption"></div>
-        <div id="map" role="region" aria-label="Mapa de Ecuador y Galápagos"></div>
+        <div id="map" role="region" aria-label="Globo de Tierra, Luna o Marte"></div>
         <div class="map-controls">
-          <div class="cuerpo-toggle" role="group" aria-label="Comparar con Marte o con la Luna" data-testid="toggle-cuerpo">
-            <button type="button" data-cuerpo="marte" aria-pressed="true">Marte</button>
-            <button type="button" data-cuerpo="luna" aria-pressed="false">Luna</button>
+          <div class="cuerpo-toggle" role="group" aria-label="Cuerpo del globo" data-testid="selector-cuerpo-globo">
+            <button type="button" data-cuerpo-globo="tierra" aria-pressed="true">Tierra</button>
+            <button type="button" data-cuerpo-globo="luna" aria-pressed="false">Luna</button>
+            <button type="button" data-cuerpo-globo="marte" aria-pressed="false">Marte</button>
           </div>
-          <div class="opacidad-ctl" data-testid="control-opacidad">
-            <label>Opacidad del mapa
+          <div class="cuerpo-toggle solo-tierra" role="group" aria-label="Área en la Tierra" data-testid="selector-area">
+            <button type="button" data-area="ecuador_continental" aria-pressed="true">Ecuador continental</button>
+            <button type="button" data-area="galapagos" aria-pressed="false">Galápagos</button>
+            <button type="button" id="btn-sitios-validacion" data-testid="btn-sitios-validacion" aria-pressed="false">Sitios de validación</button>
+          </div>
+          <div class="cuerpo-toggle solo-tierra" role="group" aria-label="Comparar con Marte o con la Luna" data-testid="toggle-cuerpo">
+            <button type="button" data-cuerpo="marte" aria-pressed="true">Similitud a Marte</button>
+            <button type="button" data-cuerpo="luna" aria-pressed="false">Similitud a la Luna</button>
+          </div>
+          <div class="opacidad-ctl solo-tierra" data-testid="control-opacidad">
+            <label>Opacidad de la capa
               <input type="range" id="opacidad" min="20" max="100" step="1" value="${Math.round(state.opacity * 100)}" />
             </label>
           </div>
+          <button type="button" class="btn btn-primary" id="btn-ver-unity" data-testid="btn-ver-unity" aria-expanded="false" aria-controls="unity-panel">Ver en 3D (Unity)</button>
         </div>
         <div class="map-legend" id="map-legend" data-testid="leyenda"></div>
         <div class="map-popup" id="map-popup" hidden role="dialog" aria-label="Ficha del punto"></div>
+        <div id="unity-panel" class="unity-panel" hidden>
+          <div class="unity-panel-bar">
+            <h2>Visualizador 3D</h2>
+            <button type="button" class="btn" id="btn-cerrar-unity">Cerrar</button>
+          </div>
+          <iframe id="unity-panel-frame" title="Visualizador 3D ANALOG v1" allow="fullscreen"></iframe>
+        </div>
       </div>
       <aside class="panel" aria-label="Explicación">
         <div class="panel-body" id="panel-body" tabindex="-1"></div>
@@ -246,7 +290,7 @@ async function main(): Promise<void> {
     <div id="glosario-panel" hidden role="tooltip"></div>
   `;
 
-  const map: MapLibreMap = createEcuadorMap(document.getElementById("map")!, cat.grilla.extension);
+  const map: MapLibreMap = createGlobeMap(document.getElementById("map")!);
 
   const hintForNivel = () => {
     const el = document.getElementById("toolbar-hint")!;
@@ -364,19 +408,51 @@ async function main(): Promise<void> {
     return "similitud-marte";
   };
 
-  const showMapLayer = () => {
+  const showMapLayer = (fly = false) => {
     const overlay = overlayFor(state.vista);
-    setOverlay(map, state.vista === "clima" ? "similitud-marte" : overlay, cat.grilla.extension, state.opacity);
-    document.getElementById("map-caption")!.innerHTML = captionHTML(state.vista, cat, state.nivel);
+    applyGlobeState(map, {
+      cuerpo: state.cuerpoGlobo,
+      area: state.areaTierra,
+      vista: state.vista === "clima" ? "similitud-marte" : overlay,
+      opacity: state.opacity,
+      sitios: state.sitios.length ? state.sitios : cat.sitios_validacion,
+      fly,
+    });
+    document.getElementById("map-caption")!.innerHTML = captionHTML(state.vista, cat, state.nivel, state.cuerpoGlobo, state.areaTierra);
     document.getElementById("map-legend")!.innerHTML = legendHTML(overlay === "clases" || state.vista === "clima" ? state.vista : overlay, state.nivel);
-    const isMarte = overlay !== "similitud-luna";
-    app.querySelectorAll<HTMLButtonElement>("[data-cuerpo]").forEach((b) => {
-      b.setAttribute("aria-pressed", String((b.dataset.cuerpo === "marte") === isMarte || (b.dataset.cuerpo === "luna" && !isMarte)));
+    app.dataset.cuerpoGlobo = state.cuerpoGlobo;
+    app.dataset.area = state.areaTierra;
+    app.querySelectorAll<HTMLButtonElement>("[data-cuerpo-globo]").forEach((b) => {
+      b.setAttribute("aria-pressed", String(b.dataset.cuerpoGlobo === state.cuerpoGlobo));
+    });
+    app.querySelectorAll<HTMLButtonElement>("[data-area]").forEach((b) => {
+      b.setAttribute("aria-pressed", String(b.dataset.area === state.areaTierra));
     });
     app.querySelector<HTMLButtonElement>('[data-cuerpo="marte"]')?.setAttribute("aria-pressed", String(overlay !== "similitud-luna"));
     app.querySelector<HTMLButtonElement>('[data-cuerpo="luna"]')?.setAttribute("aria-pressed", String(overlay === "similitud-luna"));
-    refreshMarkers();
+    if (state.cuerpoGlobo === "tierra") refreshMarkers();
+    else clearMarkers();
     requestAnimationFrame(() => map.resize());
+  };
+
+  const openUnityPanel = () => {
+    const panel = document.getElementById("unity-panel")!;
+    const frame = document.getElementById("unity-panel-frame") as HTMLIFrameElement;
+    panel.hidden = false;
+    panel.classList.add("is-open");
+    state.unityAbierto = true;
+    document.getElementById("btn-ver-unity")?.setAttribute("aria-expanded", "true");
+    if (!frame.getAttribute("src")) frame.src = "/unity/visualizador/index.html";
+    document.getElementById("btn-cerrar-unity")?.focus();
+  };
+
+  const closeUnityPanel = () => {
+    const panel = document.getElementById("unity-panel");
+    if (!panel) return;
+    panel.hidden = true;
+    panel.classList.remove("is-open");
+    state.unityAbierto = false;
+    document.getElementById("btn-ver-unity")?.setAttribute("aria-expanded", "false");
   };
 
   const renderPanel = () => {
@@ -519,8 +595,9 @@ async function main(): Promise<void> {
     const frame = document.getElementById("visualizador-frame") as HTMLIFrameElement | null;
     const isViz = state.vista === "visualizador";
     if (wrap) wrap.hidden = !isViz;
-    if (isViz && frame && !frame.getAttribute("src")) {
-      frame.src = "/unity/visualizador/index.html";
+    if (isViz) {
+      closeUnityPanel();
+      if (frame && !frame.getAttribute("src")) frame.src = "/unity/visualizador/index.html";
     }
     const hash = `#${state.vista}`;
     if (location.hash !== hash) history.replaceState(null, "", hash);
@@ -584,10 +661,50 @@ async function main(): Promise<void> {
 
   app.querySelectorAll<HTMLButtonElement>("[data-cuerpo]").forEach((b) => {
     b.addEventListener("click", () => {
+      state.cuerpoGlobo = "tierra";
       state.vista = b.dataset.cuerpo === "luna" ? "similitud-luna" : "similitud-marte";
       syncVista();
     });
   });
+
+  app.querySelectorAll<HTMLButtonElement>("[data-cuerpo-globo]").forEach((b) => {
+    b.addEventListener("click", () => {
+      const next = b.dataset.cuerpoGlobo as CuerpoGlobo;
+      const changed = next !== state.cuerpoGlobo;
+      state.cuerpoGlobo = next;
+      if (MAP_VISTAS.includes(state.vista) || state.vista === "inicio") showMapLayer(changed);
+      else {
+        app.dataset.cuerpoGlobo = state.cuerpoGlobo;
+        app.querySelectorAll<HTMLButtonElement>("[data-cuerpo-globo]").forEach((x) => {
+          x.setAttribute("aria-pressed", String(x.dataset.cuerpoGlobo === state.cuerpoGlobo));
+        });
+      }
+    });
+  });
+
+  app.querySelectorAll<HTMLButtonElement>("[data-area]").forEach((b) => {
+    b.addEventListener("click", () => {
+      const next = b.dataset.area as AreaTierra;
+      const changed = next !== state.areaTierra;
+      state.areaTierra = next;
+      state.cuerpoGlobo = "tierra";
+      document.getElementById("btn-sitios-validacion")?.setAttribute("aria-pressed", "false");
+      showMapLayer(changed);
+    });
+  });
+
+  document.getElementById("btn-sitios-validacion")?.addEventListener("click", () => {
+    state.cuerpoGlobo = "tierra";
+    document.getElementById("btn-sitios-validacion")?.setAttribute("aria-pressed", "true");
+    if (MAP_VISTAS.includes(state.vista) || state.vista === "inicio") showMapLayer(false);
+    flyToSitios(map, state.sitios.length ? state.sitios : cat.sitios_validacion);
+  });
+
+  document.getElementById("btn-ver-unity")!.addEventListener("click", () => {
+    if (state.unityAbierto) closeUnityPanel();
+    else openUnityPanel();
+  });
+  document.getElementById("btn-cerrar-unity")!.addEventListener("click", closeUnityPanel);
 
   document.getElementById("tour-dialog")!.addEventListener("click", (ev) => {
     const t = (ev.target as HTMLElement).closest<HTMLButtonElement>("[data-tour]");
@@ -616,6 +733,11 @@ async function main(): Promise<void> {
         endTour(true);
         return;
       }
+      if (state.unityAbierto) {
+        ev.preventDefault();
+        closeUnityPanel();
+        return;
+      }
       closeGlossary();
       hidePopup();
       document.getElementById("menu-mas")?.setAttribute("hidden", "");
@@ -638,9 +760,13 @@ async function main(): Promise<void> {
     }
   });
 
+  map.on("style.load", () => {
+    showMapLayer(false);
+  });
   map.on("load", () => {
-    showMapLayer();
+    showMapLayer(true);
     map.on("click", (e: MapMouseEvent) => {
+      if (state.cuerpoGlobo !== "tierra") return;
       if (!MAP_VISTAS.includes(state.vista) && state.vista !== "inicio") return;
       if (TEXT_VISTAS.includes(state.vista)) return;
       const near = nearestZone(e.lngLat.lat, e.lngLat.lng, cat.zonas_prioritarias);
