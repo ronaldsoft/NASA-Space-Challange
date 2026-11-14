@@ -86,7 +86,7 @@ export function setMarkers(
   for (const z of zonas) {
     const el = document.createElement("button");
     el.type = "button";
-    el.className = `map-pin map-pin-${z.clase}${z.id === selectedId ? " is-selected" : ""}`;
+    el.className = `map-pin${z.id === selectedId ? " is-selected" : ""}`;
     el.dataset.zoneId = z.id;
     el.setAttribute("aria-label", `${z.nombre}, similitud a Marte ${z.delta_marte.toFixed(2)}, a la Luna ${z.delta_luna.toFixed(2)}`);
     el.innerHTML = `<span class="pin-dot" aria-hidden="true"></span><span class="pin-label">${escapeHtml(z.nombre)}</span>`;

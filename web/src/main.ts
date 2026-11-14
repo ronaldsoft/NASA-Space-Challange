@@ -12,6 +12,7 @@ import {
   diagnosisHTML,
   fmt,
   fraseDelta,
+  fraseParecido,
   futureWorkHTML,
   homeHTML,
   sitioCardHTML,
@@ -24,7 +25,6 @@ import { defTermino, GLOSARIO } from "./glossary";
 import { createEcuadorMap, escapeHtml, nearestZone, setMarkers, setOverlay, setOverlayOpacity } from "./maps";
 import { recomputeValidation } from "./scoring";
 import {
-  CLASS_LABELS,
   DEFAULT_WEIGHTS,
   NIVELES,
   VAR_LABELS,
@@ -107,13 +107,13 @@ function metricsStrip(cat: Catalogo, nivel: Nivel): string {
 
 function legendHTML(vista: Vista, nivel: Nivel): string {
   if (vista === "clases") {
-    return `<div class="title">Clases de homología de superficie</div>
-      <div class="warn-box">El umbral de Marte tiene <strong>especificidad 0</strong>. Este mapa no es un inventario fiable. Prefiera los mapas continuos.</div>
-      <div><span class="swatch swatch-marte"></span>Marte</div>
-      <div><span class="swatch swatch-luna"></span>Luna</div>
-      <div><span class="swatch swatch-ambos"></span>Ambos</div>
-      <div><span class="swatch swatch-ninguno"></span>Ninguno</div>
-      <p class="note">Los colores de este ráster son los del producto congelado v1; no se alteró la paleta de los archivos oficiales.</p>`;
+    return `<div class="title">Vista secundaria del umbral congelado</div>
+      <div class="warn-box">El umbral de Marte (0,13) tiene <strong>especificidad 0</strong>. Estos colores no son un inventario de análogos ni una clasificación. Prefiera los mapas continuos de δ.</div>
+      <div><span class="swatch swatch-marte"></span>δ Marte ≥ 0,13 y δ Luna &lt; 0,79</div>
+      <div><span class="swatch swatch-luna"></span>δ Luna ≥ 0,79 y δ Marte &lt; 0,13</div>
+      <div><span class="swatch swatch-ambos"></span>supera ambos umbrales</div>
+      <div><span class="swatch swatch-ninguno"></span>no supera ninguno</div>
+      <p class="note">Los colores son los del ráster congelado v1; no se alteró el archivo. Es un recorte por umbral, no una etiqueta definitiva.</p>`;
   }
   if (vista === "clima") {
     return `<div class="title">Clima</div>
@@ -331,9 +331,9 @@ async function main(): Promise<void> {
     }
     pop.innerHTML = `<button type="button" class="cerrar" aria-label="Cerrar ficha">×</button>
       <h3>${escapeHtml(z.nombre)}</h3>
-      <p>Marte: <strong>${fraseDelta(z.delta_marte)}</strong>${state.nivel === "explorador" ? "" : ` (δ = ${fmt(z.delta_marte, 2)})`}.</p>
-      <p>Luna: <strong>${fraseDelta(z.delta_luna)}</strong>${state.nivel === "explorador" ? "" : ` (δ = ${fmt(z.delta_luna, 2)})`}.</p>
-      <p class="muted">Como la prueba general no se aprobó, esto es una pista, no una certeza.</p>
+      <p>${escapeHtml(fraseParecido("Marte", z.delta_marte, state.nivel !== "explorador"))}.</p>
+      <p>${escapeHtml(fraseParecido("la Luna", z.delta_luna, state.nivel !== "explorador"))}.</p>
+      <p class="muted">Es un índice, no una clasificación. Como la prueba general no se aprobó, esto es una pista, no una certeza.</p>
       <button type="button" class="btn" data-abrir-ficha="${z.id}">Ver ficha completa</button>`;
     pop.hidden = false;
     const col = document.querySelector(".map-col") as HTMLElement;
@@ -435,7 +435,7 @@ async function main(): Promise<void> {
       const list = cat.zonas_prioritarias
         .map(
           (z) =>
-            `<li><button type="button" data-zona="${z.id}" class="${z.id === zona.id ? "is-selected" : ""}">${escapeHtml(z.nombre)}<span class="sc">${escapeHtml(CLASS_LABELS[z.clase] ?? z.clase)} · ${fmt(Math.max(z.delta_marte, z.delta_luna), 2)}</span></button></li>`,
+            `<li><button type="button" data-zona="${z.id}" class="${z.id === zona.id ? "is-selected" : ""}">${escapeHtml(z.nombre)}<span class="sc">${state.nivel === "explorador" ? escapeHtml(fraseParecido("Marte", z.delta_marte, false)) : `δM ${fmt(z.delta_marte, 2)} · δL ${fmt(z.delta_luna, 2)}`}</span></button></li>`,
         )
         .join("");
       body.innerHTML = `<h2>Zonas en Ecuador y Galápagos</h2><ul class="zona-list">${list}</ul>${cardHTML(zona, state.nivel)}`;
