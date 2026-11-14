@@ -258,9 +258,9 @@ async function main(): Promise<void> {
         </div>
         <div class="map-legend" id="map-legend" data-testid="leyenda"></div>
         <div class="map-popup" id="map-popup" hidden role="dialog" aria-label="Ficha del punto"></div>
-        <div id="unity-panel" class="unity-panel" hidden>
+        <div id="unity-panel" class="unity-panel" hidden role="dialog" aria-modal="true" aria-labelledby="unity-panel-titulo">
           <div class="unity-panel-bar">
-            <h2>Visualizador 3D</h2>
+            <h2 id="unity-panel-titulo">Visualizador 3D</h2>
             <button type="button" class="btn" id="btn-cerrar-unity">Cerrar</button>
           </div>
           <iframe id="unity-panel-frame" title="Visualizador 3D ANALOG v1" allow="fullscreen"></iframe>
@@ -436,14 +436,52 @@ async function main(): Promise<void> {
     requestAnimationFrame(() => map.resize());
   };
 
+  let unityFocusPrev: HTMLElement | null = null;
+
+  const hookUnityFrameEsc = () => {
+    const frame = document.getElementById("unity-panel-frame") as HTMLIFrameElement | null;
+    if (!frame) return;
+    const listen = () => {
+      try {
+        const win = frame.contentWindow;
+        const doc = frame.contentDocument;
+        if (!win || !doc) return;
+        const href = doc.location?.href ?? "";
+        if (!href || href === "about:blank") return;
+        const mark = frame as HTMLIFrameElement & { __escHookedDoc?: Document };
+        if (mark.__escHookedDoc === doc) return;
+        mark.__escHookedDoc = doc;
+        const onEsc = (ev: KeyboardEvent) => {
+          if (ev.key !== "Escape" || !state.unityAbierto) return;
+          ev.preventDefault();
+          ev.stopPropagation();
+          closeUnityPanel();
+        };
+        win.addEventListener("keydown", onEsc, true);
+        doc.addEventListener("keydown", onEsc, true);
+      } catch {
+        /* el iframe aún no está listo o no es mismo origen */
+      }
+    };
+    const marked = frame as HTMLIFrameElement & { __escLoadBound?: boolean };
+    if (!marked.__escLoadBound) {
+      frame.addEventListener("load", listen);
+      marked.__escLoadBound = true;
+    }
+    listen();
+  };
+
   const openUnityPanel = () => {
     const panel = document.getElementById("unity-panel")!;
     const frame = document.getElementById("unity-panel-frame") as HTMLIFrameElement;
+    unityFocusPrev = (document.activeElement instanceof HTMLElement ? document.activeElement : null);
     panel.hidden = false;
     panel.classList.add("is-open");
     state.unityAbierto = true;
+    document.documentElement.classList.add("unity-abierto");
     document.getElementById("btn-ver-unity")?.setAttribute("aria-expanded", "true");
     if (!frame.getAttribute("src")) frame.src = assetUrl("/unity/visualizador/index.html");
+    hookUnityFrameEsc();
     document.getElementById("btn-cerrar-unity")?.focus();
   };
 
@@ -453,7 +491,17 @@ async function main(): Promise<void> {
     panel.hidden = true;
     panel.classList.remove("is-open");
     state.unityAbierto = false;
+    document.documentElement.classList.remove("unity-abierto");
     document.getElementById("btn-ver-unity")?.setAttribute("aria-expanded", "false");
+    const back = unityFocusPrev && document.contains(unityFocusPrev)
+      ? unityFocusPrev
+      : document.getElementById("btn-ver-unity");
+    unityFocusPrev = null;
+    back?.focus();
+    requestAnimationFrame(() => {
+      map.resize();
+      requestAnimationFrame(() => map.resize());
+    });
   };
 
   const renderPanel = () => {
@@ -728,6 +776,24 @@ async function main(): Promise<void> {
   });
 
   document.addEventListener("keydown", (ev) => {
+    if (ev.key === "Tab" && state.unityAbierto) {
+      const closeBtn = document.getElementById("btn-cerrar-unity");
+      const frame = document.getElementById("unity-panel-frame");
+      const cycle = [closeBtn, frame].filter((el): el is HTMLElement => el instanceof HTMLElement);
+      if (!cycle.length) return;
+      const current = document.activeElement;
+      ev.preventDefault();
+      if (ev.shiftKey) {
+        const i = cycle.indexOf(current as HTMLElement);
+        const prev = i <= 0 ? cycle[cycle.length - 1] : cycle[i - 1];
+        prev.focus();
+      } else {
+        const i = cycle.indexOf(current as HTMLElement);
+        const next = i < 0 || i >= cycle.length - 1 ? cycle[0] : cycle[i + 1];
+        next.focus();
+      }
+      return;
+    }
     if (ev.key === "Escape") {
       if (state.tour != null) {
         ev.preventDefault();

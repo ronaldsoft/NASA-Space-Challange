@@ -118,8 +118,80 @@ async function clickPressed(page, selector, waitMs = 1800) {
   await (await page.waitForSelector("#btn-ver-unity", { visible: true })).click();
   await page.waitForSelector("#unity-panel.is-open");
   await page.waitForFunction(() => document.getElementById("unity-panel-frame")?.getAttribute("src"));
+  const desk = await page.evaluate(() => {
+    const r = document.getElementById("unity-panel")?.getBoundingClientRect();
+    const close = document.getElementById("btn-cerrar-unity");
+    return {
+      w: r?.width,
+      h: r?.height,
+      vw: window.innerWidth,
+      vh: window.innerHeight,
+      closeText: close?.textContent?.trim(),
+      closeVisible: !!(close && close.offsetParent !== null),
+      locked: document.documentElement.classList.contains("unity-abierto"),
+    };
+  });
+  console.log("desktop panel", desk);
+  if (!desk.closeVisible || desk.closeText !== "Cerrar") process.exitCode = 4;
+  if (desk.w < desk.vw * 0.95 || desk.h < desk.vh * 0.95) {
+    console.error("Desktop Unity panel is not fullscreen", desk);
+    process.exitCode = 5;
+  }
   await new Promise((r) => setTimeout(r, 8000));
   await shot(page, "06-globo-panel-unity.png");
+  // Esc (parent) must close; Cerrar must close; focus returns to the button.
+  await page.keyboard.press("Escape");
+  await page.waitForFunction(() => !document.getElementById("unity-panel")?.classList.contains("is-open"));
+  const afterEsc = await page.evaluate(() => ({
+    open: document.getElementById("unity-panel")?.classList.contains("is-open"),
+    locked: document.documentElement.classList.contains("unity-abierto"),
+    focus: document.activeElement?.id,
+  }));
+  console.log("desktop after Esc", afterEsc);
+  if (afterEsc.open || afterEsc.locked) process.exitCode = 6;
+  await (await page.waitForSelector("#btn-ver-unity", { visible: true })).click();
+  await page.waitForSelector("#unity-panel.is-open");
+  await new Promise((r) => setTimeout(r, 500));
+  // Esc from inside the iframe (same origin), if the document is ready.
+  const iframeEsc = await page.evaluate(async () => {
+    const frame = document.getElementById("unity-panel-frame");
+    if (!(frame instanceof HTMLIFrameElement)) return "no-frame";
+    try {
+      const win = frame.contentWindow;
+      const doc = frame.contentDocument;
+      if (!win || !doc) return "no-doc";
+      win.focus();
+      doc.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape", bubbles: true, cancelable: true }));
+      await new Promise((r) => setTimeout(r, 200));
+      return document.getElementById("unity-panel")?.classList.contains("is-open") ? "still-open" : "closed";
+    } catch (e) {
+      return "error:" + (e instanceof Error ? e.message : String(e));
+    }
+  });
+  console.log("desktop iframe Esc", iframeEsc);
+  if (iframeEsc === "still-open") {
+    // Fallback: parent document listener (already tested). Try focusing iframe then keyboard.
+    const frame = await page.$("#unity-panel-frame");
+    if (frame) await frame.focus();
+    await page.keyboard.press("Escape");
+    await page.waitForFunction(() => !document.getElementById("unity-panel")?.classList.contains("is-open"), { timeout: 4000 }).catch(() => {});
+  }
+  const openAfterIframe = await page.evaluate(() => document.getElementById("unity-panel")?.classList.contains("is-open"));
+  if (openAfterIframe) {
+    await (await page.$("#btn-cerrar-unity"))?.click();
+    await page.waitForFunction(() => !document.getElementById("unity-panel")?.classList.contains("is-open"));
+  }
+  await (await page.waitForSelector("#btn-ver-unity", { visible: true })).click();
+  await page.waitForSelector("#unity-panel.is-open");
+  await (await page.waitForSelector("#btn-cerrar-unity", { visible: true })).click();
+  await page.waitForFunction(() => !document.getElementById("unity-panel")?.classList.contains("is-open"));
+  const afterClose = await page.evaluate(() => ({
+    open: document.getElementById("unity-panel")?.classList.contains("is-open"),
+    focus: document.activeElement?.id,
+    locked: document.documentElement.classList.contains("unity-abierto"),
+  }));
+  console.log("desktop after Cerrar", afterClose);
+  if (afterClose.open || afterClose.locked || afterClose.focus !== "btn-ver-unity") process.exitCode = 7;
   await browser.close();
 }
 
@@ -133,20 +205,46 @@ async function clickPressed(page, selector, waitMs = 1800) {
     const close = document.getElementById("btn-cerrar-unity");
     const r = document.getElementById("unity-panel")?.getBoundingClientRect();
     return {
-      closeText: close?.textContent,
+      closeText: close?.textContent?.trim(),
       closeVisible: !!(close && close.offsetParent !== null),
       w: r?.width,
       h: r?.height,
+      vw: window.innerWidth,
+      vh: window.innerHeight,
+      locked: document.documentElement.classList.contains("unity-abierto"),
     };
   });
   console.log("mobile panel", ui);
-  await new Promise((r) => setTimeout(r, 4000));
-  await shot(page, "08-globo-movil-panel-unity.png");
-  await browser.close();
-  if (!ui.closeVisible || ui.closeText?.trim() !== "Cerrar") {
+  if (!ui.closeVisible || ui.closeText !== "Cerrar") {
     console.error("Mobile Unity panel is missing a visible Cerrar button.");
     process.exitCode = 4;
   }
+  if (ui.w < ui.vw * 0.95 || ui.h < ui.vh * 0.95) {
+    console.error("Mobile Unity panel is not fullscreen", ui);
+    process.exitCode = 5;
+  }
+  await new Promise((r) => setTimeout(r, 8000));
+  await shot(page, "08-globo-movil-panel-unity.png");
+  await page.keyboard.press("Escape");
+  await page.waitForFunction(() => !document.getElementById("unity-panel")?.classList.contains("is-open"));
+  const mobileAfterEsc = await page.evaluate(() => ({
+    open: document.getElementById("unity-panel")?.classList.contains("is-open"),
+    locked: document.documentElement.classList.contains("unity-abierto"),
+  }));
+  console.log("mobile after Esc", mobileAfterEsc);
+  if (mobileAfterEsc.open || mobileAfterEsc.locked) process.exitCode = 6;
+  await (await page.waitForSelector("#btn-ver-unity", { visible: true })).click();
+  await page.waitForSelector("#unity-panel.is-open");
+  await (await page.waitForSelector("#btn-cerrar-unity", { visible: true })).click();
+  await page.waitForFunction(() => !document.getElementById("unity-panel")?.classList.contains("is-open"));
+  const mobileAfterClose = await page.evaluate(() => ({
+    open: document.getElementById("unity-panel")?.classList.contains("is-open"),
+    focus: document.activeElement?.id,
+    locked: document.documentElement.classList.contains("unity-abierto"),
+  }));
+  console.log("mobile after Cerrar", mobileAfterClose);
+  if (mobileAfterClose.open || mobileAfterClose.locked) process.exitCode = 7;
+  await browser.close();
 }
 
 console.log("HTTP", httpErrors.length, httpErrors);
