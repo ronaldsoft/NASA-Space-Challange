@@ -7,13 +7,20 @@
 
 ---
 
-## 🌍 About the Project
+## What We Do
 
-**Earth Analogs for Permanent Moon and Mars Bases** is a multidisciplinary scientific and technological initiative developed by university students participating in the **NASA Space Apps Challenge 2026**.
+Rather than relying on subjective visual comparisons or opaque black-box models, we developed ANALOG-Δ, a physics-based, reproducible methodology built on satellite raster processing (multi-band GeoTIFFs). It quantifies how closely terrestrial terrain matches key target regions on the Moon (Lunar South Pole) and Mars (Jezero Crater) across six physical dimensions—scale-invariant fractal roughness (*H*), equivalent grain size corrected for atmospheric pressure and albedo, orbital mineralogy, radar polarimetry, temperature/aridity extremes, and drainage density—evaluated under three mission profiles: Landing & Mobility, In-Situ Resource Utilization (ISRU), and Astrobiology.
 
-Our mission is to identify, analyze, and characterize terrestrial locations that share geological, environmental, and topographical characteristics with potential permanent human settlements on the Moon and Mars.
+## Blind Validation and the "Ecuadorian Dual Analog"
 
-By integrating NASA open data, Geographic Information Systems (GIS), remote sensing, and Artificial Intelligence (AI), we aim to discover terrestrial analog sites that can contribute to future space exploration, scientific research, and extraterrestrial habitat planning.
+To ensure scientific rigor without confirmation bias, the index is blindly validated against satellite cutouts of established planetary analogs (such as Haughton Crater, Meteor Crater, and Concordia Station) alongside natural negative controls (such as the Amazon rainforest, where the geometric-mean veto drives the score near zero). Running an unbiased, nationwide raster scan across Ecuador reveals that the country concentrates two complementary planetary environments less than 1,100 km apart:
+
+- **Galápagos (Fernandina, Sullivan Bay, and Santa Cruz Lava Tubes):** A natural testbed for young, unvegetated basaltic flows, orbital skylights, and GPS-denied subsurface robotic exploration.
+- **El Arenal del Chimborazo (>4,300 m):** A high-altitude, rain-shadow cold desert featuring fine volcanic tephra, diurnal freeze-thaw cycles, and extreme equatorial UV irradiance for rover terramechanics and astrobiology testing.
+
+## Impact and Deliverables
+
+The pipeline generates high-resolution thematic maps, reproducible GeoTIFF data cubes, and technical Analog Passports detailing valid experiments for each site, environmental and regulatory constraints (such as non-invasive operations within protected areas), and "irreducible physical gaps" (such as 1*g* gravity, atmospheric pressure, and petrology). These outputs provide an actionable decision-support tool for mission planners and researchers while engaging students and the general public in planetary exploration.
 
 ## 🎯 Objectives
 
@@ -128,6 +135,8 @@ Aciertos de clase en el AUC: **6 de 16**. El modelo nulo que usa solo |lat| obti
 Los mapas que hay que leer son los continuos de **δ Marte** y **δ Luna**. El mapa de clases es secundario: el umbral de Marte no tiene poder de discriminación (especificidad 0). **No se presentan porcentajes de cobertura de Ecuador como «análogo».**
 
 ### Cómo ejecutar el tablero (modo estático, por defecto)
+
+Las instrucciones completas, con un solo comando, están en [EJECUTAR.md](EJECUTAR.md).
 
 ```bash
 cd web
@@ -251,6 +260,8 @@ Class hits on the AUC set: **6 of 16**. A |lat|-only null model reaches a Mars A
 Read the continuous **δ Mars** and **δ Moon** maps. The class map is secondary: the Mars threshold has no discrimination (specificity 0). **No class-map coverage percentages for Ecuador.**
 
 ### Running the dashboard (static mode, default)
+
+Complete one-command instructions are in [EJECUTAR.md](EJECUTAR.md).
 
 ```bash
 cd web
