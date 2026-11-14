@@ -66,3 +66,7 @@ No hace falta correr el pipeline para levantar el tablero.
 ## Qué no está todavía en el README
 
 El README guarda tal cual las secciones del equipo, el patrocinio y el texto de Ronald (What We Do, Blind Validation, Impact). Esas partes no se reescriben aquí. El README técnico en español y en inglés todavía describe la corrida previa `todas_min` como si fuera el modo oficial; la v1 oficial es `banda_propia` (después de ver el AUC de `todas_min`). Galápagos es solo área de evaluación. El detalle está en `docs/version_congelada_v1_banda_propia.md` y en `docs/nota_incertidumbre.md`.
+
+## GitHub Pages (opcional)
+
+No se publica solo. En el repositorio hay un flujo `GitHub Pages` que se dispara a mano (`workflow_dispatch`), no en cada push. Compila el tablero con `VITE_BASE=/NASA-Space-Challange/` (el nombre del repo público). En GitHub hay que tener Pages con “GitHub Actions” como origen y lanzar ese flujo. La URL queda en `https://ronaldsoft.github.io/NASA-Space-Challange/`. En local, `./levantar.sh` sigue sirviendo todo en el puerto 4173, con la base `/`.

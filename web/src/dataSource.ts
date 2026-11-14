@@ -1,3 +1,4 @@
+import { assetUrl } from "./paths";
 /**
  * Capa de datos. Por defecto: catálogo estático de la v1 congelada
  * (`/productos/catalogo.json`), apto para Vercel.
@@ -15,7 +16,7 @@ export class MockDataSource implements DataSource {
 
   async load(): Promise<Catalogo> {
     if (this.cache) return this.cache;
-    const res = await fetch("/productos/catalogo.json");
+    const res = await fetch(assetUrl("/productos/catalogo.json"));
     if (!res.ok) throw new Error(`No se pudo cargar el catálogo (${res.status})`);
     this.cache = (await res.json()) as Catalogo;
     return this.cache;

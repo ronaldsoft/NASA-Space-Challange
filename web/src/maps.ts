@@ -1,6 +1,7 @@
 import maplibregl from "maplibre-gl";
 import type { GeoJSONSource, ImageSource, Map as MapLibreMap, StyleSpecification } from "maplibre-gl";
 import type { Extension, SitioValidacion, Vista, ZonaPrioritaria } from "./types";
+import { assetUrl } from "./paths";
 
 export type CuerpoGlobo = "tierra" | "luna" | "marte";
 export type AreaTierra = "ecuador_continental" | "galapagos";
@@ -30,9 +31,9 @@ function imageCoords(ext: Extension): [[number, number], [number, number], [numb
 }
 
 function overlayUrl(vista: Vista): string {
-  if (vista === "similitud-luna") return "/productos/delta_luna.png";
-  if (vista === "clases") return "/productos/clases.png";
-  return "/productos/delta_marte.png";
+  if (vista === "similitud-luna") return assetUrl("/productos/delta_luna.png");
+  if (vista === "clases") return assetUrl("/productos/clases.png");
+  return assetUrl("/productos/delta_marte.png");
 }
 
 function globeStyle(): StyleSpecification {
@@ -42,32 +43,32 @@ function globeStyle(): StyleSpecification {
     sources: {
       land: {
         type: "geojson",
-        data: "/basemap/ne_110m_land.geojson",
+        data: assetUrl("/basemap/ne_110m_land.geojson"),
         attribution: "Natural Earth 110m land (dominio público)",
       },
       hs_tierra: {
         type: "image",
-        url: "/basemap/hillshade_tierra.png",
+        url: assetUrl("/basemap/hillshade_tierra.png"),
         coordinates: WORLD,
       },
       hs_ecuador: {
         type: "image",
-        url: "/basemap/hillshade_ecuador.png",
+        url: assetUrl("/basemap/hillshade_ecuador.png"),
         coordinates: imageCoords(AREA_BOUNDS.completo),
       },
       hs_luna: {
         type: "image",
-        url: "/basemap/hillshade_luna.png",
+        url: assetUrl("/basemap/hillshade_luna.png"),
         coordinates: WORLD,
       },
       hs_marte: {
         type: "image",
-        url: "/basemap/hillshade_marte.png",
+        url: assetUrl("/basemap/hillshade_marte.png"),
         coordinates: WORLD,
       },
       overlay: {
         type: "image",
-        url: "/productos/delta_marte.png",
+        url: assetUrl("/productos/delta_marte.png"),
         coordinates: imageCoords(AREA_BOUNDS.completo),
       },
       sitios: {

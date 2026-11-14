@@ -35,6 +35,7 @@ import {
   type AreaTierra,
   type CuerpoGlobo,
 } from "./maps";
+import { assetUrl } from "./paths";
 import { recomputeValidation } from "./scoring";
 import {
   DEFAULT_WEIGHTS,
@@ -442,7 +443,7 @@ async function main(): Promise<void> {
     panel.classList.add("is-open");
     state.unityAbierto = true;
     document.getElementById("btn-ver-unity")?.setAttribute("aria-expanded", "true");
-    if (!frame.getAttribute("src")) frame.src = "/unity/visualizador/index.html";
+    if (!frame.getAttribute("src")) frame.src = assetUrl("/unity/visualizador/index.html");
     document.getElementById("btn-cerrar-unity")?.focus();
   };
 
@@ -597,7 +598,7 @@ async function main(): Promise<void> {
     if (wrap) wrap.hidden = !isViz;
     if (isViz) {
       closeUnityPanel();
-      if (frame && !frame.getAttribute("src")) frame.src = "/unity/visualizador/index.html";
+      if (frame && !frame.getAttribute("src")) frame.src = assetUrl("/unity/visualizador/index.html");
     }
     const hash = `#${state.vista}`;
     if (location.hash !== hash) history.replaceState(null, "", hash);

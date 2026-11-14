@@ -25,6 +25,7 @@ function unityMime(): {
 }
 
 export default defineConfig({
+  base: process.env.VITE_BASE || "/",
   plugins: [unityMime()],
   test: {
     environment: "node",
