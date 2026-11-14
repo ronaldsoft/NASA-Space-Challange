@@ -1,0 +1,239 @@
+{
+ "type": "FeatureCollection",
+ "features": [
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     77.4508,
+     18.4447
+    ]
+   },
+   "properties": {
+    "id": "jezero",
+    "nombre": "Jezero (piso del cráter y delta; centro = sitio de aterrizaje)",
+    "cuerpo": "marte",
+    "lat": 18.4447,
+    "lon": 77.4508,
+    "radio_km": 25
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     137.4417,
+     -4.5895
+    ]
+   },
+   "properties": {
+    "id": "gale",
+    "nombre": "Gale (piso norte y base de Aeolis Mons, travesía de Curiosity; centro = sitio de aterrizaje)",
+    "cuerpo": "marte",
+    "lat": -4.5895,
+    "lon": 137.4417,
+    "radio_km": 30
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -167.9,
+     39.0
+    ]
+   },
+   "properties": {
+    "id": "arcadia_planitia",
+    "nombre": "Arcadia Planitia — zona de exploración Erebus Montes (2015)",
+    "cuerpo": "marte",
+    "lat": 39.0,
+    "lon": -167.9,
+    "radio_km": 100
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     23.199,
+     39.11
+    ]
+   },
+   "properties": {
+    "id": "deuteronilus_mensae",
+    "nombre": "Deuteronilus Mensae — zona de exploración DBDM (2015)",
+    "cuerpo": "marte",
+    "lat": 39.11,
+    "lon": 23.199,
+    "radio_km": 100
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -68.74949453148821,
+     -83.63745863671741
+    ]
+   },
+   "properties": {
+    "id": "peak_near_cabeus_b",
+    "nombre": "Peak Near Cabeus B",
+    "cuerpo": "luna",
+    "lat": -83.63745863671741,
+    "lon": -68.74949453148821,
+    "radio_km": null
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -22.77702368814446,
+     -86.76394198158843
+    ]
+   },
+   "properties": {
+    "id": "haworth",
+    "nombre": "Haworth",
+    "cuerpo": "luna",
+    "lat": -86.76394198158843,
+    "lon": -22.77702368814446,
+    "radio_km": null
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -0.23578376450136823,
+     -85.9947846625394
+    ]
+   },
+   "properties": {
+    "id": "malapert_massif",
+    "nombre": "Malapert Massif",
+    "cuerpo": "luna",
+    "lat": -85.9947846625394,
+    "lon": -0.23578376450136823,
+    "radio_km": null
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     30.592267831603234,
+     -84.33470110958048
+    ]
+   },
+   "properties": {
+    "id": "mons_mouton_plateau",
+    "nombre": "Mons Mouton Plateau",
+    "cuerpo": "luna",
+    "lat": -84.33470110958048,
+    "lon": 30.592267831603234,
+    "radio_km": null
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     31.742761196136154,
+     -85.42657725276676
+    ]
+   },
+   "properties": {
+    "id": "mons_mouton",
+    "nombre": "Mons Mouton",
+    "cuerpo": "luna",
+    "lat": -85.42657725276676,
+    "lon": 31.742761196136154,
+    "radio_km": null
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     37.34704230932205,
+     -85.4363971285309
+    ]
+   },
+   "properties": {
+    "id": "nobile_rim_1",
+    "nombre": "Nobile Rim 1",
+    "cuerpo": "luna",
+    "lat": -85.4363971285309,
+    "lon": 37.34704230932205,
+    "radio_km": null
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     58.82154575247379,
+     -83.95405086299101
+    ]
+   },
+   "properties": {
+    "id": "nobile_rim_2",
+    "nombre": "Nobile Rim 2",
+    "cuerpo": "luna",
+    "lat": -83.95405086299101,
+    "lon": 58.82154575247379,
+    "radio_km": null
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -64.62843840104856,
+     -88.22997767069704
+    ]
+   },
+   "properties": {
+    "id": "de_gerlache_rim_2",
+    "nombre": "de Gerlache Rim 2",
+    "cuerpo": "luna",
+    "lat": -88.22997767069704,
+    "lon": -64.62843840104856,
+    "radio_km": null
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     125.5376778286035,
+     -87.1637143008493
+    ]
+   },
+   "properties": {
+    "id": "slater_plain",
+    "nombre": "Slater Plain",
+    "cuerpo": "luna",
+    "lat": -87.1637143008493,
+    "lon": 125.5376778286035,
+    "radio_km": null
+   }
+  }
+ ]
+}

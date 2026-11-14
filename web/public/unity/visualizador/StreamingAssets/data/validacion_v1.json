@@ -1,0 +1,59 @@
+{
+ "version": "ANALOG/delta v1 real 2026-11-14",
+ "congelado_en": "2026-11-14T13:40:40-05:00",
+ "marte": {
+  "auc": 0.09375,
+  "ic95_inferior": 0.0,
+  "ic95_superior": 0.2857142857142857,
+  "threshold": 0.13043478260869557,
+  "sensitivity": 1.0,
+  "specificity": 0.0,
+  "precision": 0.5,
+  "n_pos": 8,
+  "n_neg": 8
+ },
+ "luna": {
+  "auc": 0.2545454545454546,
+  "ic95_inferior": 0.0,
+  "ic95_superior": 0.6923076923076923,
+  "threshold": 0.7915472614686689,
+  "sensitivity": 0.2,
+  "specificity": 1.0,
+  "precision": 1.0,
+  "n_pos": 5,
+  "n_neg": 11
+ },
+ "modelo_nulo_auc": {
+  "marte": 0.578125,
+  "luna": 0.21818181818181817
+ },
+ "aciertos_auc": 6,
+ "n_sitios_auc": 16,
+ "limitaciones": [
+  "La analogía es solo de superficie y únicamente con las variables comparables. No se puede llamar «clima análogo» al índice.",
+  "La resolución única de ~1 km suaviza el relieve local (Andes, Meteor Crater ~1.2 km de diámetro, University Valley con buffer de 3 km).",
+  "Marte se remuestrea de ~926 m (64 ppd) a ~1 km; no se usó el MEGDR de 128 ppd.",
+  "Luna: de ~474 m (LDEM_64) a ~1 km; no se descargó el LDEM de 128 ppd.",
+  "Cobertura MOLA: interpolación entre huellas y datos más pobres por encima de ~87° de latitud.",
+  "LDEM 64: posibles artefactos en los bordes de las bandas de 45°. Datum vertical = esfera, no geoide lunar.",
+  "Los datums verticales no son homologables al metro (areoide MOLA, esfera lunar de 1737.4 km, geoide EGM2008). La variante relieve_relativo está calculada pero no es el modo por defecto (pendiente de decisión del equipo, §3).",
+  "En Tierra, el 0 m exacto de GLO-90 se enmascaró; costa y agua interior pueden perder celdas.",
+  "Inferno Chasm usa una coordenada de resumen LPSC, no de revista.",
+  "Albedo e inercia térmica no entran al índice v1 (veredicto de Expertos) y no se descargaron.",
+  "Pendiente y TRI en proyección equirrectangular cerca de los polos son más inciertos (banda G).",
+  "No hay un ráster global terrestre: solo Ecuador/Galápagos y las ventanas de validación.",
+  "Modo de bandas por defecto: todas_min (pendiente de confirmación de Ronald sobre el §5). Los umbrales se fijaron con la misma regla y se congelaron antes de Ecuador.",
+  "Río Tinto, Ries y Sudbury se listan pero no entran al AUC (análogos no de superficie o cobertura actual no comparable); no hay ventanas GLO-90 suyas en esta entrega."
+ ],
+ "fuentes": {
+  "mars": "MGS MOLA MEGDR 64 ppd, areoide GMM3/mgm1025",
+  "moon": "LRO LOLA LDEM_64 v3.1, esfera 1737.4 km",
+  "earth": "Copernicus DEM GLO-90 (EGM2008)"
+ },
+ "nota_de_incertidumbre": "Índice v1 solo de superficie (latitud, elevación, pendiente, rugosidad). Datums verticales no homologables al metro; la variante de relieve relativo está calculada y no es el defecto. Resolución ~1 km suaviza Meteor Crater, conos y el relieve andino. Askja entra al AUC (65.060, −16.640, buffer 6 km). Banda A sin positivos terrestres (Ecuador se evalúa, no se calibra ahí). Banda D débil; banda G sin estaciones, añadida por el polo sur lunar. Umbrales fijados con la regla del mínimo entre bandas en validación y congelados antes de Ecuador. Ver docs/nota_incertidumbre.md.",
+ "capa_clima": {
+  "disponible": false,
+  "etiqueta": "interpretación, no entra al índice",
+  "nota": "No se publica un ráster climático en esta entrega para no presentar un ejemplo sintético como si fuera real."
+ }
+}
