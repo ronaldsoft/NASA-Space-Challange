@@ -1,0 +1,59 @@
+# Secrets and local environment (never commit values)
+.env
+.env.*
+!.env.example
+!.env*.example
+secrets/
+**/.env
+*.pem
+id_rsa
+id_ed25519
+
+# Dependencies and build artifacts
+node_modules/
+web/dist/
+dist/
+.venv/
+**/pipeline_real/.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.vite/
+coverage/
+.pglite-test/
+web/test-results/
+web/playwright-report/
+*.egg-info/
+.DS_Store
+*.log
+
+# Heavy or raw data (keep only small sidecars under data/processed)
+data/raw/
+data/processed/**/*.tif
+data/processed/**/*.tiff
+data/processed/**/*.img
+data/processed/**/*.lbl
+data/processed/**/*.jp2
+data/processed/**/*.hdr
+data/processed/**/*.zip
+data/processed/**/*.bil
+data/processed/**/*.xml
+work/
+
+# Re-include small processed manifests
+!data/processed/**/variables.json
+!data/processed/**/manifest.json
+!data/processed/**/meta.json
+!data/processed/**/processing_summary.json
+!data/processed/**/*.csv
+
+# Keep only the official frozen-v1 captures
+screenshots/mock/
+screenshots/*.png
+screenshots/*.csv
+!screenshots/final/
+!screenshots/final/**
+!screenshots/v2/
+!screenshots/v2/**

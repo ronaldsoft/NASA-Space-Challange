@@ -1,0 +1,362 @@
+{
+  "indice": {
+    "entran": [
+      "latitude",
+      "elevation",
+      "slope",
+      "roughness"
+    ],
+    "no_entran": [
+      "temperatura",
+      "precipitacion",
+      "humedad",
+      "viento",
+      "nubosidad",
+      "cualquier climatología"
+    ],
+    "fuera_del_indice": [
+      "albedo",
+      "thermal_inertia"
+    ],
+    "nota": "El documento metodológico prohíbe variables meteorológicas en el índice. Expertos confirmó que el albedo y la inercia térmica (tampoco la abundancia de roca) NO entran al índice v1. No se descargaron. El índice queda con latitud, elevación, pendiente y rugosidad, pesos iguales."
+  },
+  "mars": {
+    "latitude": {
+      "unit": "grados (planetocéntricos / geodésicos según el cuerpo)",
+      "descripcion": "Latitud del centro de la celda de la grilla de ≈1 km.",
+      "fuente": "calculada a partir de la geotransformación de la grilla",
+      "url_fuente": null,
+      "resolucion_nativa": "no aplica",
+      "resolucion_producto": "≈ 1 km (ver celda_grilla_*)",
+      "nodata": -9999.0,
+      "datum_horizontal": "IAU2000 planetocéntrico, longitudes este, esfera de 3396.0 km (rótulo MEGDR)",
+      "datum_vertical": "no aplica",
+      "celda_grilla_grados": 0.016871309401068516,
+      "celda_grilla_m_ecuador": 999.9858141897964,
+      "estadisticos": {
+        "min": -90.0,
+        "max": 90.0,
+        "nota": "Ráster de latitud del centro de cada celda, cubre el globo."
+      },
+      "ruta": "/workspace/analogs/data/processed/mars/mars_latitude_1km.tif",
+      "notas": "Entra al índice ANALOG/delta como proxy de régimen de insolación y como clave de las bandas de muestreo. No sustituye al resto de variables de superficie."
+    },
+    "elevation": {
+      "unit": "m",
+      "descripcion": "Elevación respecto al areoide MOLA.",
+      "fuente": "MGS MOLA MEGDR (topografía, 64 ppd, productos megt*gb) — PDS Geosciences Node",
+      "url_fuente": "https://pds-geosciences.wustl.edu/mgs/mgs-m-mola-5-megdr-l3-v1/mgsl_300x/meg064/",
+      "resolucion_nativa": "64 ppd (0.015625°, ≈ 926 m en el ecuador de Marte)",
+      "resolucion_producto": "≈ 1 km (ver celda_grilla_*)",
+      "nodata": -9999.0,
+      "datum_horizontal": "IAU2000 planetocéntrico, longitudes este, esfera de 3396.0 km (rótulo MEGDR)",
+      "datum_vertical": "Areoide MOLA (GMM3 / mgm1025, grado y orden 50). Topografía = radio planetario − radio del areoide.",
+      "celda_grilla_grados": 0.016871309401068516,
+      "celda_grilla_m_ecuador": 999.9858141897964,
+      "estadisticos": {
+        "min": -8194.7509765625,
+        "max": 21185.93359375,
+        "n": 227655122,
+        "mean": -720.5229723933029
+      },
+      "ruta": "/workspace/analogs/data/processed/mars/mars_elevation_1km.tif",
+      "notas": "El producto nativo ya viene interpolado donde no hay disparos MOLA. Cobertura más pobre cerca del ecuador y en los polos (>87°)."
+    },
+    "slope": {
+      "unit": "grados",
+      "descripcion": "Pendiente topográfica (método de Horn).",
+      "fuente": "MGS MOLA MEGDR (topografía, 64 ppd, productos megt*gb) — PDS Geosciences Node",
+      "url_fuente": "https://pds-geosciences.wustl.edu/mgs/mgs-m-mola-5-megdr-l3-v1/mgsl_300x/meg064/",
+      "resolucion_nativa": "derivada; no nativa",
+      "resolucion_producto": "≈ 1 km (ver celda_grilla_*)",
+      "nodata": -9999.0,
+      "datum_horizontal": "IAU2000 planetocéntrico, longitudes este, esfera de 3396.0 km (rótulo MEGDR)",
+      "datum_vertical": "no aplica (derivada)",
+      "celda_grilla_grados": 0.016871309401068516,
+      "celda_grilla_m_ecuador": 999.9858141897964,
+      "estadisticos": {
+        "min": 0.0,
+        "max": 85.83189392089844,
+        "n": 227612446,
+        "mean": 1.5209176605175623
+      },
+      "ruta": "/workspace/analogs/data/processed/mars/mars_slope_1km.tif",
+      "notas": "Recalculada sobre el DEM ya remuestreado a ≈1 km (método Horn 3×3). La escala horizontal es radius·π/180·cos(latitud), con radio del cuerpo documentado. No se interpoló un ráster de pendiente de otra resolución. Radio usado: 3396000 m."
+    },
+    "roughness": {
+      "unit": "m",
+      "descripcion": "Rugosidad local TRI (Wilson, ventana 3×3).",
+      "fuente": "MGS MOLA MEGDR (topografía, 64 ppd, productos megt*gb) — PDS Geosciences Node",
+      "url_fuente": "https://pds-geosciences.wustl.edu/mgs/mgs-m-mola-5-megdr-l3-v1/mgsl_300x/meg064/",
+      "resolucion_nativa": "derivada; no nativa",
+      "resolucion_producto": "≈ 1 km (ver celda_grilla_*)",
+      "nodata": -9999.0,
+      "datum_horizontal": "IAU2000 planetocéntrico, longitudes este, esfera de 3396.0 km (rótulo MEGDR)",
+      "datum_vertical": "no aplica (derivada)",
+      "celda_grilla_grados": 0.016871309401068516,
+      "celda_grilla_m_ecuador": 999.9858141897964,
+      "estadisticos": {
+        "min": 0.0,
+        "max": 2388.824951171875,
+        "n": 227612446,
+        "mean": 17.775643989828218
+      },
+      "ruta": "/workspace/analogs/data/processed/mars/mars_roughness_tri_1km.tif",
+      "notas": "Índice de rugosidad del terreno (TRI) de Wilson et al.: media de las diferencias absolutas de elevación entre la celda y sus 8 vecinos (ventana 3×3), en metros, calculado sobre el DEM ya remuestreado. Requiere los 8 vecinos válidos."
+    }
+  },
+  "moon": {
+    "latitude": {
+      "unit": "grados (planetocéntricos / geodésicos según el cuerpo)",
+      "descripcion": "Latitud del centro de la celda de la grilla de ≈1 km.",
+      "fuente": "calculada a partir de la geotransformación de la grilla",
+      "url_fuente": null,
+      "resolucion_nativa": "no aplica",
+      "resolucion_producto": "≈ 1 km (ver celda_grilla_*)",
+      "nodata": -9999.0,
+      "datum_horizontal": "Mean Earth / Polar Axis de DE421, longitudes este, esfera de 1737.4 km",
+      "datum_vertical": "no aplica",
+      "celda_grilla_grados": 0.03297911322828875,
+      "celda_grilla_m_ecuador": 1000.0372070991035,
+      "estadisticos": {
+        "min": -90.0,
+        "max": 90.0,
+        "nota": "Ráster de latitud del centro de cada celda, cubre el globo."
+      },
+      "ruta": "/workspace/analogs/data/processed/moon/moon_latitude_1km.tif",
+      "notas": "Entra al índice ANALOG/delta como proxy de régimen de insolación y como clave de las bandas de muestreo. No sustituye al resto de variables de superficie."
+    },
+    "elevation": {
+      "unit": "m",
+      "descripcion": "Altura relativa a la esfera de 1737.4 km (HEIGHT = DN × 0.5).",
+      "fuente": "LRO LOLA LDEM_64 V3.1 — PDS Geosciences Node",
+      "url_fuente": "https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/cylindrical/img/ldem_64.img",
+      "resolucion_nativa": "64 ppd (0.015625°, ≈ 473.8 m en el ecuador lunar); registro de píxel",
+      "resolucion_producto": "≈ 1 km (ver celda_grilla_*)",
+      "nodata": -9999.0,
+      "datum_horizontal": "Mean Earth / Polar Axis de DE421, longitudes este, esfera de 1737.4 km",
+      "datum_vertical": "Esfera de 1737.4 km (no el geoide lunar / potencial).",
+      "celda_grilla_grados": 0.03297911322828875,
+      "celda_grilla_m_ecuador": 1000.0372070991035,
+      "estadisticos": {
+        "min": -9100.2724609375,
+        "max": 10748.22265625,
+        "n": 59579528,
+        "mean": -519.4149205075945
+      },
+      "ruta": "/workspace/analogs/data/processed/moon/moon_elevation_1km.tif",
+      "notas": "El rótulo advierte posibles artefactos en los bordes de las bandas de 45° de latitud."
+    },
+    "slope": {
+      "unit": "grados",
+      "descripcion": "Pendiente topográfica (método de Horn).",
+      "fuente": "LRO LOLA LDEM_64 V3.1 — PDS Geosciences Node",
+      "url_fuente": "https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/cylindrical/img/ldem_64.img",
+      "resolucion_nativa": "derivada; no nativa",
+      "resolucion_producto": "≈ 1 km (ver celda_grilla_*)",
+      "nodata": -9999.0,
+      "datum_horizontal": "Mean Earth / Polar Axis de DE421, longitudes este, esfera de 1737.4 km",
+      "datum_vertical": "no aplica (derivada)",
+      "celda_grilla_grados": 0.03297911322828875,
+      "celda_grilla_m_ecuador": 1000.0372070991035,
+      "estadisticos": {
+        "min": 0.0001350257807644084,
+        "max": 88.95797729492188,
+        "n": 59557696,
+        "mean": 6.149780886419784
+      },
+      "ruta": "/workspace/analogs/data/processed/moon/moon_slope_1km.tif",
+      "notas": "Recalculada sobre el DEM ya remuestreado a ≈1 km (método Horn 3×3). La escala horizontal es radius·π/180·cos(latitud), con radio del cuerpo documentado. No se interpoló un ráster de pendiente de otra resolución. Radio usado: 1737400 m."
+    },
+    "roughness": {
+      "unit": "m",
+      "descripcion": "Rugosidad local TRI (Wilson, ventana 3×3).",
+      "fuente": "LRO LOLA LDEM_64 V3.1 — PDS Geosciences Node",
+      "url_fuente": "https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/cylindrical/img/ldem_64.img",
+      "resolucion_nativa": "derivada; no nativa",
+      "resolucion_producto": "≈ 1 km (ver celda_grilla_*)",
+      "nodata": -9999.0,
+      "datum_horizontal": "Mean Earth / Polar Axis de DE421, longitudes este, esfera de 1737.4 km",
+      "datum_vertical": "no aplica (derivada)",
+      "celda_grilla_grados": 0.03297911322828875,
+      "celda_grilla_m_ecuador": 1000.0372070991035,
+      "estadisticos": {
+        "min": 0.07916259765625,
+        "max": 1027.1783447265625,
+        "n": 59557696,
+        "mean": 71.71557677449444
+      },
+      "ruta": "/workspace/analogs/data/processed/moon/moon_roughness_tri_1km.tif",
+      "notas": "Índice de rugosidad del terreno (TRI) de Wilson et al.: media de las diferencias absolutas de elevación entre la celda y sus 8 vecinos (ventana 3×3), en metros, calculado sobre el DEM ya remuestreado. Requiere los 8 vecinos válidos."
+    }
+  },
+  "earth": {
+    "latitude": {
+      "unit": "grados (planetocéntricos / geodésicos según el cuerpo)",
+      "descripcion": "Latitud del centro de la celda de la grilla de ≈1 km.",
+      "fuente": "calculada a partir de la geotransformación de la grilla",
+      "url_fuente": null,
+      "resolucion_nativa": "no aplica",
+      "resolucion_producto": "0.009° (≈ 1001.9 m en el ecuador WGS84)",
+      "nodata": -9999.0,
+      "datum_horizontal": "EPSG:4326 (WGS84)",
+      "datum_vertical": "no aplica",
+      "celda_grilla_grados": 0.009,
+      "celda_grilla_m_ecuador": 1001.8754171394621,
+      "estadisticos": null,
+      "ruta": "/workspace/analogs/data/processed/earth/ecuador_latitude_1km.tif",
+      "notas": "Entra al índice ANALOG/delta como proxy de régimen de insolación y como clave de las bandas de muestreo. No sustituye al resto de variables de superficie."
+    },
+    "elevation": {
+      "unit": "m",
+      "descripcion": "Elevación sobre el geoide EGM2008 (Copernicus DEM).",
+      "fuente": "Copernicus DEM GLO-90 (COG, AWS Open Data, s3://copernicus-dem-90m)",
+      "url_fuente": "https://copernicus-dem-90m.s3.amazonaws.com/",
+      "resolucion_nativa": "3 arco-segundos (≈ 90 m en el ecuador); en latitudes altas las teselas reducen la resolución en longitud (p. ej. 9\" a ~75°)",
+      "resolucion_producto": "0.009° (≈ 1001.9 m en el ecuador WGS84)",
+      "nodata": -9999.0,
+      "datum_horizontal": "EPSG:4326 (WGS84)",
+      "datum_vertical": "EGM2008",
+      "celda_grilla_grados": 0.009,
+      "celda_grilla_m_ecuador": 1001.8754171394621,
+      "estadisticos": {
+        "min": -2.8543505668640137,
+        "max": 6018.81201171875,
+        "mean": 820.3034057617188,
+        "n": 460499
+      },
+      "ruta": "/workspace/analogs/data/processed/earth/ecuador_elevation_1km.tif",
+      "notas": "Se trata el valor exacto 0 como no-dato (mar y gran parte de las aguas en GLO-90). Las elevaciones reales de exactamente 0 m quedan enmascaradas. Se usó GLO-90 y no SRTM para cubrir sitios de validación por encima de 60° (Devon Island, Svalbard, Islandia, valles secos antárticos)."
+    },
+    "slope": {
+      "unit": "grados",
+      "descripcion": "Pendiente topográfica (método de Horn).",
+      "fuente": "Copernicus DEM GLO-90 (COG, AWS Open Data, s3://copernicus-dem-90m)",
+      "url_fuente": "https://copernicus-dem-90m.s3.amazonaws.com/",
+      "resolucion_nativa": "derivada; no nativa",
+      "resolucion_producto": "0.009° (≈ 1001.9 m en el ecuador WGS84)",
+      "nodata": -9999.0,
+      "datum_horizontal": "EPSG:4326 (WGS84)",
+      "datum_vertical": "no aplica (derivada)",
+      "celda_grilla_grados": 0.009,
+      "celda_grilla_m_ecuador": 1001.8754171394621,
+      "estadisticos": {
+        "min": 0.00012465960753615946,
+        "max": 33.05157470703125,
+        "mean": 3.1822874546051025,
+        "n": 453375
+      },
+      "ruta": "/workspace/analogs/data/processed/earth/ecuador_slope_1km.tif",
+      "notas": "Recalculada sobre el DEM ya remuestreado a ≈1 km (método Horn 3×3). La escala horizontal es radius·π/180·cos(latitud), con radio del cuerpo documentado. No se interpoló un ráster de pendiente de otra resolución. Radio usado: 6378137 m (semieje WGS84)."
+    },
+    "roughness": {
+      "unit": "m",
+      "descripcion": "Rugosidad local TRI (Wilson, ventana 3×3).",
+      "fuente": "Copernicus DEM GLO-90 (COG, AWS Open Data, s3://copernicus-dem-90m)",
+      "url_fuente": "https://copernicus-dem-90m.s3.amazonaws.com/",
+      "resolucion_nativa": "derivada; no nativa",
+      "resolucion_producto": "0.009° (≈ 1001.9 m en el ecuador WGS84)",
+      "nodata": -9999.0,
+      "datum_horizontal": "EPSG:4326 (WGS84)",
+      "datum_vertical": "no aplica (derivada)",
+      "celda_grilla_grados": 0.009,
+      "celda_grilla_m_ecuador": 1001.8754171394621,
+      "estadisticos": {
+        "min": 0.008026123046875,
+        "max": 518.236328125,
+        "mean": 53.36087417602539,
+        "n": 453375
+      },
+      "ruta": "/workspace/analogs/data/processed/earth/ecuador_roughness_1km.tif",
+      "notas": "Índice de rugosidad del terreno (TRI) de Wilson et al.: media de las diferencias absolutas de elevación entre la celda y sus 8 vecinos (ventana 3×3), en metros, calculado sobre el DEM ya remuestreado. Requiere los 8 vecinos válidos."
+    },
+    "cobertura": {
+      "ecuador_y_galapagos": {
+        "west": -92.0,
+        "south": -5.1,
+        "east": -75.0,
+        "north": 1.7
+      },
+      "sitios_validacion": [
+        "yungay",
+        "haughton",
+        "university_valley",
+        "askja",
+        "mauna_kea",
+        "sverrefjell",
+        "timanfaya",
+        "meteor_crater",
+        "sp_mountain",
+        "inferno_chasm",
+        "tapajos",
+        "bondville",
+        "harvard_forest",
+        "tumbarumba",
+        "hainich",
+        "hyytiala"
+      ],
+      "nota": "No se descargó un DEM global terrestre: solo Ecuador + Galápagos y ventanas de ~50 km (más margen) alrededor de los sitios de validación."
+    }
+  },
+  "capas_opcionales_no_procesadas": {
+    "albedo": {
+      "mars": {
+        "producto": "TES Bolometric Albedo (global, ~8 ppd / ~7.5 km) o THEMIS/VIS",
+        "url": "https://www.mars.asu.edu/data/tes_albedo/",
+        "nota": "Disponible a escala global. Expertos: NO entra al índice v1. No se descarga."
+      },
+      "moon": {
+        "producto": "LROC WAC Hapke o mosaico de albedo 643 nm",
+        "url": "https://wms.lroc.asu.edu/lroc/view_rdr/WAC_HAPKE",
+        "nota": "Disponible a 100 m–global. Expertos: NO entra al índice v1 (tampoco la abundancia de roca). No se descarga."
+      },
+      "earth": {
+        "producto": "MODIS MCD43 albedo o Landsat",
+        "url": "https://lpdaac.usgs.gov/products/mcd43a3v061/",
+        "nota": "Disponible, pero la definición (banda, geometría, corrección) no es idéntica a TES/LROC."
+      }
+    },
+    "thermal_inertia": {
+      "mars": {
+        "producto": "TES Thermal Inertia y/o THEMIS Thermal Inertia",
+        "url": "https://www.mars.asu.edu/data/tes_inertia/",
+        "nota": "Producto global clásico de Marte. Expertos: NO entra al índice v1 (tampoco la abundancia de roca). No se descarga."
+      },
+      "moon": {
+        "producto": "Diviner rock abundance / thermal inertia (no es un mapa de TI equivalente en todo el globo de forma trivial)",
+        "url": "https://pds-geosciences.wustl.edu/missions/lro/diviner.htm",
+        "nota": "Disponible en productos derivados de Diviner. Expertos: NO entra al índice v1 (tampoco la abundancia de roca). No se descarga."
+      },
+      "earth": {
+        "producto": "No hay un producto global de inercia térmica homologable a TES/Diviner de acceso abierto y resolución comparable.",
+        "url": null,
+        "nota": "Es la capa más difícil de homologar en los tres cuerpos."
+      }
+    }
+  },
+  "capa_extra_relieve_relativo": {
+    "en_el_indice_v1": false,
+    "unit": "m",
+    "descripcion": "Elevación menos la mediana de elevación en una ventana de 15×15 celdas (≈ 15 km en el ecuador), calculada sobre el DEM ya remuestreado a 1 km.",
+    "estado": "Pendiente de decisión del equipo: podría sustituir a la elevación absoluta, porque los datums verticales de los tres cuerpos no son homologables al metro.",
+    "archivos": {
+      "mars": "/workspace/analogs/data/processed/mars/mars_relative_relief_1km.tif",
+      "moon": "/workspace/analogs/data/processed/moon/moon_relative_relief_1km.tif",
+      "earth_ecuador": "/workspace/analogs/data/processed/earth/ecuador_relative_relief_1km.tif"
+    },
+    "estadisticos": {
+      "mars": {
+        "min": -4329.3642578125,
+        "max": 2245.72998046875,
+        "mean": 0.8613202571868896,
+        "n": 227655122
+      },
+      "moon": {
+        "min": -2664.57861328125,
+        "max": 2090.7587890625,
+        "mean": 2.7407078742980957,
+        "n": 59579528
+      }
+    }
+  }
+}

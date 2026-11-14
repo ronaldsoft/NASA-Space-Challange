@@ -1,0 +1,1475 @@
+{
+  "generado": "2026-11-14 13:37 UTC-05:00 (America/Guayaquil, UTC-5)",
+  "grillas_objetivo": {
+    "earth": {
+      "cell_deg": 0.009,
+      "cell_m_equator": 1001.8754171394621,
+      "origen": "(-180°, 90°), lon oeste–este, lat norte–sur"
+    },
+    "mars": {
+      "cell_deg": 0.016871309401068516,
+      "cell_m_equator": 999.9858141897964,
+      "shape": [
+        21338,
+        10669
+      ]
+    },
+    "moon": {
+      "cell_deg": 0.03297911322828875,
+      "cell_m_equator": 1000.0372070991035,
+      "shape": [
+        10916,
+        5458
+      ]
+    }
+  },
+  "descargas_crudas": {
+    "mars_mola": {
+      "urls": [
+        "https://pds-geosciences.wustl.edu/mgs/mgs-m-mola-5-megdr-l3-v1/mgsl_300x/meg064/megt90n000gb.img",
+        "https://pds-geosciences.wustl.edu/mgs/mgs-m-mola-5-megdr-l3-v1/mgsl_300x/meg064/megt90n180gb.img",
+        "https://pds-geosciences.wustl.edu/mgs/mgs-m-mola-5-megdr-l3-v1/mgsl_300x/meg064/megt00n000gb.img",
+        "https://pds-geosciences.wustl.edu/mgs/mgs-m-mola-5-megdr-l3-v1/mgsl_300x/meg064/megt00n180gb.img",
+        "https://pds-geosciences.wustl.edu/mgs/mgs-m-mola-5-megdr-l3-v1/mgsl_300x/meg064/megt90n000gb.lbl",
+        "https://pds-geosciences.wustl.edu/mgs/mgs-m-mola-5-megdr-l3-v1/mgsl_300x/meg064/megt90n180gb.lbl",
+        "https://pds-geosciences.wustl.edu/mgs/mgs-m-mola-5-megdr-l3-v1/mgsl_300x/meg064/megt00n000gb.lbl",
+        "https://pds-geosciences.wustl.edu/mgs/mgs-m-mola-5-megdr-l3-v1/mgsl_300x/meg064/megt00n180gb.lbl"
+      ],
+      "archivos": [
+        "/workspace/analogs/data/raw/mars/mola_megdr64/megt00n000gb.img",
+        "/workspace/analogs/data/raw/mars/mola_megdr64/megt00n180gb.img",
+        "/workspace/analogs/data/raw/mars/mola_megdr64/megt90n000gb.img",
+        "/workspace/analogs/data/raw/mars/mola_megdr64/megt90n180gb.img"
+      ],
+      "bytes": 530841600
+    },
+    "moon_lola": {
+      "urls": [
+        "https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/cylindrical/img/ldem_64.img",
+        "https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/cylindrical/img/ldem_64.lbl"
+      ],
+      "archivos": [
+        "/workspace/analogs/data/raw/moon/lola_ldem64/ldem_64.img"
+      ],
+      "bytes": 530841600
+    },
+    "earth_copernicus_glo90": {
+      "catalogo": "https://copernicus-dem-90m.s3.amazonaws.com/tileList.txt",
+      "patron_url": "https://copernicus-dem-90m.s3.amazonaws.com/{TILE}/{TILE}.tif",
+      "n_teselas": 116,
+      "bytes": 415855789,
+      "directorio": "/workspace/analogs/data/raw/earth/copernicus_glo90"
+    }
+  },
+  "productos": {
+    "mars": {
+      "body": "mars",
+      "width": 21338,
+      "height": 10669,
+      "cell_deg": 0.016871309401068516,
+      "cell_m_equator": 999.9858141897964,
+      "paths": {
+        "elevation": "/workspace/analogs/data/processed/mars/mars_elevation_1km.tif",
+        "slope": "/workspace/analogs/data/processed/mars/mars_slope_1km.tif",
+        "roughness": "/workspace/analogs/data/processed/mars/mars_roughness_tri_1km.tif",
+        "latitude": "/workspace/analogs/data/processed/mars/mars_latitude_1km.tif",
+        "relative_relief": "/workspace/analogs/data/processed/mars/mars_relative_relief_1km.tif"
+      },
+      "stats": {
+        "elevation": {
+          "min": -8194.7509765625,
+          "max": 21185.93359375,
+          "n": 227655122,
+          "mean": -720.5229723933029
+        },
+        "slope": {
+          "min": 0.0,
+          "max": 85.83189392089844,
+          "n": 227612446,
+          "mean": 1.5209176605175623
+        },
+        "roughness": {
+          "min": 0.0,
+          "max": 2388.824951171875,
+          "n": 227612446,
+          "mean": 17.775643989828218
+        },
+        "relative_relief": {
+          "min": -4329.3642578125,
+          "max": 2245.72998046875,
+          "mean": 0.8613202571868896,
+          "n": 227655122
+        }
+      },
+      "radius_m": 3396000.0,
+      "samples": {
+        "path": "/workspace/analogs/data/processed/mars/mars_latband_samples.npz",
+        "n": 56000,
+        "bands": [
+          {
+            "band": "A",
+            "hemi": "N",
+            "lat_min": 0.0,
+            "lat_max": 15.0,
+            "n": 4000,
+            "available": 18990820
+          },
+          {
+            "band": "A",
+            "hemi": "S",
+            "lat_min": -15.0,
+            "lat_max": -0.0,
+            "n": 4000,
+            "available": 18969482
+          },
+          {
+            "band": "B",
+            "hemi": "N",
+            "lat_min": 15.0,
+            "lat_max": 30.0,
+            "n": 4000,
+            "available": 18969482
+          },
+          {
+            "band": "B",
+            "hemi": "S",
+            "lat_min": -30.0,
+            "lat_max": -15.0,
+            "n": 4000,
+            "available": 18969482
+          },
+          {
+            "band": "C",
+            "hemi": "N",
+            "lat_min": 30.0,
+            "lat_max": 45.0,
+            "n": 4000,
+            "available": 18969482
+          },
+          {
+            "band": "C",
+            "hemi": "S",
+            "lat_min": -45.0,
+            "lat_max": -30.0,
+            "n": 4000,
+            "available": 18969482
+          },
+          {
+            "band": "D",
+            "hemi": "N",
+            "lat_min": 45.0,
+            "lat_max": 60.0,
+            "n": 4000,
+            "available": 18969482
+          },
+          {
+            "band": "D",
+            "hemi": "S",
+            "lat_min": -60.0,
+            "lat_max": -45.0,
+            "n": 4000,
+            "available": 18969482
+          },
+          {
+            "band": "E",
+            "hemi": "N",
+            "lat_min": 60.0,
+            "lat_max": 72.0,
+            "n": 4000,
+            "available": 15171318
+          },
+          {
+            "band": "E",
+            "hemi": "S",
+            "lat_min": -72.0,
+            "lat_max": -60.0,
+            "n": 4000,
+            "available": 15171318
+          },
+          {
+            "band": "F",
+            "hemi": "N",
+            "lat_min": 72.0,
+            "lat_max": 80.0,
+            "n": 4000,
+            "available": 10114212
+          },
+          {
+            "band": "F",
+            "hemi": "S",
+            "lat_min": -80.0,
+            "lat_max": -72.0,
+            "n": 4000,
+            "available": 10114212
+          },
+          {
+            "band": "G",
+            "hemi": "N",
+            "lat_min": 80.0,
+            "lat_max": 90.0,
+            "n": 4000,
+            "available": 12632096
+          },
+          {
+            "band": "G",
+            "hemi": "S",
+            "lat_min": -90.0,
+            "lat_max": -80.0,
+            "n": 4000,
+            "available": 12632096
+          }
+        ]
+      }
+    },
+    "moon": {
+      "body": "moon",
+      "width": 10916,
+      "height": 5458,
+      "cell_deg": 0.03297911322828875,
+      "cell_m_equator": 1000.0372070991035,
+      "paths": {
+        "elevation": "/workspace/analogs/data/processed/moon/moon_elevation_1km.tif",
+        "slope": "/workspace/analogs/data/processed/moon/moon_slope_1km.tif",
+        "roughness": "/workspace/analogs/data/processed/moon/moon_roughness_tri_1km.tif",
+        "latitude": "/workspace/analogs/data/processed/moon/moon_latitude_1km.tif",
+        "relative_relief": "/workspace/analogs/data/processed/moon/moon_relative_relief_1km.tif"
+      },
+      "stats": {
+        "elevation": {
+          "min": -9100.2724609375,
+          "max": 10748.22265625,
+          "n": 59579528,
+          "mean": -519.4149205075945
+        },
+        "slope": {
+          "min": 0.0001350257807644084,
+          "max": 88.95797729492188,
+          "n": 59557696,
+          "mean": 6.149780886419784
+        },
+        "roughness": {
+          "min": 0.07916259765625,
+          "max": 1027.1783447265625,
+          "n": 59557696,
+          "mean": 71.71557677449444
+        },
+        "relative_relief": {
+          "min": -2664.57861328125,
+          "max": 2090.7587890625,
+          "mean": 2.7407078742980957,
+          "n": 59579528
+        }
+      },
+      "radius_m": 1737400.0,
+      "samples": {
+        "path": "/workspace/analogs/data/processed/moon/moon_latband_samples.npz",
+        "n": 56000,
+        "bands": [
+          {
+            "band": "A",
+            "hemi": "N",
+            "lat_min": 0.0,
+            "lat_max": 15.0,
+            "n": 4000,
+            "available": 4966780
+          },
+          {
+            "band": "A",
+            "hemi": "S",
+            "lat_min": -15.0,
+            "lat_max": -0.0,
+            "n": 4000,
+            "available": 4966780
+          },
+          {
+            "band": "B",
+            "hemi": "N",
+            "lat_min": 15.0,
+            "lat_max": 30.0,
+            "n": 4000,
+            "available": 4966780
+          },
+          {
+            "band": "B",
+            "hemi": "S",
+            "lat_min": -30.0,
+            "lat_max": -15.0,
+            "n": 4000,
+            "available": 4966780
+          },
+          {
+            "band": "C",
+            "hemi": "N",
+            "lat_min": 30.0,
+            "lat_max": 45.0,
+            "n": 4000,
+            "available": 4966780
+          },
+          {
+            "band": "C",
+            "hemi": "S",
+            "lat_min": -45.0,
+            "lat_max": -30.0,
+            "n": 4000,
+            "available": 4966780
+          },
+          {
+            "band": "D",
+            "hemi": "N",
+            "lat_min": 45.0,
+            "lat_max": 60.0,
+            "n": 4000,
+            "available": 4955864
+          },
+          {
+            "band": "D",
+            "hemi": "S",
+            "lat_min": -60.0,
+            "lat_max": -45.0,
+            "n": 4000,
+            "available": 4955864
+          },
+          {
+            "band": "E",
+            "hemi": "N",
+            "lat_min": 60.0,
+            "lat_max": 72.0,
+            "n": 4000,
+            "available": 3973424
+          },
+          {
+            "band": "E",
+            "hemi": "S",
+            "lat_min": -72.0,
+            "lat_max": -60.0,
+            "n": 4000,
+            "available": 3973424
+          },
+          {
+            "band": "F",
+            "hemi": "N",
+            "lat_min": 72.0,
+            "lat_max": 80.0,
+            "n": 4000,
+            "available": 2652588
+          },
+          {
+            "band": "F",
+            "hemi": "S",
+            "lat_min": -80.0,
+            "lat_max": -72.0,
+            "n": 4000,
+            "available": 2652588
+          },
+          {
+            "band": "G",
+            "hemi": "N",
+            "lat_min": 80.0,
+            "lat_max": 90.0,
+            "n": 4000,
+            "available": 3296632
+          },
+          {
+            "band": "G",
+            "hemi": "S",
+            "lat_min": -90.0,
+            "lat_max": -80.0,
+            "n": 4000,
+            "available": 3296632
+          }
+        ]
+      }
+    },
+    "earth": {
+      "ecuador": {
+        "paths": {
+          "elevation": "/workspace/analogs/data/processed/earth/ecuador_elevation_1km.tif",
+          "slope": "/workspace/analogs/data/processed/earth/ecuador_slope_1km.tif",
+          "roughness": "/workspace/analogs/data/processed/earth/ecuador_roughness_1km.tif",
+          "latitude": "/workspace/analogs/data/processed/earth/ecuador_latitude_1km.tif"
+        },
+        "stats": {
+          "elevation": {
+            "min": -2.8543505668640137,
+            "max": 6018.81201171875,
+            "mean": 820.3034057617188,
+            "n": 460499
+          },
+          "slope": {
+            "min": 0.00012465960753615946,
+            "max": 33.05157470703125,
+            "mean": 3.1822874546051025,
+            "n": 453375
+          },
+          "roughness": {
+            "min": 0.008026123046875,
+            "max": 518.236328125,
+            "mean": 53.36087417602539,
+            "n": 453375
+          }
+        },
+        "shape": [
+          756,
+          1890
+        ],
+        "cell_deg": 0.009,
+        "cell_m_equator": 1001.8754171394621,
+        "width": 1890,
+        "height": 756
+      },
+      "validation_sites": [
+        {
+          "id": "yungay",
+          "name": "Yungay / Atacama",
+          "lat": -24.1,
+          "lon": -70.01,
+          "buffer_km": 20,
+          "etiqueta": "marciano",
+          "clase": "positivo",
+          "notas": "Análogo marciano verificado. Fuente y citas en validacion_parte1.md.",
+          "window": {
+            "west": -70.29,
+            "south": -24.353999999999996,
+            "east": -69.732,
+            "north": -23.840999999999994,
+            "width": 62,
+            "height": 57
+          },
+          "cell": {
+            "elevation_m": 1012.8746948242188,
+            "slope_deg": 0.3793070614337921,
+            "roughness_tri_m": 14.289649963378906,
+            "relative_relief_m": -121.59942626953125
+          },
+          "paths": {
+            "elevation": "/workspace/analogs/data/processed/earth/validation/yungay/yungay_elevation_1km.tif",
+            "slope": "/workspace/analogs/data/processed/earth/validation/yungay/yungay_slope_1km.tif",
+            "roughness": "/workspace/analogs/data/processed/earth/validation/yungay/yungay_roughness_1km.tif",
+            "latitude": "/workspace/analogs/data/processed/earth/validation/yungay/yungay_latitude_1km.tif",
+            "relative_relief": "/workspace/analogs/data/processed/earth/validation/yungay/yungay_relative_relief_1km.tif"
+          },
+          "stats": {
+            "elevation": {
+              "min": 578.5517578125,
+              "max": 2525.22900390625,
+              "mean": 1222.0645751953125,
+              "n": 3534
+            },
+            "slope": {
+              "min": 0.07734135538339615,
+              "max": 15.803511619567871,
+              "mean": 2.899121046066284,
+              "n": 3300
+            },
+            "roughness": {
+              "min": 3.2310409545898438,
+              "max": 240.6181182861328,
+              "mean": 43.145870208740234,
+              "n": 3300
+            }
+          }
+        },
+        {
+          "id": "haughton",
+          "name": "Haughton / Devon Island",
+          "lat": 75.3667,
+          "lon": -89.6833,
+          "buffer_km": 12,
+          "etiqueta": "marciano",
+          "clase": "positivo",
+          "notas": "Cráter Haughton, Isla Devon. Análogo marciano verificado.",
+          "window": {
+            "west": -90.396,
+            "south": 75.186,
+            "east": -88.965,
+            "north": 75.555,
+            "width": 159,
+            "height": 41
+          },
+          "cell": {
+            "elevation_m": 141.8409423828125,
+            "slope_deg": 1.2543516159057617,
+            "roughness_tri_m": 12.991235733032227,
+            "relative_relief_m": -26.786758422851562
+          },
+          "paths": {
+            "elevation": "/workspace/analogs/data/processed/earth/validation/haughton/haughton_elevation_1km.tif",
+            "slope": "/workspace/analogs/data/processed/earth/validation/haughton/haughton_slope_1km.tif",
+            "roughness": "/workspace/analogs/data/processed/earth/validation/haughton/haughton_roughness_1km.tif",
+            "latitude": "/workspace/analogs/data/processed/earth/validation/haughton/haughton_latitude_1km.tif",
+            "relative_relief": "/workspace/analogs/data/processed/earth/validation/haughton/haughton_relative_relief_1km.tif"
+          },
+          "stats": {
+            "elevation": {
+              "min": 0.8500422239303589,
+              "max": 398.23724365234375,
+              "mean": 262.1620178222656,
+              "n": 6347
+            },
+            "slope": {
+              "min": 0.030391361564397812,
+              "max": 21.212841033935547,
+              "mean": 2.0776069164276123,
+              "n": 5942
+            },
+            "roughness": {
+              "min": 1.5656239986419678,
+              "max": 142.65353393554688,
+              "mean": 21.04388999938965,
+              "n": 5942
+            }
+          }
+        },
+        {
+          "id": "university_valley",
+          "name": "University Valley / Valles Secos",
+          "lat": -77.866,
+          "lon": 160.726,
+          "buffer_km": 3,
+          "etiqueta": "marciano",
+          "clase": "positivo",
+          "notas": "University Valley (Antártida), no el genérico 'Dry Valleys'. Buffer 3 km.",
+          "window": {
+            "west": 160.25399999999996,
+            "south": -77.96699999999998,
+            "east": 161.19899999999996,
+            "north": -77.75999999999999,
+            "width": 105,
+            "height": 23
+          },
+          "cell": {
+            "elevation_m": 1715.1268310546875,
+            "slope_deg": 9.379080772399902,
+            "roughness_tri_m": 92.81446838378906,
+            "relative_relief_m": 66.5447998046875
+          },
+          "paths": {
+            "elevation": "/workspace/analogs/data/processed/earth/validation/university_valley/university_valley_elevation_1km.tif",
+            "slope": "/workspace/analogs/data/processed/earth/validation/university_valley/university_valley_slope_1km.tif",
+            "roughness": "/workspace/analogs/data/processed/earth/validation/university_valley/university_valley_roughness_1km.tif",
+            "latitude": "/workspace/analogs/data/processed/earth/validation/university_valley/university_valley_latitude_1km.tif",
+            "relative_relief": "/workspace/analogs/data/processed/earth/validation/university_valley/university_valley_relative_relief_1km.tif"
+          },
+          "stats": {
+            "elevation": {
+              "min": 990.0054321289062,
+              "max": 2980.301513671875,
+              "mean": 1687.3370361328125,
+              "n": 2415
+            },
+            "slope": {
+              "min": 0.040502432733774185,
+              "max": 35.97930145263672,
+              "mean": 8.809296607971191,
+              "n": 2163
+            },
+            "roughness": {
+              "min": 1.352752685546875,
+              "max": 316.9318542480469,
+              "mean": 77.13548278808594,
+              "n": 2163
+            }
+          }
+        },
+        {
+          "id": "askja",
+          "name": "Askja / Vikrahraun",
+          "lat": 65.06,
+          "lon": -16.64,
+          "buffer_km": 6,
+          "etiqueta": "marciano",
+          "clase": "positivo",
+          "notas": "Coordenada confirmada: punto medio de la colada Vikrahraun (bocas 65.0647, -16.7247; frente 65.0590, -16.5454), archivo adicional 1 de Blasizzo et al. (2022), hoja (1.1) Samples. Se descarta 65.03, -16.78 (quedaba 4–5 km fuera de la colada). Radio 6 km. Permanece en el AUC.",
+          "window": {
+            "west": -16.947000000000003,
+            "south": 64.926,
+            "east": -16.326000000000004,
+            "north": 65.187,
+            "width": 69,
+            "height": 29
+          },
+          "cell": {
+            "elevation_m": 925.0698852539062,
+            "slope_deg": 4.146480560302734,
+            "roughness_tri_m": 47.314796447753906,
+            "relative_relief_m": -27.0953369140625
+          },
+          "paths": {
+            "elevation": "/workspace/analogs/data/processed/earth/validation/askja/askja_elevation_1km.tif",
+            "slope": "/workspace/analogs/data/processed/earth/validation/askja/askja_slope_1km.tif",
+            "roughness": "/workspace/analogs/data/processed/earth/validation/askja/askja_roughness_1km.tif",
+            "latitude": "/workspace/analogs/data/processed/earth/validation/askja/askja_latitude_1km.tif",
+            "relative_relief": "/workspace/analogs/data/processed/earth/validation/askja/askja_relative_relief_1km.tif"
+          },
+          "stats": {
+            "elevation": {
+              "min": 494.3641662597656,
+              "max": 1363.7933349609375,
+              "mean": 793.9467163085938,
+              "n": 3219
+            },
+            "slope": {
+              "min": 0.03678908944129944,
+              "max": 15.866630554199219,
+              "mean": 2.355553388595581,
+              "n": 2975
+            },
+            "roughness": {
+              "min": 0.4683685302734375,
+              "max": 201.93923950195312,
+              "mean": 25.479167938232422,
+              "n": 2975
+            }
+          }
+        },
+        {
+          "id": "mauna_kea",
+          "name": "Mauna Kea (conos de cumbre)",
+          "lat": 19.8291,
+          "lon": -155.4629,
+          "buffer_km": 10,
+          "etiqueta": "ambos",
+          "clase": "positivo",
+          "notas": "Conos de la cumbre de Mauna Kea. Etiqueta: ambos (Marte y Luna).",
+          "window": {
+            "west": -155.637,
+            "south": 19.665000000000006,
+            "east": -155.286,
+            "north": 19.998000000000005,
+            "width": 39,
+            "height": 37
+          },
+          "cell": {
+            "elevation_m": 3942.72705078125,
+            "slope_deg": 6.198721885681152,
+            "roughness_tri_m": 94.10015869140625,
+            "relative_relief_m": 664.58740234375
+          },
+          "paths": {
+            "elevation": "/workspace/analogs/data/processed/earth/validation/mauna_kea/mauna_kea_elevation_1km.tif",
+            "slope": "/workspace/analogs/data/processed/earth/validation/mauna_kea/mauna_kea_slope_1km.tif",
+            "roughness": "/workspace/analogs/data/processed/earth/validation/mauna_kea/mauna_kea_roughness_1km.tif",
+            "latitude": "/workspace/analogs/data/processed/earth/validation/mauna_kea/mauna_kea_latitude_1km.tif",
+            "relative_relief": "/workspace/analogs/data/processed/earth/validation/mauna_kea/mauna_kea_relative_relief_1km.tif"
+          },
+          "stats": {
+            "elevation": {
+              "min": 432.58966064453125,
+              "max": 4096.6953125,
+              "mean": 1980.6722412109375,
+              "n": 1443
+            },
+            "slope": {
+              "min": 0.21953433752059937,
+              "max": 19.854097366333008,
+              "mean": 6.946182727813721,
+              "n": 1295
+            },
+            "roughness": {
+              "min": 4.1913909912109375,
+              "max": 276.7707824707031,
+              "mean": 92.947021484375,
+              "n": 1295
+            }
+          }
+        },
+        {
+          "id": "sverrefjell",
+          "name": "Sverrefjell / Svalbard",
+          "lat": 79.4305,
+          "lon": 13.3072,
+          "buffer_km": 5,
+          "etiqueta": "marciano",
+          "clase": "positivo",
+          "notas": "Sverrefjell, Svalbard. Análogo marciano.",
+          "window": {
+            "west": 12.662999999999982,
+            "south": 79.308,
+            "east": 13.949999999999982,
+            "north": 79.551,
+            "width": 143,
+            "height": 27
+          },
+          "cell": {
+            "elevation_m": 368.4132385253906,
+            "slope_deg": 2.6962971687316895,
+            "roughness_tri_m": 114.5906753540039,
+            "relative_relief_m": 69.35662841796875
+          },
+          "paths": {
+            "elevation": "/workspace/analogs/data/processed/earth/validation/sverrefjell/sverrefjell_elevation_1km.tif",
+            "slope": "/workspace/analogs/data/processed/earth/validation/sverrefjell/sverrefjell_slope_1km.tif",
+            "roughness": "/workspace/analogs/data/processed/earth/validation/sverrefjell/sverrefjell_roughness_1km.tif",
+            "latitude": "/workspace/analogs/data/processed/earth/validation/sverrefjell/sverrefjell_latitude_1km.tif",
+            "relative_relief": "/workspace/analogs/data/processed/earth/validation/sverrefjell/sverrefjell_relative_relief_1km.tif"
+          },
+          "stats": {
+            "elevation": {
+              "min": 0.24124912917613983,
+              "max": 1240.528076171875,
+              "mean": 505.6112060546875,
+              "n": 2946
+            },
+            "slope": {
+              "min": 0.05502048507332802,
+              "max": 33.51726150512695,
+              "mean": 10.029257774353027,
+              "n": 2486
+            },
+            "roughness": {
+              "min": 0.6239436864852905,
+              "max": 258.2650451660156,
+              "mean": 80.76795959472656,
+              "n": 2486
+            }
+          }
+        },
+        {
+          "id": "timanfaya",
+          "name": "Timanfaya / Lanzarote",
+          "lat": 29.021,
+          "lon": -13.7744,
+          "buffer_km": 8,
+          "etiqueta": "ambos",
+          "clase": "positivo",
+          "notas": "Parque Nacional de Timanfaya, Lanzarote. Etiqueta: ambos.",
+          "window": {
+            "west": -13.941000000000003,
+            "south": 28.872000000000003,
+            "east": -13.608000000000002,
+            "north": 29.169000000000004,
+            "width": 37,
+            "height": 33
+          },
+          "cell": {
+            "elevation_m": 182.12416076660156,
+            "slope_deg": 3.044051170349121,
+            "roughness_tri_m": 39.13762283325195,
+            "relative_relief_m": 15.687446594238281
+          },
+          "paths": {
+            "elevation": "/workspace/analogs/data/processed/earth/validation/timanfaya/timanfaya_elevation_1km.tif",
+            "slope": "/workspace/analogs/data/processed/earth/validation/timanfaya/timanfaya_slope_1km.tif",
+            "roughness": "/workspace/analogs/data/processed/earth/validation/timanfaya/timanfaya_roughness_1km.tif",
+            "latitude": "/workspace/analogs/data/processed/earth/validation/timanfaya/timanfaya_latitude_1km.tif",
+            "relative_relief": "/workspace/analogs/data/processed/earth/validation/timanfaya/timanfaya_relative_relief_1km.tif"
+          },
+          "stats": {
+            "elevation": {
+              "min": 6.958066940307617,
+              "max": 470.81756591796875,
+              "mean": 182.9231719970703,
+              "n": 521
+            },
+            "slope": {
+              "min": 0.11382246762514114,
+              "max": 8.848133087158203,
+              "mean": 2.534557819366455,
+              "n": 406
+            },
+            "roughness": {
+              "min": 7.173111915588379,
+              "max": 143.33616638183594,
+              "mean": 36.87722396850586,
+              "n": 406
+            }
+          }
+        },
+        {
+          "id": "meteor_crater",
+          "name": "Meteor Crater",
+          "lat": 35.0275,
+          "lon": -111.0222,
+          "buffer_km": 3,
+          "etiqueta": "lunar",
+          "clase": "positivo",
+          "notas": "Barringer Crater, Arizona. Análogo lunar de impacto. El cráter (~1.2 km) queda mal resuelto a 1 km.",
+          "window": {
+            "west": -111.15,
+            "south": 34.92,
+            "east": -110.89800000000001,
+            "north": 35.127,
+            "width": 28,
+            "height": 23
+          },
+          "cell": {
+            "elevation_m": 1666.6033935546875,
+            "slope_deg": 0.48264703154563904,
+            "roughness_tri_m": 20.14849853515625,
+            "relative_relief_m": -6.442626953125
+          },
+          "paths": {
+            "elevation": "/workspace/analogs/data/processed/earth/validation/meteor_crater/meteor_crater_elevation_1km.tif",
+            "slope": "/workspace/analogs/data/processed/earth/validation/meteor_crater/meteor_crater_slope_1km.tif",
+            "roughness": "/workspace/analogs/data/processed/earth/validation/meteor_crater/meteor_crater_roughness_1km.tif",
+            "latitude": "/workspace/analogs/data/processed/earth/validation/meteor_crater/meteor_crater_latitude_1km.tif",
+            "relative_relief": "/workspace/analogs/data/processed/earth/validation/meteor_crater/meteor_crater_relative_relief_1km.tif"
+          },
+          "stats": {
+            "elevation": {
+              "min": 1490.1663818359375,
+              "max": 1842.523193359375,
+              "mean": 1668.0660400390625,
+              "n": 644
+            },
+            "slope": {
+              "min": 0.048190727829933167,
+              "max": 2.158367156982422,
+              "mean": 0.6442647576332092,
+              "n": 546
+            },
+            "roughness": {
+              "min": 2.8715057373046875,
+              "max": 24.94207763671875,
+              "mean": 8.1810302734375,
+              "n": 546
+            }
+          }
+        },
+        {
+          "id": "sp_mountain",
+          "name": "SP Mountain / Flagstaff",
+          "lat": 35.5831,
+          "lon": -111.6336,
+          "buffer_km": 8,
+          "etiqueta": "ambos",
+          "clase": "positivo",
+          "notas": "SP Mountain, cerca de Flagstaff, Arizona. Etiqueta: ambos.",
+          "window": {
+            "west": -111.816,
+            "south": 35.43300000000001,
+            "east": -111.456,
+            "north": 35.730000000000004,
+            "width": 40,
+            "height": 33
+          },
+          "cell": {
+            "elevation_m": 1984.85498046875,
+            "slope_deg": 2.9278054237365723,
+            "roughness_tri_m": 76.64471435546875,
+            "relative_relief_m": 137.531005859375
+          },
+          "paths": {
+            "elevation": "/workspace/analogs/data/processed/earth/validation/sp_mountain/sp_mountain_elevation_1km.tif",
+            "slope": "/workspace/analogs/data/processed/earth/validation/sp_mountain/sp_mountain_slope_1km.tif",
+            "roughness": "/workspace/analogs/data/processed/earth/validation/sp_mountain/sp_mountain_roughness_1km.tif",
+            "latitude": "/workspace/analogs/data/processed/earth/validation/sp_mountain/sp_mountain_latitude_1km.tif",
+            "relative_relief": "/workspace/analogs/data/processed/earth/validation/sp_mountain/sp_mountain_relative_relief_1km.tif"
+          },
+          "stats": {
+            "elevation": {
+              "min": 1534.359619140625,
+              "max": 2573.955322265625,
+              "mean": 1877.66064453125,
+              "n": 1320
+            },
+            "slope": {
+              "min": 0.08471326529979706,
+              "max": 6.793342113494873,
+              "mean": 1.575979232788086,
+              "n": 1178
+            },
+            "roughness": {
+              "min": 1.7711944580078125,
+              "max": 96.9549560546875,
+              "mean": 21.705522537231445,
+              "n": 1178
+            }
+          }
+        },
+        {
+          "id": "inferno_chasm",
+          "name": "Inferno Chasm / Idaho",
+          "lat": 42.9667,
+          "lon": -113.1903,
+          "buffer_km": 5,
+          "etiqueta": "lunar",
+          "clase": "positivo",
+          "notas": "Coordenada de un resumen LPSC, no de una revista revisada por pares.",
+          "window": {
+            "west": -113.355,
+            "south": 42.849000000000004,
+            "east": -113.022,
+            "north": 43.092000000000006,
+            "width": 37,
+            "height": 27
+          },
+          "cell": {
+            "elevation_m": 1524.0313720703125,
+            "slope_deg": 0.5012785196304321,
+            "roughness_tri_m": 8.02581787109375,
+            "relative_relief_m": 9.8243408203125
+          },
+          "paths": {
+            "elevation": "/workspace/analogs/data/processed/earth/validation/inferno_chasm/inferno_chasm_elevation_1km.tif",
+            "slope": "/workspace/analogs/data/processed/earth/validation/inferno_chasm/inferno_chasm_slope_1km.tif",
+            "roughness": "/workspace/analogs/data/processed/earth/validation/inferno_chasm/inferno_chasm_roughness_1km.tif",
+            "latitude": "/workspace/analogs/data/processed/earth/validation/inferno_chasm/inferno_chasm_latitude_1km.tif",
+            "relative_relief": "/workspace/analogs/data/processed/earth/validation/inferno_chasm/inferno_chasm_relative_relief_1km.tif"
+          },
+          "stats": {
+            "elevation": {
+              "min": 1393.5712890625,
+              "max": 1632.1646728515625,
+              "mean": 1494.697265625,
+              "n": 999
+            },
+            "slope": {
+              "min": 0.021482476964592934,
+              "max": 1.870735764503479,
+              "mean": 0.6849704384803772,
+              "n": 875
+            },
+            "roughness": {
+              "min": 1.580718994140625,
+              "max": 27.568588256835938,
+              "mean": 8.745845794677734,
+              "n": 875
+            }
+          }
+        },
+        {
+          "id": "tapajos",
+          "name": "Tapajós BR-Sa1",
+          "lat": -2.8567,
+          "lon": -54.9589,
+          "buffer_km": 10,
+          "etiqueta": "no_analogo",
+          "clase": "negativo",
+          "notas": "Sitio FLUXNET/AmeriFlux. No análogo. Teselas GLO-90 pueden faltar en algunos países.",
+          "window": {
+            "west": -55.125000000000014,
+            "south": -3.0239999999999885,
+            "east": -54.792000000000016,
+            "north": -2.6909999999999883,
+            "width": 37,
+            "height": 37
+          },
+          "cell": {
+            "elevation_m": 198.418701171875,
+            "slope_deg": 0.05464485287666321,
+            "roughness_tri_m": 1.2332038879394531,
+            "relative_relief_m": 12.294631958007812
+          },
+          "paths": {
+            "elevation": "/workspace/analogs/data/processed/earth/validation/tapajos/tapajos_elevation_1km.tif",
+            "slope": "/workspace/analogs/data/processed/earth/validation/tapajos/tapajos_slope_1km.tif",
+            "roughness": "/workspace/analogs/data/processed/earth/validation/tapajos/tapajos_roughness_1km.tif",
+            "latitude": "/workspace/analogs/data/processed/earth/validation/tapajos/tapajos_latitude_1km.tif",
+            "relative_relief": "/workspace/analogs/data/processed/earth/validation/tapajos/tapajos_relative_relief_1km.tif"
+          },
+          "stats": {
+            "elevation": {
+              "min": 3.5,
+              "max": 202.5808868408203,
+              "mean": 103.86215209960938,
+              "n": 1369
+            },
+            "slope": {
+              "min": 0.0,
+              "max": 3.522766590118408,
+              "mean": 0.6943976879119873,
+              "n": 1225
+            },
+            "roughness": {
+              "min": 0.0,
+              "max": 58.16901779174805,
+              "mean": 11.107084274291992,
+              "n": 1225
+            }
+          }
+        },
+        {
+          "id": "bondville",
+          "name": "Bondville US-Bo1",
+          "lat": 40.0062,
+          "lon": -88.2904,
+          "buffer_km": 5,
+          "etiqueta": "no_analogo",
+          "clase": "negativo",
+          "notas": "Sitio FLUXNET/AmeriFlux. No análogo.",
+          "window": {
+            "west": -88.44300000000001,
+            "south": 39.888,
+            "east": -88.13700000000001,
+            "north": 40.131,
+            "width": 34,
+            "height": 27
+          },
+          "cell": {
+            "elevation_m": 216.44554138183594,
+            "slope_deg": 0.460979700088501,
+            "roughness_tri_m": 5.041688919067383,
+            "relative_relief_m": 3.0446624755859375
+          },
+          "paths": {
+            "elevation": "/workspace/analogs/data/processed/earth/validation/bondville/bondville_elevation_1km.tif",
+            "slope": "/workspace/analogs/data/processed/earth/validation/bondville/bondville_slope_1km.tif",
+            "roughness": "/workspace/analogs/data/processed/earth/validation/bondville/bondville_roughness_1km.tif",
+            "latitude": "/workspace/analogs/data/processed/earth/validation/bondville/bondville_latitude_1km.tif",
+            "relative_relief": "/workspace/analogs/data/processed/earth/validation/bondville/bondville_relative_relief_1km.tif"
+          },
+          "stats": {
+            "elevation": {
+              "min": 197.85142517089844,
+              "max": 240.11717224121094,
+              "mean": 213.19532775878906,
+              "n": 918
+            },
+            "slope": {
+              "min": 0.005472059827297926,
+              "max": 0.5872952342033386,
+              "mean": 0.1436726599931717,
+              "n": 800
+            },
+            "roughness": {
+              "min": 0.2662773132324219,
+              "max": 7.054035186767578,
+              "mean": 1.911689043045044,
+              "n": 800
+            }
+          }
+        },
+        {
+          "id": "harvard_forest",
+          "name": "Harvard Forest US-Ha1",
+          "lat": 42.5378,
+          "lon": -72.1715,
+          "buffer_km": 5,
+          "etiqueta": "no_analogo",
+          "clase": "negativo",
+          "notas": "Sitio FLUXNET/AmeriFlux. No análogo.",
+          "window": {
+            "west": -72.33300000000001,
+            "south": 42.417,
+            "east": -72.00900000000001,
+            "north": 42.660000000000004,
+            "width": 36,
+            "height": 27
+          },
+          "cell": {
+            "elevation_m": 376.3689880371094,
+            "slope_deg": 0.8991848230361938,
+            "roughness_tri_m": 14.813056945800781,
+            "relative_relief_m": 52.954498291015625
+          },
+          "paths": {
+            "elevation": "/workspace/analogs/data/processed/earth/validation/harvard_forest/harvard_forest_elevation_1km.tif",
+            "slope": "/workspace/analogs/data/processed/earth/validation/harvard_forest/harvard_forest_slope_1km.tif",
+            "roughness": "/workspace/analogs/data/processed/earth/validation/harvard_forest/harvard_forest_roughness_1km.tif",
+            "latitude": "/workspace/analogs/data/processed/earth/validation/harvard_forest/harvard_forest_latitude_1km.tif",
+            "relative_relief": "/workspace/analogs/data/processed/earth/validation/harvard_forest/harvard_forest_relative_relief_1km.tif"
+          },
+          "stats": {
+            "elevation": {
+              "min": 158.00022888183594,
+              "max": 398.6348876953125,
+              "mean": 277.4045715332031,
+              "n": 972
+            },
+            "slope": {
+              "min": 0.052023716270923615,
+              "max": 5.022873878479004,
+              "mean": 1.2816522121429443,
+              "n": 850
+            },
+            "roughness": {
+              "min": 2.2710094451904297,
+              "max": 52.91252899169922,
+              "mean": 18.21584129333496,
+              "n": 850
+            }
+          }
+        },
+        {
+          "id": "tumbarumba",
+          "name": "Tumbarumba AU-Tum",
+          "lat": -35.6566,
+          "lon": 148.1517,
+          "buffer_km": 5,
+          "etiqueta": "no_analogo",
+          "clase": "negativo",
+          "notas": "Sitio FLUXNET/AmeriFlux. No análogo.",
+          "window": {
+            "west": 148.005,
+            "south": -35.775,
+            "east": 148.302,
+            "north": -35.532,
+            "width": 33,
+            "height": 27
+          },
+          "cell": {
+            "elevation_m": 1241.8172607421875,
+            "slope_deg": 1.1904569864273071,
+            "roughness_tri_m": 20.137161254882812,
+            "relative_relief_m": 71.27978515625
+          },
+          "paths": {
+            "elevation": "/workspace/analogs/data/processed/earth/validation/tumbarumba/tumbarumba_elevation_1km.tif",
+            "slope": "/workspace/analogs/data/processed/earth/validation/tumbarumba/tumbarumba_slope_1km.tif",
+            "roughness": "/workspace/analogs/data/processed/earth/validation/tumbarumba/tumbarumba_roughness_1km.tif",
+            "latitude": "/workspace/analogs/data/processed/earth/validation/tumbarumba/tumbarumba_latitude_1km.tif",
+            "relative_relief": "/workspace/analogs/data/processed/earth/validation/tumbarumba/tumbarumba_relative_relief_1km.tif"
+          },
+          "stats": {
+            "elevation": {
+              "min": 378.97515869140625,
+              "max": 1372.7060546875,
+              "mean": 956.0281372070312,
+              "n": 891
+            },
+            "slope": {
+              "min": 0.08293401449918747,
+              "max": 14.305137634277344,
+              "mean": 3.3753199577331543,
+              "n": 775
+            },
+            "roughness": {
+              "min": 5.543609619140625,
+              "max": 173.66839599609375,
+              "mean": 47.50420379638672,
+              "n": 775
+            }
+          }
+        },
+        {
+          "id": "hainich",
+          "name": "Hainich DE-Hai",
+          "lat": 51.0792,
+          "lon": 10.4522,
+          "buffer_km": 5,
+          "etiqueta": "no_analogo",
+          "clase": "negativo",
+          "notas": "Sitio FLUXNET/AmeriFlux. No análogo.",
+          "window": {
+            "west": 10.259999999999991,
+            "south": 50.958,
+            "east": 10.646999999999991,
+            "north": 51.201,
+            "width": 43,
+            "height": 27
+          },
+          "cell": {
+            "elevation_m": 461.3709411621094,
+            "slope_deg": 2.0801665782928467,
+            "roughness_tri_m": 27.814006805419922,
+            "relative_relief_m": 102.87429809570312
+          },
+          "paths": {
+            "elevation": "/workspace/analogs/data/processed/earth/validation/hainich/hainich_elevation_1km.tif",
+            "slope": "/workspace/analogs/data/processed/earth/validation/hainich/hainich_slope_1km.tif",
+            "roughness": "/workspace/analogs/data/processed/earth/validation/hainich/hainich_roughness_1km.tif",
+            "latitude": "/workspace/analogs/data/processed/earth/validation/hainich/hainich_latitude_1km.tif",
+            "relative_relief": "/workspace/analogs/data/processed/earth/validation/hainich/hainich_relative_relief_1km.tif"
+          },
+          "stats": {
+            "elevation": {
+              "min": 174.75881958007812,
+              "max": 491.3195495605469,
+              "mean": 299.5495300292969,
+              "n": 1161
+            },
+            "slope": {
+              "min": 0.02019985392689705,
+              "max": 5.480129241943359,
+              "mean": 1.5829733610153198,
+              "n": 1025
+            },
+            "roughness": {
+              "min": 1.5669002532958984,
+              "max": 55.282493591308594,
+              "mean": 21.375288009643555,
+              "n": 1025
+            }
+          }
+        },
+        {
+          "id": "hyytiala",
+          "name": "Hyytiälä FI-Hyy",
+          "lat": 61.8474,
+          "lon": 24.2948,
+          "buffer_km": 5,
+          "etiqueta": "no_analogo",
+          "clase": "negativo",
+          "notas": "Sitio FLUXNET/AmeriFlux. No análogo.",
+          "window": {
+            "west": 24.038999999999987,
+            "south": 61.722,
+            "east": 24.54299999999999,
+            "north": 61.965,
+            "width": 56,
+            "height": 27
+          },
+          "cell": {
+            "elevation_m": 168.505615234375,
+            "slope_deg": 1.3556327819824219,
+            "roughness_tri_m": 14.158994674682617,
+            "relative_relief_m": 7.1974639892578125
+          },
+          "paths": {
+            "elevation": "/workspace/analogs/data/processed/earth/validation/hyytiala/hyytiala_elevation_1km.tif",
+            "slope": "/workspace/analogs/data/processed/earth/validation/hyytiala/hyytiala_slope_1km.tif",
+            "roughness": "/workspace/analogs/data/processed/earth/validation/hyytiala/hyytiala_roughness_1km.tif",
+            "latitude": "/workspace/analogs/data/processed/earth/validation/hyytiala/hyytiala_latitude_1km.tif",
+            "relative_relief": "/workspace/analogs/data/processed/earth/validation/hyytiala/hyytiala_relative_relief_1km.tif"
+          },
+          "stats": {
+            "elevation": {
+              "min": 92.88272857666016,
+              "max": 203.606689453125,
+              "mean": 148.7261505126953,
+              "n": 1512
+            },
+            "slope": {
+              "min": 0.027509069070219994,
+              "max": 2.4834296703338623,
+              "mean": 0.6900689005851746,
+              "n": 1350
+            },
+            "roughness": {
+              "min": 1.0658149719238281,
+              "max": 29.44968032836914,
+              "mean": 8.621301651000977,
+              "n": 1350
+            }
+          }
+        }
+      ],
+      "sitios_excluidos": [
+        {
+          "id": "rio_tinto",
+          "motivo": "Análogo solo geoquímico; fuera del AUC de superficie."
+        },
+        {
+          "id": "ries",
+          "motivo": "Análogo geológico de impacto, hoy cubierto de ciudad, cultivo o bosque."
+        },
+        {
+          "id": "sudbury",
+          "motivo": "Análogo geológico de impacto, hoy cubierto de ciudad, cultivo o bosque."
+        },
+        {
+          "id": "iceland_highlands_generic",
+          "motivo": "Sustituido por Askja/Vikrahraun."
+        },
+        {
+          "id": "dry_valleys_generic",
+          "motivo": "Sustituido por University Valley."
+        }
+      ],
+      "relative_relief": {
+        "ecuador": {
+          "path": "/workspace/analogs/data/processed/earth/ecuador_relative_relief_1km.tif"
+        },
+        "window_km": 15.0
+      }
+    }
+  },
+  "bandas_latitud_provisionales": [
+    {
+      "id": "A",
+      "lat_min": 0.0,
+      "lat_max": 15.0,
+      "motivo": "Sin positivos terrestres; Ecuador cae aquí (evaluación, no validación)."
+    },
+    {
+      "id": "B",
+      "lat_min": 15.0,
+      "lat_max": 30.0,
+      "motivo": "Mauna Kea, Timanfaya, Yungay."
+    },
+    {
+      "id": "C",
+      "lat_min": 30.0,
+      "lat_max": 45.0,
+      "motivo": "Meteor Crater, SP Mountain, Inferno Chasm; negativos Bondville, Harvard Forest, Tumbarumba."
+    },
+    {
+      "id": "D",
+      "lat_min": 45.0,
+      "lat_max": 60.0,
+      "motivo": "Banda débil (pocos positivos); negativo Hainich."
+    },
+    {
+      "id": "E",
+      "lat_min": 60.0,
+      "lat_max": 72.0,
+      "motivo": "Askja; negativo Hyytiälä."
+    },
+    {
+      "id": "F",
+      "lat_min": 72.0,
+      "lat_max": 80.0,
+      "motivo": "Haughton, University Valley, Sverrefjell."
+    },
+    {
+      "id": "G",
+      "lat_min": 80.0,
+      "lat_max": 90.0,
+      "motivo": "Obligatoria por diseño para el polo sur lunar (>~84°S). Ninguna estación terrestre cae aquí; el único análogo latitudinal sería la Antártida, y ni siquiera University Valley (~78°S)."
+    }
+  ],
+  "sitios_validacion_provisionales": [
+    {
+      "id": "yungay",
+      "name": "Yungay / Atacama",
+      "lat": -24.1,
+      "lon": -70.01,
+      "buffer_km": 20,
+      "etiqueta": "marciano",
+      "clase": "positivo",
+      "notas": "Análogo marciano verificado. Fuente y citas en validacion_parte1.md."
+    },
+    {
+      "id": "haughton",
+      "name": "Haughton / Devon Island",
+      "lat": 75.3667,
+      "lon": -89.6833,
+      "buffer_km": 12,
+      "etiqueta": "marciano",
+      "clase": "positivo",
+      "notas": "Cráter Haughton, Isla Devon. Análogo marciano verificado."
+    },
+    {
+      "id": "university_valley",
+      "name": "University Valley / Valles Secos",
+      "lat": -77.866,
+      "lon": 160.726,
+      "buffer_km": 3,
+      "etiqueta": "marciano",
+      "clase": "positivo",
+      "notas": "University Valley (Antártida), no el genérico 'Dry Valleys'. Buffer 3 km."
+    },
+    {
+      "id": "askja",
+      "name": "Askja / Vikrahraun",
+      "lat": 65.06,
+      "lon": -16.64,
+      "buffer_km": 6,
+      "etiqueta": "marciano",
+      "clase": "positivo",
+      "notas": "Coordenada confirmada: punto medio de la colada Vikrahraun (bocas 65.0647, -16.7247; frente 65.0590, -16.5454), archivo adicional 1 de Blasizzo et al. (2022), hoja (1.1) Samples. Se descarta 65.03, -16.78 (quedaba 4–5 km fuera de la colada). Radio 6 km. Permanece en el AUC."
+    },
+    {
+      "id": "mauna_kea",
+      "name": "Mauna Kea (conos de cumbre)",
+      "lat": 19.8291,
+      "lon": -155.4629,
+      "buffer_km": 10,
+      "etiqueta": "ambos",
+      "clase": "positivo",
+      "notas": "Conos de la cumbre de Mauna Kea. Etiqueta: ambos (Marte y Luna)."
+    },
+    {
+      "id": "sverrefjell",
+      "name": "Sverrefjell / Svalbard",
+      "lat": 79.4305,
+      "lon": 13.3072,
+      "buffer_km": 5,
+      "etiqueta": "marciano",
+      "clase": "positivo",
+      "notas": "Sverrefjell, Svalbard. Análogo marciano."
+    },
+    {
+      "id": "timanfaya",
+      "name": "Timanfaya / Lanzarote",
+      "lat": 29.021,
+      "lon": -13.7744,
+      "buffer_km": 8,
+      "etiqueta": "ambos",
+      "clase": "positivo",
+      "notas": "Parque Nacional de Timanfaya, Lanzarote. Etiqueta: ambos."
+    },
+    {
+      "id": "meteor_crater",
+      "name": "Meteor Crater",
+      "lat": 35.0275,
+      "lon": -111.0222,
+      "buffer_km": 3,
+      "etiqueta": "lunar",
+      "clase": "positivo",
+      "notas": "Barringer Crater, Arizona. Análogo lunar de impacto. El cráter (~1.2 km) queda mal resuelto a 1 km."
+    },
+    {
+      "id": "sp_mountain",
+      "name": "SP Mountain / Flagstaff",
+      "lat": 35.5831,
+      "lon": -111.6336,
+      "buffer_km": 8,
+      "etiqueta": "ambos",
+      "clase": "positivo",
+      "notas": "SP Mountain, cerca de Flagstaff, Arizona. Etiqueta: ambos."
+    },
+    {
+      "id": "inferno_chasm",
+      "name": "Inferno Chasm / Idaho",
+      "lat": 42.9667,
+      "lon": -113.1903,
+      "buffer_km": 5,
+      "etiqueta": "lunar",
+      "clase": "positivo",
+      "notas": "Coordenada de un resumen LPSC, no de una revista revisada por pares."
+    },
+    {
+      "id": "tapajos",
+      "name": "Tapajós BR-Sa1",
+      "lat": -2.8567,
+      "lon": -54.9589,
+      "buffer_km": 10,
+      "etiqueta": "no_analogo",
+      "clase": "negativo",
+      "notas": "Sitio FLUXNET/AmeriFlux. No análogo. Teselas GLO-90 pueden faltar en algunos países."
+    },
+    {
+      "id": "bondville",
+      "name": "Bondville US-Bo1",
+      "lat": 40.0062,
+      "lon": -88.2904,
+      "buffer_km": 5,
+      "etiqueta": "no_analogo",
+      "clase": "negativo",
+      "notas": "Sitio FLUXNET/AmeriFlux. No análogo."
+    },
+    {
+      "id": "harvard_forest",
+      "name": "Harvard Forest US-Ha1",
+      "lat": 42.5378,
+      "lon": -72.1715,
+      "buffer_km": 5,
+      "etiqueta": "no_analogo",
+      "clase": "negativo",
+      "notas": "Sitio FLUXNET/AmeriFlux. No análogo."
+    },
+    {
+      "id": "tumbarumba",
+      "name": "Tumbarumba AU-Tum",
+      "lat": -35.6566,
+      "lon": 148.1517,
+      "buffer_km": 5,
+      "etiqueta": "no_analogo",
+      "clase": "negativo",
+      "notas": "Sitio FLUXNET/AmeriFlux. No análogo."
+    },
+    {
+      "id": "hainich",
+      "name": "Hainich DE-Hai",
+      "lat": 51.0792,
+      "lon": 10.4522,
+      "buffer_km": 5,
+      "etiqueta": "no_analogo",
+      "clase": "negativo",
+      "notas": "Sitio FLUXNET/AmeriFlux. No análogo."
+    },
+    {
+      "id": "hyytiala",
+      "name": "Hyytiälä FI-Hyy",
+      "lat": 61.8474,
+      "lon": 24.2948,
+      "buffer_km": 5,
+      "etiqueta": "no_analogo",
+      "clase": "negativo",
+      "notas": "Sitio FLUXNET/AmeriFlux. No análogo."
+    }
+  ],
+  "muestras_por_banda_y_hemisferio": 4000
+}

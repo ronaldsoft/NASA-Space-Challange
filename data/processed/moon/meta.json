@@ -1,0 +1,159 @@
+{
+  "body": "moon",
+  "width": 10916,
+  "height": 5458,
+  "cell_deg": 0.03297911322828875,
+  "cell_m_equator": 1000.0372070991035,
+  "paths": {
+    "elevation": "/workspace/analogs/data/processed/moon/moon_elevation_1km.tif",
+    "slope": "/workspace/analogs/data/processed/moon/moon_slope_1km.tif",
+    "roughness": "/workspace/analogs/data/processed/moon/moon_roughness_tri_1km.tif",
+    "latitude": "/workspace/analogs/data/processed/moon/moon_latitude_1km.tif",
+    "relative_relief": "/workspace/analogs/data/processed/moon/moon_relative_relief_1km.tif"
+  },
+  "stats": {
+    "elevation": {
+      "min": -9100.2724609375,
+      "max": 10748.22265625,
+      "n": 59579528,
+      "mean": -519.4149205075945
+    },
+    "slope": {
+      "min": 0.0001350257807644084,
+      "max": 88.95797729492188,
+      "n": 59557696,
+      "mean": 6.149780886419784
+    },
+    "roughness": {
+      "min": 0.07916259765625,
+      "max": 1027.1783447265625,
+      "n": 59557696,
+      "mean": 71.71557677449444
+    },
+    "relative_relief": {
+      "min": -2664.57861328125,
+      "max": 2090.7587890625,
+      "mean": 2.7407078742980957,
+      "n": 59579528
+    }
+  },
+  "radius_m": 1737400.0,
+  "samples": {
+    "path": "/workspace/analogs/data/processed/moon/moon_latband_samples.npz",
+    "n": 56000,
+    "bands": [
+      {
+        "band": "A",
+        "hemi": "N",
+        "lat_min": 0.0,
+        "lat_max": 15.0,
+        "n": 4000,
+        "available": 4966780
+      },
+      {
+        "band": "A",
+        "hemi": "S",
+        "lat_min": -15.0,
+        "lat_max": -0.0,
+        "n": 4000,
+        "available": 4966780
+      },
+      {
+        "band": "B",
+        "hemi": "N",
+        "lat_min": 15.0,
+        "lat_max": 30.0,
+        "n": 4000,
+        "available": 4966780
+      },
+      {
+        "band": "B",
+        "hemi": "S",
+        "lat_min": -30.0,
+        "lat_max": -15.0,
+        "n": 4000,
+        "available": 4966780
+      },
+      {
+        "band": "C",
+        "hemi": "N",
+        "lat_min": 30.0,
+        "lat_max": 45.0,
+        "n": 4000,
+        "available": 4966780
+      },
+      {
+        "band": "C",
+        "hemi": "S",
+        "lat_min": -45.0,
+        "lat_max": -30.0,
+        "n": 4000,
+        "available": 4966780
+      },
+      {
+        "band": "D",
+        "hemi": "N",
+        "lat_min": 45.0,
+        "lat_max": 60.0,
+        "n": 4000,
+        "available": 4955864
+      },
+      {
+        "band": "D",
+        "hemi": "S",
+        "lat_min": -60.0,
+        "lat_max": -45.0,
+        "n": 4000,
+        "available": 4955864
+      },
+      {
+        "band": "E",
+        "hemi": "N",
+        "lat_min": 60.0,
+        "lat_max": 72.0,
+        "n": 4000,
+        "available": 3973424
+      },
+      {
+        "band": "E",
+        "hemi": "S",
+        "lat_min": -72.0,
+        "lat_max": -60.0,
+        "n": 4000,
+        "available": 3973424
+      },
+      {
+        "band": "F",
+        "hemi": "N",
+        "lat_min": 72.0,
+        "lat_max": 80.0,
+        "n": 4000,
+        "available": 2652588
+      },
+      {
+        "band": "F",
+        "hemi": "S",
+        "lat_min": -80.0,
+        "lat_max": -72.0,
+        "n": 4000,
+        "available": 2652588
+      },
+      {
+        "band": "G",
+        "hemi": "N",
+        "lat_min": 80.0,
+        "lat_max": 90.0,
+        "n": 4000,
+        "available": 3296632
+      },
+      {
+        "band": "G",
+        "hemi": "S",
+        "lat_min": -90.0,
+        "lat_max": -80.0,
+        "n": 4000,
+        "available": 3296632
+      }
+    ]
+  }
+}

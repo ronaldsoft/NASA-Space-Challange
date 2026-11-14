@@ -1,0 +1,9 @@
+raw/**/*.img
+raw/**/*.tif
+raw/earth/copernicus_glo90/
+raw/earth/tileList.txt
+processed/**/*.tif
+processed/**/*.npz
+processed/**/*.csv
+!processed/**/*.json
+!processed/**/*.md

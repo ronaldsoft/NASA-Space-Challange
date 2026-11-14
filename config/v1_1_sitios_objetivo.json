@@ -1,0 +1,353 @@
+{
+  "revision": "v1.1",
+  "seccion_metodologica": "§9",
+  "estado": "no_aprobado_trabajo_futuro",
+  "no_correr_hasta": "OK explícito del cliente (Ronald), vía Projectlead. Este archivo no está congelado.",
+  "fecha_borrador": "2026-11-14",
+  "zona_horaria": "America/Guayaquil (UTC-5)",
+  "motivo_de_la_revision": "La v1 (firmas por mediana de banda de latitud a ~1 km) obtuvo AUC < 0.5 en validación (Marte 0.09, Luna 0.25). Diagnóstico preespecificado: la mediana por banda describe el terreno típico (llanuras suaves), no los sitios de base o de aterrizaje. Esta revisión sustituye esas firmas por firmas de sitios objetivo definidos a priori por NASA y la literatura de exploración, sin usar las etiquetas terrestres ni Ecuador para elegir sitios, ventanas o variables.",
+  "corrida_preliminar_superada": {
+    "cuando": "2026-11-14T13:50:29-05:00",
+    "archivo": "/workspace/analogs/work/v11_corrida_preliminar_superada_2026-11-14T1350/",
+    "por_que_no_es_oficial": "Se corrió sobre ventanas que después quedaron superadas por las fuentes verificadas de Expertos (§10 de validacion_space_apps.md): Arcadia no era la EZ de Erebus Montes; Jezero usaba el centro del cráter en vez del sitio de aterrizaje; los centros lunares salían de una fuente secundaria; los DEM eran los cilíndricos de ~1 km, no MOLA 128 ppd ni LDEM polar. Esos números no se publican en el tablero ni se usan para elegir una versión.",
+    "no_iterar_a_partir_de_ese_AUC": true
+  },
+  "validado_por_expertos": true,
+  "congelado_por_el_cliente": false,
+  "nota_de_validez_del_auc": "La mayoría de los positivos terrestres del conjunto son análogos de Marte en general (o de la Luna en general), no de Jezero, Arcadia u otro sitio objetivo en particular. El AUC sigue siendo una prueba imperfecta de esta firma.",
+  "nomenclatura": {
+    "luna_regiones": "regiones candidatas para el primer alunizaje de Artemis",
+    "no_usar_en_interfaz_ni_docs": "Artemis III",
+    "motivo_nomenclatura": "Según las notas de NASA del 27 de febrero de 2026 (https://www.nasa.gov/news-release/nasa-adds-mission-to-the-artemis-lunar-program-updates-architecture/) y del 23 de octubre de 2026 (https://www.nasa.gov/blogs/missions/2026/10/23/nasa-shares-artemis-acceleration-plans-for-moon-missions/), el primer alunizaje tripulado de Artemis queda en Artemis IV. En la interfaz y la documentación en español no se usa el nombre «Artemis III» para estas regiones. Las citas bibliográficas pueden conservar el título oficial de un dataset o un comunicado si es imprescindible identificar la fuente; el texto corrido no lo usa.",
+    "lista_publicada": "NASA, 28 de octubre de 2024. Comunicado que lista las nueve regiones. https://www.nasa.gov/news-release/nasa-provides-update-on-artemis-iii-moon-landing-regions/"
+  },
+  "variables_indice": {
+    "incluidas": [
+      "elevation",
+      "slope",
+      "roughness"
+    ],
+    "mapeo": {
+      "elevation": "relieve_relativo (elevación menos mediana local 15×15, calculada sobre el DEM a la escala emparejada)",
+      "slope": "pendiente Horn 3×3, en grados, a la escala del producto planetario",
+      "roughness": "TRI de Wilson 3×3, en metros, a la misma escala"
+    },
+    "latitude": "fuera del vector (todas las regiones lunares están a ~84–90°S; la latitud solo mediría la distancia al polo)",
+    "elevacion_modo": "relieve_relativo",
+    "pesos": "iguales (1/3 cada una)",
+    "prohibido": "invertir el índice; ajustar pesos mirando el AUC; redefinir sitios o ventanas después de ver la validación o Ecuador; elegir la «mejor» entre v1 y v1.1"
+  },
+  "estandarizacion": {
+    "std_params": "congelados sobre muestras del cuerpo de referencia a la escala emparejada, aplicados a relieve relativo, pendiente y TRI. No se reajustan a las celdas de los sitios objetivo."
+  },
+  "distancia": {
+    "metrica": "euclídea en el espacio estandarizado, con penalización IQR, delta acotada en [0,1] (misma función que la v1)",
+    "agregacion": "mínimo sobre las firmas de los sitios objetivo de ese cuerpo; se guarda el sitio ganador",
+    "firmas": "una por sitio objetivo: mediana, q1, q3 y n de las celdas válidas de su ventana"
+  },
+  "agregacion_validacion_terrestre": "Mediana de las celdas válidas dentro del buffer oficial (haversina). No se elige la mejor celda del buffer. Pendiente y TRI de la Tierra se calculan sobre GLO remuestreado a la escala del cuerpo (≈463 m para Marte; la del LDEM polar elegido para la Luna).",
+  "escala": {
+    "marte": {
+      "producto": "MOLA MEGDR 128 ppd (~463 m/píxel), topografía (prefijo megt, versión hb)",
+      "directorio": "https://pds-geosciences.wustl.edu/mgs/mgs-m-mola-5-megdr-l3-v1/mgsl_300x/meg128/",
+      "dataset": "MGS-M-MOLA-5-MEGDR-L3-V1.0",
+      "radio_km": 3396.0,
+      "dato": "planetocéntrico, longitudes este, areoide (map scale 0.463 km/pixel)",
+      "archivos_confirmados_en_pds": {
+        "jezero_y_deuteronilus": {
+          "img": "megt44n000hb.img",
+          "lbl": "megt44n000hb.lbl",
+          "bytes_img": 129761280,
+          "extension": "lat 0.0° a 44.0° N; lon 0.0° a 90.0° E",
+          "url_img": "https://pds-geosciences.wustl.edu/mgs/mgs-m-mola-5-megdr-l3-v1/mgsl_300x/meg128/megt44n000hb.img"
+        },
+        "gale": {
+          "img": "megt00n090hb.img",
+          "lbl": "megt00n090hb.lbl",
+          "bytes_img": 129761280,
+          "extension": "lat 0.0° a −44.0°; lon 90.0° a 180.0° E",
+          "nota_nomenclatura": "Pese al '00n' del nombre, la etiqueta PDS de este mosaico cubre el hemisferio sur hasta −44° (MAXIMUM_LATITUDE=0, MINIMUM_LATITUDE=−44). Verificado en megt00n090hb.lbl el 2026-11-14.",
+          "url_img": "https://pds-geosciences.wustl.edu/mgs/mgs-m-mola-5-megdr-l3-v1/mgsl_300x/meg128/megt00n090hb.img"
+        },
+        "arcadia_erebus_montes": {
+          "img": "megt44n180hb.img",
+          "lbl": "megt44n180hb.lbl",
+          "bytes_img": 129761280,
+          "extension": "lat 0.0° a 44.0° N; lon 180.0° a 270.0° E",
+          "url_img": "https://pds-geosciences.wustl.edu/mgs/mgs-m-mola-5-megdr-l3-v1/mgsl_300x/meg128/megt44n180hb.img"
+        }
+      },
+      "etiquetas_locales": "/workspace/analogs/data/raw/pds_listings/"
+    },
+    "luna": {
+      "producto_previsto": "LDEM_80S_20M (ldem_80s_20m.img), 80–90°S, 20 m/píxel, estereográfico polar, radio 1737.4 km, ME/PA DE421",
+      "directorio": "https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/polar/img/",
+      "dataset": "LRO-L-LOLA-4-GDR-V1.0",
+      "alternativa_mas_reciente": "LDEM_80S_20MPP_ADJ.TIF (PGDA, Barker et al., 2023, doi 10.3847/PSJ/acf3e1; datos https://doi.org/10.60903/gsfcpgda-lola-spole)",
+      "archivos_confirmados_en_pds": {
+        "ldem_80s_20m.img": {
+          "bytes": 1848320000,
+          "lineas": 30400,
+          "map_scale_m": 20,
+          "proyeccion": "POLAR STEREOGRAPHIC, centro −90°, lon 0° este"
+        },
+        "ldem_80s_40m.img": {
+          "bytes": 462080000,
+          "lineas": 15200,
+          "map_scale_m": 40
+        },
+        "ldem_80s_80m.img": {
+          "bytes": 115520000,
+          "lineas": 7600,
+          "map_scale_m": 80,
+          "nota": "Misma familia; útil para agregar temprano si el de 20 m (1,85 GB) no cabe. Si se usa, hay que preespecificarlo en la congelación, no después de ver el AUC."
+        }
+      },
+      "agregar_temprano": "Descargar solo ventanas, o agregar el de 20 m a 80 m (o a la escala que se congele) antes de calcular pendiente y TRI.",
+      "etiquetas_locales": "/workspace/analogs/data/raw/pds_listings/"
+    },
+    "tierra": "GLO-30/90 remuestreado a ≈463 m para Marte y a la escala del LDEM polar elegido para la Luna; pendiente y TRI se recalculan sobre ese ráster, no se reutilizan las derivadas a 1 km.",
+    "de_esta_preparacion": {
+      "marte_m": 463,
+      "luna_m": 100,
+      "luna_producto": "LDEM_80S_20M (ldem_80s_20m.img, 1 848 320 000 bytes), agregado 5×5 a 100 m en estereográfica polar, antes de calcular pendiente y TRI.",
+      "motivo_100m_luna": "El producto nativo es de 20 m. A 20 m la Tierra no es comparable con el GLO-90 del paquete (~90 m en el ecuador; más grueso en longitud a latitudes altas) y haría falta GLO-30, que no está en esta entrega. 100 m es un múltiplo exacto de 20 m y queda a la escala nativa de GLO-90. Se preespecifica ahora, antes de puntuar.",
+      "tierra": "GLO-90 remuestreado a 463 m (comparación con Marte) y a 100 m (comparación con la Luna). Pendiente (Horn) y TRI de Wilson, más relieve relativo (z − mediana en 15 km, la misma ventana física de la v1).",
+      "archivos_descargados": {
+        "megt44n000hb.img": 129761280,
+        "megt00n090hb.img": 129761280,
+        "megt44n180hb.img": 129761280,
+        "ldem_80s_20m.img": 1848320000
+      }
+    },
+    "de_esta_corrida_oficial": "Pendiente del OK del cliente. La preparación de rásteres (sin puntuar) usa ya MOLA 128 ppd y LDEM polar a las escalas preespecificadas."
+  },
+  "minimo_celdas_validas": 100,
+  "radio_lunar_km": 1737.4,
+  "radio_marte_km": 3396.0,
+  "nota_fuentes_marte": "Las coordenadas de las EZ de Arcadia (Erebus Montes) y Deuteronilus (DBDM) provienen de resúmenes del taller NASA 2015 (Viola et al., 2015, LPI 1011; Head et al., 2015, resumen 1033). El radio de ≈100 km está verificado en el anuncio del taller y en NTRS 20160001040 (Hoffman y Bussey, 2016). No son artículos revisados por pares. Jezero y Gale usan el punto de aterrizaje (NASA GISS Mars24), no el centro geométrico del cráter.",
+  "sitios_objetivo": {
+    "mars": [
+      {
+        "id": "jezero",
+        "nombre": "Jezero (piso del cráter y delta; centro = sitio de aterrizaje)",
+        "lat": 18.4447,
+        "lon": 77.4508,
+        "radio_km": 25,
+        "coordenada_provisional": false,
+        "es_centro_de_crater": false,
+        "ventana": "Radio de 25 km centrado en el sitio de aterrizaje de Perseverance (Octavia E. Butler Landing), de modo que cubre el piso del cráter y el delta. No se usa el centro geométrico del cráter ni solo la elipse de aterrizaje.",
+        "cita_espacial": "NASA GISS Mars24: 18,4447° N, 77,4508° E. Radio de 25 km preespecificado por Expertos.",
+        "tesela_mola128": "megt44n000hb.img"
+      },
+      {
+        "id": "gale",
+        "nombre": "Gale (piso norte y base de Aeolis Mons, travesía de Curiosity; centro = sitio de aterrizaje)",
+        "lat": -4.5895,
+        "lon": 137.4417,
+        "radio_km": 30,
+        "coordenada_provisional": false,
+        "es_centro_de_crater": false,
+        "ventana": "Radio de 30 km centrado en Bradbury Landing, de modo que cubre el piso norte y la base de Aeolis Mons a lo largo de la travesía. No se usa el cráter completo (~155 km) ni el centro geométrico del cráter.",
+        "cita_espacial": "NASA GISS Mars24: 4,5895° S, 137,4417° E. Radio de 30 km preespecificado por Expertos.",
+        "tesela_mola128": "megt00n090hb.img"
+      },
+      {
+        "id": "arcadia_planitia",
+        "nombre": "Arcadia Planitia — zona de exploración Erebus Montes (2015)",
+        "lat": 39.0,
+        "lon": 192.1,
+        "lon_oeste": -167.9,
+        "radio_km": 100,
+        "coordenada_provisional": false,
+        "ventana": "Círculo de 100 km de radio centrado en la EZ de Erebus Montes. No se usa toda la provincia de Arcadia. Coincide, a esta escala, con la zona de hielo somero de mayor consistencia de SWIM (Morgan et al., 2021); el valor exacto de consistencia en el punto no se comprobó sobre el ráster.",
+        "cita_espacial": "Viola, D., McEwen, A. S., y Dundas, C. M. (2015). Mid-latitude Martian ice as a target for human exploration, astrobiology, and in-situ resource utilization. First Landing Site/Exploration Zone Workshop, resumen 1011: «centered near 192.1°E, 39.0°N». https://www.hou.usra.edu/meetings/explorationzone2015/pdf/1011.pdf. Coordenada de un resumen de congreso, no de un artículo.",
+        "tesela_mola128": "megt44n180hb.img"
+      },
+      {
+        "id": "deuteronilus_mensae",
+        "nombre": "Deuteronilus Mensae — zona de exploración DBDM (2015)",
+        "lat": 39.11,
+        "lon": 23.199,
+        "radio_km": 100,
+        "coordenada_provisional": false,
+        "ventana": "Círculo de 100 km de radio centrado en el landing site/field station de la EZ publicada (no toda la mensa). Radio verificado (NTRS 20160001040).",
+        "cita_espacial": "Head, J., et al. (2015). Mars human science exploration and resource utilization: the Dichotomy Boundary Deuteronilus Mensae Exploration Zone. First Landing Site/Exploration Zone Workshop, resumen 1033: «(DBDM) Exploration Zone (EZ) (39.11˚ N, 23.199˚ E)» y «outlined as a circle of 100 km radius». https://www.hou.usra.edu/meetings/explorationzone2015/pdf/1033.pdf. Coordenada de un resumen de congreso, no de un artículo.",
+        "tesela_mola128": "megt44n000hb.img"
+      }
+    ],
+    "moon": [
+      {
+        "id": "peak_near_cabeus_b",
+        "nombre": "Peak Near Cabeus B",
+        "nombre_oficial_usgs": "Peak Near Cabeus B",
+        "region_code": "CB",
+        "lat": -83.63745863671741,
+        "lon": -68.74949453148821,
+        "area_km2_usgs": 399.800025,
+        "area_km2_calculada_estereografica": 399.8000452540876,
+        "geometria": "poligono_oficial_usgs",
+        "coordenada_provisional": false,
+        "radio_km_si_falla_el_poligono": 15,
+        "shapefile": "data/raw/usgs_luna/A3_9regions-lonlat-simplified.shp",
+        "doi": "10.5066/P1MEQ6UK",
+        "cita_espacial": "McClernan, M. T. (2024). Data release, U.S. Geological Survey, https://doi.org/10.5066/P1MEQ6UK. ScienceBase ítem 671a6fa8d34efed5620f89f8, archivo A3_9regions-lonlat-simplified. Centroide calculado sobre el polígono oficial en estereográfica polar (R=1737.4 km), no tomado de una fuente secundaria.",
+        "cita_nombre": "NASA (2024, 28 de octubre), lista de nueve regiones. El nombre oficial del polígono es el del data release de USGS."
+      },
+      {
+        "id": "haworth",
+        "nombre": "Haworth",
+        "nombre_oficial_usgs": "Haworth",
+        "region_code": "HW",
+        "lat": -86.76394198158843,
+        "lon": -22.77702368814446,
+        "area_km2_usgs": 888.04,
+        "area_km2_calculada_estereografica": 888.0399810955739,
+        "geometria": "poligono_oficial_usgs",
+        "coordenada_provisional": false,
+        "radio_km_si_falla_el_poligono": 15,
+        "shapefile": "data/raw/usgs_luna/A3_9regions-lonlat-simplified.shp",
+        "doi": "10.5066/P1MEQ6UK",
+        "cita_espacial": "McClernan, M. T. (2024). Data release, U.S. Geological Survey, https://doi.org/10.5066/P1MEQ6UK. ScienceBase ítem 671a6fa8d34efed5620f89f8, archivo A3_9regions-lonlat-simplified. Centroide calculado sobre el polígono oficial en estereográfica polar (R=1737.4 km), no tomado de una fuente secundaria.",
+        "cita_nombre": "NASA (2024, 28 de octubre), lista de nueve regiones. El nombre oficial del polígono es el del data release de USGS."
+      },
+      {
+        "id": "malapert_massif",
+        "nombre": "Malapert Massif",
+        "nombre_oficial_usgs": "Malapert Massif",
+        "region_code": "MA",
+        "lat": -85.9947846625394,
+        "lon": -0.23578376450136823,
+        "area_km2_usgs": 441.0,
+        "area_km2_calculada_estereografica": 441.0000200979556,
+        "geometria": "poligono_oficial_usgs",
+        "coordenada_provisional": false,
+        "radio_km_si_falla_el_poligono": 15,
+        "shapefile": "data/raw/usgs_luna/A3_9regions-lonlat-simplified.shp",
+        "doi": "10.5066/P1MEQ6UK",
+        "cita_espacial": "McClernan, M. T. (2024). Data release, U.S. Geological Survey, https://doi.org/10.5066/P1MEQ6UK. ScienceBase ítem 671a6fa8d34efed5620f89f8, archivo A3_9regions-lonlat-simplified. Centroide calculado sobre el polígono oficial en estereográfica polar (R=1737.4 km), no tomado de una fuente secundaria.",
+        "cita_nombre": "NASA (2024, 28 de octubre), lista de nueve regiones. El nombre oficial del polígono es el del data release de USGS."
+      },
+      {
+        "id": "mons_mouton_plateau",
+        "nombre": "Mons Mouton Plateau",
+        "nombre_oficial_usgs": "Mons Mouton Plateau",
+        "region_code": "MP",
+        "lat": -84.33470110958048,
+        "lon": 30.592267831603234,
+        "area_km2_usgs": 4451.83602,
+        "area_km2_calculada_estereografica": 4451.835975125002,
+        "geometria": "poligono_oficial_usgs",
+        "coordenada_provisional": false,
+        "radio_km_si_falla_el_poligono": 15,
+        "shapefile": "data/raw/usgs_luna/A3_9regions-lonlat-simplified.shp",
+        "doi": "10.5066/P1MEQ6UK",
+        "cita_espacial": "McClernan, M. T. (2024). Data release, U.S. Geological Survey, https://doi.org/10.5066/P1MEQ6UK. ScienceBase ítem 671a6fa8d34efed5620f89f8, archivo A3_9regions-lonlat-simplified. Centroide calculado sobre el polígono oficial en estereográfica polar (R=1737.4 km), no tomado de una fuente secundaria.",
+        "cita_nombre": "NASA (2024, 28 de octubre), lista de nueve regiones. El nombre oficial del polígono es el del data release de USGS."
+      },
+      {
+        "id": "mons_mouton",
+        "nombre": "Mons Mouton",
+        "nombre_oficial_usgs": "Mons Mouton",
+        "region_code": "MM",
+        "lat": -85.42657725276676,
+        "lon": 31.742761196136154,
+        "area_km2_usgs": 256.0,
+        "area_km2_calculada_estereografica": 256.00000310186624,
+        "geometria": "poligono_oficial_usgs",
+        "coordenada_provisional": false,
+        "radio_km_si_falla_el_poligono": 15,
+        "shapefile": "data/raw/usgs_luna/A3_9regions-lonlat-simplified.shp",
+        "doi": "10.5066/P1MEQ6UK",
+        "cita_espacial": "McClernan, M. T. (2024). Data release, U.S. Geological Survey, https://doi.org/10.5066/P1MEQ6UK. ScienceBase ítem 671a6fa8d34efed5620f89f8, archivo A3_9regions-lonlat-simplified. Centroide calculado sobre el polígono oficial en estereográfica polar (R=1737.4 km), no tomado de una fuente secundaria.",
+        "cita_nombre": "NASA (2024, 28 de octubre), lista de nueve regiones. El nombre oficial del polígono es el del data release de USGS."
+      },
+      {
+        "id": "nobile_rim_1",
+        "nombre": "Nobile Rim 1",
+        "nombre_oficial_usgs": "Nobile Rim 1",
+        "region_code": "N1",
+        "lat": -85.4363971285309,
+        "lon": 37.34704230932205,
+        "area_km2_usgs": 400.0,
+        "area_km2_calculada_estereografica": 400.0000042107339,
+        "geometria": "poligono_oficial_usgs",
+        "coordenada_provisional": false,
+        "radio_km_si_falla_el_poligono": 15,
+        "shapefile": "data/raw/usgs_luna/A3_9regions-lonlat-simplified.shp",
+        "doi": "10.5066/P1MEQ6UK",
+        "cita_espacial": "McClernan, M. T. (2024). Data release, U.S. Geological Survey, https://doi.org/10.5066/P1MEQ6UK. ScienceBase ítem 671a6fa8d34efed5620f89f8, archivo A3_9regions-lonlat-simplified. Centroide calculado sobre el polígono oficial en estereográfica polar (R=1737.4 km), no tomado de una fuente secundaria.",
+        "cita_nombre": "NASA (2024, 28 de octubre), lista de nueve regiones. El nombre oficial del polígono es el del data release de USGS."
+      },
+      {
+        "id": "nobile_rim_2",
+        "nombre": "Nobile Rim 2",
+        "nombre_oficial_usgs": "Nobile Rim 2",
+        "region_code": "N2",
+        "lat": -83.95405086299101,
+        "lon": 58.82154575247379,
+        "area_km2_usgs": 400.0,
+        "area_km2_calculada_estereografica": 400.00000101369164,
+        "geometria": "poligono_oficial_usgs",
+        "coordenada_provisional": false,
+        "radio_km_si_falla_el_poligono": 15,
+        "shapefile": "data/raw/usgs_luna/A3_9regions-lonlat-simplified.shp",
+        "doi": "10.5066/P1MEQ6UK",
+        "cita_espacial": "McClernan, M. T. (2024). Data release, U.S. Geological Survey, https://doi.org/10.5066/P1MEQ6UK. ScienceBase ítem 671a6fa8d34efed5620f89f8, archivo A3_9regions-lonlat-simplified. Centroide calculado sobre el polígono oficial en estereográfica polar (R=1737.4 km), no tomado de una fuente secundaria.",
+        "cita_nombre": "NASA (2024, 28 de octubre), lista de nueve regiones. El nombre oficial del polígono es el del data release de USGS."
+      },
+      {
+        "id": "de_gerlache_rim_2",
+        "nombre": "de Gerlache Rim 2",
+        "nombre_oficial_usgs": "de Gerlache Rim 2",
+        "region_code": "G2",
+        "lat": -88.22997767069704,
+        "lon": -64.62843840104856,
+        "area_km2_usgs": 400.0,
+        "area_km2_calculada_estereografica": 399.99999984753833,
+        "geometria": "poligono_oficial_usgs",
+        "coordenada_provisional": false,
+        "radio_km_si_falla_el_poligono": 15,
+        "shapefile": "data/raw/usgs_luna/A3_9regions-lonlat-simplified.shp",
+        "doi": "10.5066/P1MEQ6UK",
+        "cita_espacial": "McClernan, M. T. (2024). Data release, U.S. Geological Survey, https://doi.org/10.5066/P1MEQ6UK. ScienceBase ítem 671a6fa8d34efed5620f89f8, archivo A3_9regions-lonlat-simplified. Centroide calculado sobre el polígono oficial en estereográfica polar (R=1737.4 km), no tomado de una fuente secundaria.",
+        "cita_nombre": "NASA (2024, 28 de octubre), lista de nueve regiones. El nombre oficial del polígono es el del data release de USGS."
+      },
+      {
+        "id": "slater_plain",
+        "nombre": "Slater Plain",
+        "nombre_oficial_usgs": "Slater Plain",
+        "region_code": "SP",
+        "lat": -87.1637143008493,
+        "lon": 125.5376778286035,
+        "area_km2_usgs": 399.800025,
+        "area_km2_calculada_estereografica": 399.80000942006313,
+        "geometria": "poligono_oficial_usgs",
+        "coordenada_provisional": false,
+        "radio_km_si_falla_el_poligono": 15,
+        "shapefile": "data/raw/usgs_luna/A3_9regions-lonlat-simplified.shp",
+        "doi": "10.5066/P1MEQ6UK",
+        "cita_espacial": "McClernan, M. T. (2024). Data release, U.S. Geological Survey, https://doi.org/10.5066/P1MEQ6UK. ScienceBase ítem 671a6fa8d34efed5620f89f8, archivo A3_9regions-lonlat-simplified. Centroide calculado sobre el polígono oficial en estereográfica polar (R=1737.4 km), no tomado de una fuente secundaria.",
+        "cita_nombre": "NASA (2024, 28 de octubre), lista de nueve regiones. El nombre oficial del polígono es el del data release de USGS."
+      }
+    ]
+  },
+  "geometria_lunar": {
+    "estado": "poligono_oficial_disponible",
+    "ruta": "data/raw/usgs_luna/A3_9regions-lonlat-simplified.shp",
+    "nombres_verificados": [
+      "Peak Near Cabeus B",
+      "Haworth",
+      "Malapert Massif",
+      "Mons Mouton Plateau",
+      "Mons Mouton",
+      "Nobile Rim 1",
+      "Nobile Rim 2",
+      "de Gerlache Rim 2",
+      "Slater Plain"
+    ],
+    "nota": "Las 9 regiones del shapefile coinciden con la lista de NASA. El USGS llama «Peak Near Cabeus B» a la que el comunicado de NASA escribe «Peak near Cabeus B». Se usa el polígono, no un radio de 15 km, salvo que el polígono no se pueda aplicar a las celdas."
+  },
+  "aviso_archivo": "NO aprobado / trabajo futuro. El 14 de noviembre de 2026 (America/Guayaquil, UTC-5) el cliente no aprobó la v1.1. Este archivo se conserva solo como archivo. No correr, no puntuar y no publicar como resultado. El entregable oficial es la v1 por bandas, congelada.",
+  "fecha_no_aprobacion": "2026-11-14T14:30:00-05:00"
+}

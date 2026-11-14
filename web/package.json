@@ -1,0 +1,28 @@
+{
+  "name": "analog-finder",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview --host --port 4173",
+    "test": "vitest run",
+    "test:sql": "node ../db/test_sql.mjs",
+    "screenshot": "node scripts/screenshot.mjs"
+  },
+  "dependencies": {
+    "maplibre-gl": "^5.10.0"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "^0.3.14",
+    "@electric-sql/pglite-postgis": "^0.2.16",
+    "@fontsource/ibm-plex-mono": "^5.2.7",
+    "@fontsource/ibm-plex-sans": "^5.2.8",
+    "puppeteer-core": "^24.26.0",
+    "typescript": "^5.9.3",
+    "vite": "^6.4.1",
+    "vitest": "^3.2.4"
+  },
+  "license": "GPL-3.0-only"
+}

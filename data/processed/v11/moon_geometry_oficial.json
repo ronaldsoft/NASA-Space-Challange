@@ -1,0 +1,218 @@
+[
+  {
+    "id": "nobile_rim_2",
+    "nombre_oficial": "Nobile Rim 2",
+    "region_code": "N2",
+    "area_km2_atributo_usgs": 400.0,
+    "area_km2_calculada_estereografica": 400.00000101369164,
+    "centroide_lat": -83.95405086299101,
+    "centroide_lon": 58.82154575247379,
+    "centroide_x_m": 156998.2760620304,
+    "centroide_y_m": 95000.86182286595,
+    "n_vertices": 5,
+    "bbox_lonlat": [
+      54.461782,
+      -84.4046507,
+      63.0242496,
+      -83.501582
+    ],
+    "bbox_ps_m": [
+      146998.27585835205,
+      85000.86152669357,
+      166998.27636321585,
+      105000.86193522874
+    ]
+  },
+  {
+    "id": "mons_mouton",
+    "nombre_oficial": "Mons Mouton",
+    "region_code": "MM",
+    "area_km2_atributo_usgs": 256.0,
+    "area_km2_calculada_estereografica": 256.00000310186624,
+    "centroide_lat": -85.42657725276676,
+    "centroide_lon": 31.742761196136154,
+    "centroide_x_m": 73000.00053021115,
+    "centroide_y_m": 118000.0006604207,
+    "n_vertices": 5,
+    "bbox_lonlat": [
+      27.2879879,
+      -85.7883352,
+      36.3665802,
+      -85.0633036
+    ],
+    "bbox_ps_m": [
+      64999.999856088725,
+      110000.00019677932,
+      81000.00077611883,
+      126000.00107244842
+    ]
+  },
+  {
+    "id": "malapert_massif",
+    "nombre_oficial": "Malapert Massif",
+    "region_code": "MA",
+    "area_km2_atributo_usgs": 441.0,
+    "area_km2_calculada_estereografica": 441.0000200979556,
+    "centroide_lat": -85.9947846625394,
+    "centroide_lon": -0.23578376450136823,
+    "centroide_x_m": -499.99999122778394,
+    "centroide_y_m": 121500.00063825939,
+    "n_vertices": 5,
+    "bbox_lonlat": [
+      -5.65948184,
+      -86.3258893,
+      5.14788482,
+      -85.6339442
+    ],
+    "bbox_ps_m": [
+      -11000.000123709558,
+      110999.99930174356,
+      10000.000038681052,
+      132000.00150473003
+    ]
+  },
+  {
+    "id": "de_gerlache_rim_2",
+    "nombre_oficial": "de Gerlache Rim 2",
+    "region_code": "G2",
+    "area_km2_atributo_usgs": 400.0,
+    "area_km2_calculada_estereografica": 399.99999984753833,
+    "centroide_lat": -88.22997767069704,
+    "centroide_lon": -64.62843840104856,
+    "centroide_x_m": -48500.000050787145,
+    "centroide_y_m": 22999.99986425967,
+    "n_vertices": 5,
+    "bbox_lonlat": [
+      -77.4711923,
+      -88.6599857,
+      -49.3987054,
+      -87.7852884
+    ],
+    "bbox_ps_m": [
+      -58500.00079458117,
+      12999.999988291647,
+      -38499.99990795076,
+      33000.000018589904
+    ]
+  },
+  {
+    "id": "mons_mouton_plateau",
+    "nombre_oficial": "Mons Mouton Plateau",
+    "region_code": "MP",
+    "area_km2_atributo_usgs": 4451.83602,
+    "area_km2_calculada_estereografica": 4451.835975125002,
+    "centroide_lat": -84.33470110958048,
+    "centroide_lon": 30.592267831603234,
+    "centroide_x_m": 87499.99978607454,
+    "centroide_y_m": 148000.00007386217,
+    "n_vertices": 5,
+    "bbox_lonlat": [
+      15.4941713,
+      -85.7556443,
+      46.6120414,
+      -82.8467104
+    ],
+    "bbox_ps_m": [
+      49052.500126604675,
+      119052.49978980573,
+      125947.49961176117,
+      176947.50078256914
+    ]
+  },
+  {
+    "id": "slater_plain",
+    "nombre_oficial": "Slater Plain",
+    "region_code": "SP",
+    "area_km2_atributo_usgs": 399.800025,
+    "area_km2_calculada_estereografica": 399.80000942006313,
+    "centroide_lat": -87.1637143008493,
+    "centroide_lon": 125.5376778286035,
+    "centroide_x_m": 69999.99986191439,
+    "centroide_y_m": -49999.999968950404,
+    "n_vertices": 5,
+    "bbox_lonlat": [
+      116.5672,
+      -87.6221578,
+      134.997613,
+      -86.7032367
+    ],
+    "bbox_ps_m": [
+      60002.499109072814,
+      -59997.49978800645,
+      79997.50027524238,
+      -40002.499953915954
+    ]
+  },
+  {
+    "id": "peak_near_cabeus_b",
+    "nombre_oficial": "Peak Near Cabeus B",
+    "region_code": "CB",
+    "area_km2_atributo_usgs": 399.800025,
+    "area_km2_calculada_estereografica": 399.8000452540876,
+    "centroide_lat": -83.63745863671741,
+    "centroide_lon": -68.74949453148821,
+    "centroide_x_m": -180000.00039555645,
+    "centroide_y_m": 70000.00001414493,
+    "n_vertices": 5,
+    "bbox_lonlat": [
+      -72.4735296,
+      -84.0600477,
+      -64.7998908,
+      -83.2095021
+    ],
+    "bbox_ps_m": [
+      -189997.50114461652,
+      60002.49977001086,
+      -170002.49963238297,
+      79997.50015908502
+    ]
+  },
+  {
+    "id": "nobile_rim_1",
+    "nombre_oficial": "Nobile Rim 1",
+    "region_code": "N1",
+    "area_km2_atributo_usgs": 400.0,
+    "area_km2_calculada_estereografica": 400.0000042107339,
+    "centroide_lat": -85.4363971285309,
+    "centroide_lon": 37.34704230932205,
+    "centroide_x_m": 83993.69734629813,
+    "centroide_y_m": 110069.89516302997,
+    "n_vertices": 5,
+    "bbox_lonlat": [
+      31.6436679,
+      -85.8974903,
+      43.2066353,
+      -84.9745999
+    ],
+    "bbox_ps_m": [
+      73993.69712661038,
+      100069.8946095769,
+      93993.69800304515,
+      120069.89556613425
+    ]
+  },
+  {
+    "id": "haworth",
+    "nombre_oficial": "Haworth",
+    "region_code": "HW",
+    "area_km2_atributo_usgs": 888.04,
+    "area_km2_calculada_estereografica": 888.0399810955739,
+    "centroide_lat": -86.76394198158843,
+    "centroide_lon": -22.77702368814446,
+    "centroide_x_m": -37999.99968422685,
+    "centroide_y_m": 90499.99984789766,
+    "n_vertices": 5,
+    "bbox_lonlat": [
+      -34.981846,
+      -87.3935336,
+      -12.3617819,
+      -86.1123982
+    ],
+    "bbox_ps_m": [
+      -52899.99953221982,
+      75599.99944136,
+      -23100.000082266863,
+      105400.00117750854
+    ]
+  }
+]
