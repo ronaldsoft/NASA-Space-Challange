@@ -34,15 +34,15 @@ Excluidas en global: 91.294 por bosque y 295.908 por uso. Sin dato IGBP: 85.160,
 
 Positivos: 12 sitios de `tabla_validacion.csv` (marcianos, lunares o ambos; se excluye Sudbury por coordenada no verificada). Negativos: 6 sitios de flujo en bosque o cultivo. Valor del sitio: mediana del percentil en un radio max(buffer, 10 km) sobre la grilla de 0,05°; celda enmascarada = 0.
 
-- Marte (9 positivos): v1 sin máscara NASA 0,63 (IC 95 % bootstrap 0,296–0,944; Hanley-McNeil 0,339–0,92); v2 0,889 (IC 95 % bootstrap 0,722–1,0; Hanley-McNeil 0,718–1,0).
-- Luna (6 positivos): v1 0,722 (IC 95 % bootstrap 0,361–1,0; Hanley-McNeil 0,423–1,0); v2 0,917 (IC 95 % bootstrap 0,75–1,0; Hanley-McNeil 0,741–1,0).
+- Marte (9 positivos): mapa original sin máscara NASA 0,63 (IC 95 % bootstrap 0,296–0,944; Hanley-McNeil 0,339–0,92); v2 0,889 (IC 95 % bootstrap 0,722–1,0; Hanley-McNeil 0,718–1,0).
+- Luna (6 positivos): mapa original 0,722 (IC 95 % bootstrap 0,361–1,0; Hanley-McNeil 0,423–1,0); v2 0,917 (IC 95 % bootstrap 0,75–1,0; Hanley-McNeil 0,741–1,0).
 - El salto de AUC de v1 a v2 es en parte circular: los 6 negativos son bosques o cultivos y la máscara los elimina. No es evidencia de que el puntaje discrimine.
 
 ### 3.2 Recuperación frente a nulo de permutación espacial por bloques
 
 1000 permutaciones; cada sitio se reubica en una celda elegible al azar de un bloque 10°×10° elegido al azar dentro de su misma franja de latitud de 10°; mismo radio y misma mediana de buffer (≥10 km) que el observado; celda sin dato = 0.
 
-| Umbral | Recuperados v2 (de 12) | Media nula | p v2 | Recuperados v1 | p v1 |
+| Umbral | Recuperados v2 (de 12) | Media nula | p v2 | Recuperados mapa original | p mapa original |
 |---|---|---|---|---|---|
 | ≥90 | 1 | 1,08 | 0,6803 | 1 | 0,6783 |
 | ≥95 | 1 | 0,33 | 0,2937 | 1 | 0,3117 |
