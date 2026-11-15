@@ -91,3 +91,16 @@ Son artículos y fichas de sitio que justifican la etiqueta de cada sitio. **No 
 ## 7. Relieve del globo (14 de noviembre de 2026)
 
 Los cuatro relieves del dashboard (`web/public/basemap/hillshade_{luna,marte,tierra,ecuador}.png`) se generan con `web/scripts/basemap_relieve.py` con un solo método: Horn 3×3, luz desde el noroeste (315°) a 45°, celda métrica según el radio de cada cuerpo, z = tamaño de píxel ecuatorial / 1066, sin percentiles ni gamma, reproyectados a Web Mercator sobre las esquinas `WORLD` de `maps.ts`. Las fuentes son todas NASA: LOLA LDEM_64 (Luna), MOLA MEGDR 64 ppd (Marte) y SRTMGL30 V002 (Tierra y Ecuador). El detalle está en `web/public/basemap/FUENTE.txt`. Lo único no NASA que queda en el globo terrestre es el contorno de Natural Earth 110m. Estos relieves son solo visuales: no cambian el índice, δ ni Supabase.
+
+## 5. Modelo v2 (15 nov 2026)
+
+| Dataset | Institución | NASA | URL | DOI | HTTP | Uso en v2 |
+|---|---|---|---|---|---|---|
+| MODIS MCD12Q1 v061, IGBP 2022, vía GIBS (`MODIS_Combined_L3_IGBP_Land_Cover_Type_Annual`, matriz 500m) | NASA LP DAAC / NASA GIBS | Sí | https://gibs.earthdata.nasa.gov/wmts/epsg4326/best/MODIS_Combined_L3_IGBP_Land_Cover_Type_Annual/default/2022-01-01/500m/{z}/{fila}/{col}.png · paleta: https://gibs.earthdata.nasa.gov/colormaps/v1.3/MODIS_IGBP_Land_Cover_Type.xml | 10.5067/MODIS/MCD12Q1.061 | 200 (teselas sin login) / DOI 302 | **Máscara principal**: bosque IGBP 1–5 (> 5 % o mayoritaria, borde 3×3), humedal 11, cultivo 12, urbano 13, mosaico 14. Global agregado a 0,05° (nivel 6); Ecuador a 1/120° (nivel 7) |
+| MODIS MCD12C1 v061 | NASA LP DAAC | Sí | https://www.earthdata.nasa.gov/data/catalog/lpcloud-mcd12c1-061 | 10.5067/MODIS/MCD12C1.061 | DOI 302; descarga redirige al login de Earthdata | Referencia del método de agregación a 0,05°. **El HDF no se descargó** (sin sesión Earthdata en el proceso) |
+| MODIS MCD43C3 v061 (albedo WSA onda corta, 13 sep 2026) | NASA LP DAAC | Sí | https://www.earthdata.nasa.gov/data/catalog/lpcloud-mcd43c3-061 | 10.5067/MODIS/MCD43C3.061 | DOI 302 | Albedo terrestre del modelo |
+| MGS TES albedo bolométrico 8 ppd | NASA PDS | Sí | https://pds-geosciences.wustl.edu/missions/mgs/tes.html | Christensen et al. 2001, 10.1029/2000JE001370 | DOI 302 | Albedo de Marte en las firmas |
+| LROC WAC 643 nm | NASA PDS / LROC | Sí | https://wms.lroc.asu.edu/lroc/view_rdr/WAC_EMP | Robinson et al. 2010, 10.1007/s11214-010-9634-2 | DOI 302 | Reflectancia lunar en las firmas |
+| GMTED2010 mean 30" | USGS / NGA | **No** | https://www.usgs.gov/coastal-changes-and-impacts/gmted2010 | 10.3133/ofr20111073 | DOI 302 | Elevación y pendiente terrestres del modelo v2. **Limitación declarada** |
+| ESA CCI Land Cover 2022 v2.1.1 | ESA / C3S | **No** | https://cds.climate.copernicus.eu/datasets/satellite-land-cover | 10.24381/cds.006f2c9a | DOI 302 | Máscara base (bosque, agua) del modelo original. **Limitación** |
+| Natural Earth 10m admin-0 | NACIS (dominio público) | **No** | https://naciscdn.org/naturalearth/10m/cultural/ne_10m_admin_0_countries.zip | No tiene | 200 | Solo recorte de Ecuador en las teselas globales z6 |
