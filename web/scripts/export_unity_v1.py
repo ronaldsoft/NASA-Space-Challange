@@ -176,7 +176,9 @@ def hillshade(z, dx, dy, azimuth_deg=315.0, altitude_deg=45.0, nodata_mask=None)
     dzdy = ((pad[2:, 0:-2] + 2 * pad[2:, 1:-1] + pad[2:, 2:]) - (pad[0:-2, 0:-2] + 2 * pad[0:-2, 1:-1] + pad[0:-2, 2:])) / (8.0 * dy)
     slope = np.arctan(np.sqrt(dzdx * dzdx + dzdy * dzdy))
     aspect = np.arctan2(dzdy, -dzdx)
-    az = np.radians(azimuth_deg)
+    # aspect is a math angle (CCW from east, rows = south); azimuth is geographic
+    # (clockwise from north). Convert so 315° really means light from the NW.
+    az = np.radians((450.0 - azimuth_deg) % 360.0)
     alt = np.radians(altitude_deg)
     hs = np.sin(alt) * np.cos(slope) + np.cos(alt) * np.sin(slope) * np.cos(az - aspect)
     hs = np.clip(hs, 0, 1)

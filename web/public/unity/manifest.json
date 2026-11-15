@@ -70,13 +70,13 @@
     },
     {
       "archivo": "hillshade.json",
-      "bytes": 865,
-      "sha256": "d60c2b7f8c63b9c8f409d61e0fb482df9e612106674569935b56062f1b5cc5e6"
+      "bytes": 956,
+      "sha256": "5220d5ec8e54399ad6293124e9413c45ca50a23f177f15f38d6465b88a147ae7"
     },
     {
       "archivo": "hillshade.png",
-      "bytes": 416001,
-      "sha256": "5e59be7f1caed909fa7dfe1662e318ecc5b71806fb81318de99e74cc791bc519"
+      "bytes": 412975,
+      "sha256": "396eafd52501ffb03339d07dafd933d88ee6d3634e9331f0390c83da53385e89"
     },
     {
       "archivo": "sitios_validacion.geojson",

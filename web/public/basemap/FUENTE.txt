@@ -1,6 +1,21 @@
 ne_110m_land.geojson: Natural Earth 1:110m Physical Land, public domain.
 https://www.naturalearthdata.com/  version in shapefile VERSION.txt.
 Hillshade de Ecuador: Copernicus GLO-90 (EGM2008) remuestreado a 1 km, Horn 315°/45°.
-Hillshade Luna: LOLA LDEM_64 v3.1 remuestreado.
-Hillshade Marte: MOLA MEGDR 64 ppd remuestreado.
 Hillshade global de la Tierra: Natural Earth SR_50M (public domain), remuestreado a 2048×1024 y con el contraste subido para que el relieve se lea en el globo.
+
+Relieve uniforme v2 (2026-11-14, hora de Ecuador UTC-5), generado con web/scripts/basemap_relieve.py:
+  hillshade_luna.png  <- NASA PDS Geosciences, LRO LOLA LDEM_64 (LRO-L-LOLA-3-RDR-V1, ldem_64.img, 64 px/grado,
+                         radio 1737,4 km). https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/cylindrical/img/ldem_64.img
+  hillshade_marte.png <- NASA PDS Geosciences, MGS MOLA MEGDR 64 ppd (MGS-M-MOLA-5-MEGDR-L3-V1.0, teselas
+                         megt90n000gb, megt90n180gb, megt00n000gb, megt00n180gb; radio 3396,0 km).
+                         https://pds-geosciences.wustl.edu/mgs/mgs-m-mola-5-megdr-l3-v1/mgsl_300x/meg064/
+  Parámetros (iguales para ambos cuerpos):
+    - DEM promediado por área a malla equirectangular 2048x1024.
+    - Horn 3x3, acimut geográfico 315° (luz desde el noroeste), altura solar 45°.
+    - Celda métrica según el radio: dx = R·Δλ·cos φ, dy = R·Δφ.
+    - Exageración z = tamaño de píxel ecuatorial (m) / 1066 -> Luna 5330,3 m -> z = 5,00; Marte 10418,8 m -> z = 9,77.
+    - Salida clip(hs,0,1)·255, sin percentiles ni gamma; RGBA gris, alfa 255 (nodata alfa 0; no hay nodata).
+    - Reproyectado (bilineal) a Web Mercator 2048x2048 cubriendo exactamente las esquinas WORLD de
+      web/src/maps.ts: lon -179,9..179,9, lat -85..85 (no ±85,0511), filas lineales en y de Mercator.
+  hillshade_tierra.png y hillshade_ecuador.png no cambian todavía: siguen siendo los descritos arriba
+  (Natural Earth y GLO-90, equirectangulares) hasta tener SRTMGL30 / NASADEM con cuenta Earthdata.
