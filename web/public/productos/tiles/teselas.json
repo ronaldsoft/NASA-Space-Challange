@@ -1,0 +1,53 @@
+{
+ "clases": [
+  "0–49",
+  "50–74",
+  "75–89",
+  "90–94",
+  "95–100"
+ ],
+ "rgba": [
+  [
+   45,
+   40,
+   110,
+   110
+  ],
+  [
+   118,
+   42,
+   160,
+   165
+  ],
+  [
+   208,
+   74,
+   118,
+   205
+  ],
+  [
+   248,
+   150,
+   64,
+   235
+  ],
+  [
+   252,
+   236,
+   60,
+   255
+  ]
+ ],
+ "teselas": {
+  "global/marte": 1847,
+  "global_sin_ecuador/marte": 1218,
+  "ecuador/marte": 80,
+  "global/luna": 1847,
+  "global_sin_ecuador/luna": 1218,
+  "ecuador/luna": 80,
+  "global/conjunta": 1847,
+  "global_sin_ecuador/conjunta": 1218,
+  "ecuador/conjunta": 80
+ },
+ "esquema": "XYZ, 256 px, EPSG:3857; píxel sin dato = transparente; z0–6 global, z6 sin Ecuador, z5–9 Ecuador"
+}

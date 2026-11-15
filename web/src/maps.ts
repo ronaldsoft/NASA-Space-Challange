@@ -1,5 +1,5 @@
 import maplibregl from "maplibre-gl";
-import type { GeoJSONSource, ImageSource, Map as MapLibreMap, StyleSpecification } from "maplibre-gl";
+import type { GeoJSONSource, Map as MapLibreMap, RasterTileSource, StyleSpecification } from "maplibre-gl";
 import type { Extension, SitioValidacion, Vista, ZonaPrioritaria } from "./types";
 import { assetUrl } from "./paths";
 
@@ -30,10 +30,50 @@ function imageCoords(ext: Extension): [[number, number], [number, number], [numb
   ];
 }
 
-function overlayUrl(vista: Vista): string {
-  if (vista === "similitud-luna") return assetUrl("/productos/delta_luna.png");
-  if (vista === "clases") return assetUrl("/productos/clases.png");
-  return assetUrl("/productos/delta_marte.png");
+export type BandaModelo = "marte" | "luna" | "conjunta";
+
+/** Modelo v2: vista del tablero -> banda de las teselas (marte, luna o conjunta = mínimo). */
+export function bandaModelo(vista: Vista): BandaModelo {
+  if (vista === "similitud-luna") return "luna";
+  if (vista === "clases") return "conjunta";
+  return "marte";
+}
+
+// Teselas XYZ 256 px (EPSG:3857) del modelo v2, paleta de 5 clases, sin dato transparente.
+// global: z0–6 (0,05°); global_sin_ecuador: z6 con Ecuador recortado; ecuador: z5–9 (1/120°).
+const TESELAS = {
+  global: { dir: "global", minzoom: 0, maxzoom: 6 },
+  global_sin_ecuador: { dir: "global_sin_ecuador", minzoom: 6, maxzoom: 6 },
+  ecuador: { dir: "ecuador", minzoom: 5, maxzoom: 9 },
+} as const;
+type FuenteModelo = keyof typeof TESELAS;
+const FUENTES_MODELO = Object.keys(TESELAS) as FuenteModelo[];
+const CAPA_DE: Record<FuenteModelo, string> = {
+  global: "capa-delta",
+  global_sin_ecuador: "capa-global-cerca",
+  ecuador: "capa-ecuador",
+};
+const ECUADOR_BOUNDS: [number, number, number, number] = [-92, -5, -75, 2];
+
+function tileUrl(fuente: FuenteModelo, banda: BandaModelo): string {
+  return assetUrl(`/productos/tiles/${TESELAS[fuente].dir}/${banda}/{z}/{x}/{y}.png`);
+}
+
+/** Cruce de opacidad entre z5,5 y z6,5: global al alejarse, Ecuador al acercarse. */
+function opacidadModelo(fuente: FuenteModelo, op: number): unknown {
+  if (fuente === "global") return ["interpolate", ["linear"], ["zoom"], 5.5, op, 6.5, 0];
+  return ["interpolate", ["linear"], ["zoom"], 5.5, 0, 6.5, op];
+}
+
+function setModelo(map: MapLibreMap, banda: BandaModelo, opacity?: number): void {
+  for (const f of FUENTES_MODELO) {
+    const src = map.getSource(f) as (RasterTileSource & { tiles?: string[] }) | undefined;
+    const url = tileUrl(f, banda);
+    if (src && src.tiles?.[0] !== url && typeof src.setTiles === "function") src.setTiles([url]);
+    if (opacity != null && map.getLayer(CAPA_DE[f])) {
+      map.setPaintProperty(CAPA_DE[f], "raster-opacity", opacidadModelo(f, opacity));
+    }
+  }
 }
 
 function globeStyle(): StyleSpecification {
@@ -66,10 +106,28 @@ function globeStyle(): StyleSpecification {
         url: assetUrl("/basemap/hillshade_marte.png"),
         coordinates: WORLD,
       },
-      overlay: {
-        type: "image",
-        url: assetUrl("/productos/delta_marte.png"),
-        coordinates: imageCoords(AREA_BOUNDS.completo),
+      global: {
+        type: "raster",
+        tiles: [tileUrl("global", "marte")],
+        tileSize: 256,
+        minzoom: TESELAS.global.minzoom,
+        maxzoom: TESELAS.global.maxzoom,
+        attribution: "Modelo ANALOG v2; máscara NASA MODIS IGBP (MCD12Q1 v061, GIBS)",
+      },
+      global_sin_ecuador: {
+        type: "raster",
+        tiles: [tileUrl("global_sin_ecuador", "marte")],
+        tileSize: 256,
+        minzoom: TESELAS.global_sin_ecuador.minzoom,
+        maxzoom: TESELAS.global_sin_ecuador.maxzoom,
+      },
+      ecuador: {
+        type: "raster",
+        tiles: [tileUrl("ecuador", "marte")],
+        tileSize: 256,
+        minzoom: TESELAS.ecuador.minzoom,
+        maxzoom: TESELAS.ecuador.maxzoom,
+        bounds: ECUADOR_BOUNDS,
       },
       sitios: {
         type: "geojson",
@@ -119,8 +177,20 @@ function globeStyle(): StyleSpecification {
       {
         id: "capa-delta",
         type: "raster",
-        source: "overlay",
-        paint: { "raster-opacity": 0.82, "raster-fade-duration": 0 },
+        source: "global",
+        paint: { "raster-opacity": opacidadModelo("global", 0.82) as number, "raster-fade-duration": 0, "raster-resampling": "nearest" },
+      },
+      {
+        id: "capa-global-cerca",
+        type: "raster",
+        source: "global_sin_ecuador",
+        paint: { "raster-opacity": opacidadModelo("global_sin_ecuador", 0.82) as number, "raster-fade-duration": 0, "raster-resampling": "nearest" },
+      },
+      {
+        id: "capa-ecuador",
+        type: "raster",
+        source: "ecuador",
+        paint: { "raster-opacity": opacidadModelo("ecuador", 0.82) as number, "raster-fade-duration": 0, "raster-resampling": "nearest" },
       },
       {
         id: "sitios-halo",
@@ -176,6 +246,8 @@ export function createGlobeMap(container: HTMLElement): MapLibreMap {
   };
   map.on("style.load", enableGlobe);
   if (map.isStyleLoaded()) enableGlobe();
+  // Acceso de depuración/capturas automáticas (no afecta a la interfaz).
+  (window as unknown as { __analogMap?: MapLibreMap }).__analogMap = map;
   return map;
 }
 
@@ -301,18 +373,12 @@ export function applyGlobeState(
   visible(map, "hs-ecuador", enTierra);
   visible(map, "hs-luna", opts.cuerpo === "luna");
   visible(map, "hs-marte", opts.cuerpo === "marte");
-  visible(map, "capa-delta", enTierra);
+  for (const f of FUENTES_MODELO) visible(map, CAPA_DE[f], enTierra);
   visible(map, "sitios-halo", enTierra);
   visible(map, "sitios-punto", enTierra);
   if (enTierra) {
     setValidationSites(map, opts.sitios, opts.vista === "clima" ? "similitud-marte" : opts.vista);
-    const src = map.getSource("overlay") as ImageSource | undefined;
-    const url = overlayUrl(opts.vista === "clima" ? "similitud-marte" : opts.vista);
-    const coordinates = imageCoords(AREA_BOUNDS.completo);
-    if (src && typeof src.updateImage === "function") {
-      src.updateImage({ url, coordinates });
-    }
-    map.setPaintProperty("capa-delta", "raster-opacity", opts.opacity);
+    setModelo(map, bandaModelo(opts.vista), opts.opacity);
     if (opts.fly) flyToArea(map, AREA_BOUNDS[opts.area]);
   } else if (opts.fly) {
     map.easeTo({ center: [0, 0], zoom: 1.35, pitch: 0, bearing: 0, duration: 700 });
@@ -321,16 +387,14 @@ export function applyGlobeState(
 
 export function setOverlay(map: MapLibreMap, vista: Vista, extents: Extension, opacity = 0.85): void {
   void extents;
-  if (!map.isStyleLoaded() || !map.getSource("overlay")) return;
-  const src = map.getSource("overlay") as ImageSource;
-  if (typeof src.updateImage === "function") {
-    src.updateImage({ url: overlayUrl(vista), coordinates: imageCoords(AREA_BOUNDS.completo) });
-  }
-  if (map.getLayer("capa-delta")) map.setPaintProperty("capa-delta", "raster-opacity", opacity);
+  if (!map.isStyleLoaded() || !map.getSource("global")) return;
+  setModelo(map, bandaModelo(vista), opacity);
 }
 
 export function setOverlayOpacity(map: MapLibreMap, opacity: number): void {
-  if (map.getLayer("capa-delta")) map.setPaintProperty("capa-delta", "raster-opacity", opacity);
+  for (const f of FUENTES_MODELO) {
+    if (map.getLayer(CAPA_DE[f])) map.setPaintProperty(CAPA_DE[f], "raster-opacity", opacidadModelo(f, opacity));
+  }
 }
 
 export function flyToArea(map: MapLibreMap, extents: Extension): void {

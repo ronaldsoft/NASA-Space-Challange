@@ -1,0 +1,44 @@
+{
+ "global": {
+  "v1_sin_mascara_nasa": {
+   "celdas": 2584921,
+   "marte_ge95": 74045,
+   "luna_ge95": 55769,
+   "conjunta_ge95_min": 1285
+  },
+  "variante_solo_bosque": {
+   "celdas": 2493627,
+   "marte_ge95": 63146,
+   "luna_ge95": 52864,
+   "conjunta_ge95_min": 1249
+  },
+  "principal_bosque_y_uso": {
+   "celdas": 2197719,
+   "marte_ge95": 44693,
+   "luna_ge95": 38387,
+   "conjunta_ge95_min": 1144
+  },
+  "excluidas_por_bosque": 91294,
+  "excluidas_por_uso_sin_bosque": 295908,
+  "celdas_sin_dato_igbp": 85160
+ },
+ "ecuador": {
+  "articulo_sin_mascara_nasa": {
+   "celdas": 10193,
+   "marte_ge95": 709,
+   "luna_ge95": 241,
+   "conjunta_ge95": 0,
+   "conjunta_max": 93
+  },
+  "principal_bosque_y_uso": {
+   "celdas": 8741,
+   "marte_ge95": 387,
+   "luna_ge95": 193,
+   "conjunta_ge95": 0,
+   "conjunta_max": 93
+  },
+  "excluidas_por_uso": 1318,
+  "excluidas_por_bosque_igbp": 134,
+  "excluidas_cultivo_12_14": 1105
+ }
+}
