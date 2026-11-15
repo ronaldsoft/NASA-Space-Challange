@@ -188,6 +188,15 @@ export interface Catalogo {
   elevacion_modo?: string;
   capa_clima?: { disponible?: boolean; etiqueta?: string; nota?: string };
   clases_ecuador?: Record<string, number>;
+  /** Modelo v2 (teselas, máscara NASA IGBP y métricas). Viene de catalogo.json o de Supabase (analog_v2_*). */
+  modelo_v2?: {
+    mascara?: unknown;
+    metricas?: Record<string, unknown>;
+    teselas?: Record<string, number>;
+    capas?: unknown[];
+    fuente_datos?: "catalogo" | "supabase";
+    [k: string]: unknown;
+  };
 }
 
 export interface DataSource {

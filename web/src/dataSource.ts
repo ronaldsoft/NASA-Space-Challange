@@ -7,6 +7,9 @@ import { assetUrl } from "./paths";
  * REST de Supabase: primero `analog_get_validation_table`, y si no existe
  * `get_validation_table`. El mapa sigue saliendo de los rásteres estáticos.
  * Si el RPC falla, se usa el catálogo estático.
+ * Modelo v2: las métricas y la metadata de capas se leen de
+ * `analog_v2_get_metrics` y `analog_v2_get_layers` (migración 013). Si fallan,
+ * quedan las de `catalogo.json` (clave `modelo_v2`).
  */
 import type { Catalogo, DataSource } from "./types";
 
@@ -42,9 +45,44 @@ export class SupabaseDataSource implements DataSource {
    * El mapa y las firmas siguen saliendo del catálogo estático (rásteres
    * precalculados). La tabla de validación y las fichas pueden venir del RPC.
    */
+  private async rpc<T>(base: string, fn: string, body: unknown = {}): Promise<T | null> {
+    try {
+      const res = await fetch(`${base}/rest/v1/rpc/${fn}`, {
+        method: "POST",
+        headers: this.headers(),
+        body: JSON.stringify(body),
+      });
+      if (!res.ok) return null;
+      return (await res.json()) as T;
+    } catch {
+      return null;
+    }
+  }
+
+  /** Modelo v2 desde Supabase; si falla, se conserva el bloque de catalogo.json. */
+  private async loadModeloV2(base: string, cat: Catalogo): Promise<void> {
+    const [metricas, capas] = await Promise.all([
+      this.rpc<Record<string, unknown>>(base, "analog_v2_get_metrics"),
+      this.rpc<unknown[]>(base, "analog_v2_get_layers"),
+    ]);
+    if (metricas && Object.keys(metricas).length && capas?.length) {
+      const { mascara_nasa_igbp, ...resto } = metricas as Record<string, unknown>;
+      cat.modelo_v2 = {
+        ...(cat.modelo_v2 ?? {}),
+        metricas: resto,
+        mascara: mascara_nasa_igbp ?? cat.modelo_v2?.mascara,
+        capas,
+        fuente_datos: "supabase",
+      };
+    } else if (cat.modelo_v2) {
+      cat.modelo_v2.fuente_datos = "catalogo";
+    }
+  }
+
   async load(): Promise<Catalogo> {
     const mock = await new MockDataSource().load();
     const base = this.url.replace(/\/$/, "");
+    await this.loadModeloV2(base, mock);
     try {
       let res = await fetch(`${base}/rest/v1/rpc/analog_get_validation_table`, {
         method: "POST",
