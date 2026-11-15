@@ -29,6 +29,8 @@ function classify(dm: number, dl: number, tM: number, tL: number): string {
 }
 
 export function recomputeValidation(catalog: Catalogo, weights: Weights): SitioValidacion[] {
+  // Modelo v2: percentiles precalculados; los pesos de la v1 no se aplican.
+  if (catalog.metricas_validacion.version === "modelo_v2") return catalog.sitios_validacion;
   const sum = INDEX_VARS.reduce((s, k) => s + Math.max(0, weights[k]), 0) || 1;
   const w = Object.fromEntries(INDEX_VARS.map((k) => [k, Math.max(0, weights[k]) / sum])) as Weights;
 

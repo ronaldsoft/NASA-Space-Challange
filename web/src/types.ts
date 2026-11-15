@@ -173,6 +173,10 @@ export interface Catalogo {
     aciertos_auc?: number;
     n_sitios_auc?: number;
     n_sitios: number;
+    version?: string;
+    ic95_marte?: [number, number];
+    ic95_luna?: [number, number];
+    nota?: string;
   };
   sitios_validacion: SitioValidacion[];
   zonas_prioritarias: ZonaPrioritaria[];

@@ -83,6 +83,26 @@ export class SupabaseDataSource implements DataSource {
     const mock = await new MockDataSource().load();
     const base = this.url.replace(/\/$/, "");
     await this.loadModeloV2(base, mock);
+    if (mock.metricas_validacion.version === "modelo_v2") {
+      // Modelo v2 principal: los percentiles de los sitios salen de analog_v2_get_stations; la tabla v1 no se usa.
+      const est = await this.rpc<Array<{ kind: string; name: string; pct_marte_v2: number | null; pct_luna_v2: number | null }>>(
+        base,
+        "analog_v2_get_stations",
+      );
+      const porNombre = new Map((est ?? []).filter((e) => e.kind === "sitio_validacion").map((e) => [e.name, e]));
+      if (porNombre.size) {
+        mock.sitios_validacion = mock.sitios_validacion.map((s) => {
+          const e = porNombre.get(s.nombre);
+          if (!e) return s;
+          return {
+            ...s,
+            delta_marte: e.pct_marte_v2 == null ? s.delta_marte : e.pct_marte_v2 / 100,
+            delta_luna: e.pct_luna_v2 == null ? s.delta_luna : e.pct_luna_v2 / 100,
+          };
+        });
+      }
+      return mock;
+    }
     try {
       let res = await fetch(`${base}/rest/v1/rpc/analog_get_validation_table`, {
         method: "POST",
