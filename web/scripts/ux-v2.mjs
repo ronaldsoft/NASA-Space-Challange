@@ -165,6 +165,22 @@ const report = { viewports: [], shots: [], keyboard: null };
   await page.close();
 }
 
+// En móvil la navegación vive en un cajón: se abre antes de elegir la vista.
+async function goVista(page, vista) {
+  const menu = await page.$("#btn-menu");
+  if (menu && (await menu.isIntersectingViewport())) {
+    const abierto = await page.$eval("#app", (el) => el.classList.contains("rail-open"));
+    if (!abierto) {
+      // esperar a que termine de cerrarse el cajón anterior: mientras se desliza tapa el botón
+      await page.waitForFunction(() => getComputedStyle(document.getElementById("rail")).visibility === "hidden");
+      await menu.click();
+    }
+  }
+  await page.waitForSelector(`.rail button[data-vista="${vista}"]`, { visible: true });
+  await new Promise((r) => setTimeout(r, 900));
+  await page.click(`button[data-vista="${vista}"]`);
+}
+
 // 1366 and 390: smoke + no errors
 for (const vp of [
   { width: 1366, height: 768, name: "1366x768" },
@@ -172,13 +188,13 @@ for (const vp of [
 ]) {
   const { page, bag } = await freshPage(vp);
   await page.waitForSelector("[data-testid='home']");
-  await page.click('button[data-vista="similitud-marte"]');
+  await goVista(page, "similitud-marte");
   await page.waitForFunction(() => document.getElementById("app")?.dataset.vista === "similitud-marte");
   await new Promise((r) => setTimeout(r, 1000));
-  await page.click('button[data-vista="validacion"]');
+  await goVista(page, "validacion");
   await page.waitForSelector("[data-testid='validacion-oficial']");
   if (vp.width === 390) {
-    await page.click('button[data-vista="inicio"]');
+    await goVista(page, "inicio");
     await page.waitForSelector("[data-testid='home']");
     await page.screenshot({ path: path.join(OUT, "07-movil.png"), type: "png" });
   }

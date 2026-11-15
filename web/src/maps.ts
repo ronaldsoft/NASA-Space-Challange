@@ -32,7 +32,7 @@ function imageCoords(ext: Extension): [[number, number], [number, number], [numb
 
 export type BandaModelo = "marte" | "luna" | "conjunta";
 
-/** Modelo v2: vista del tablero -> banda de las teselas (marte, luna o conjunta = mínimo). */
+/** Vista del tablero -> banda de las teselas (marte, luna o conjunta = mínimo). */
 export function bandaModelo(vista: Vista): BandaModelo {
   if (vista === "similitud-luna") return "luna";
   if (vista === "clases") return "conjunta";
@@ -112,7 +112,7 @@ function globeStyle(): StyleSpecification {
         tileSize: 256,
         minzoom: TESELAS.global.minzoom,
         maxzoom: TESELAS.global.maxzoom,
-        attribution: "Modelo ANALOG v2; máscara NASA MODIS IGBP (MCD12Q1 v061, GIBS)",
+        attribution: "Índice ANALOG; máscara NASA MODIS IGBP (MCD12Q1 v061, GIBS)",
       },
       global_sin_ecuador: {
         type: "raster",
@@ -361,7 +361,6 @@ export function applyGlobeState(
     area: AreaTierra;
     vista: Vista;
     opacity: number;
-    sitios: SitioValidacion[];
     fly?: boolean;
   },
 ): void {
@@ -374,10 +373,12 @@ export function applyGlobeState(
   visible(map, "hs-luna", opts.cuerpo === "luna");
   visible(map, "hs-marte", opts.cuerpo === "marte");
   for (const f of FUENTES_MODELO) visible(map, CAPA_DE[f], enTierra);
-  visible(map, "sitios-halo", enTierra);
-  visible(map, "sitios-punto", enTierra);
+  visible(map, "sitios-halo", false);
+  visible(map, "sitios-punto", false);
+  stationMarkers.forEach((m) => {
+    m.getElement().style.display = enTierra ? "" : "none";
+  });
   if (enTierra) {
-    setValidationSites(map, opts.sitios, opts.vista === "clima" ? "similitud-marte" : opts.vista);
     setModelo(map, bandaModelo(opts.vista), opts.opacity);
     if (opts.fly) flyToArea(map, AREA_BOUNDS[opts.area]);
   } else if (opts.fly) {
@@ -418,6 +419,25 @@ export function flyToSitios(map: MapLibreMap, sitios: { lon: number; lat: number
 }
 
 const markers: maplibregl.Marker[] = [];
+const stationMarkers: maplibregl.Marker[] = [];
+
+/** Estaciones análogas permanentes: punto con etiqueta visible al pasar o enfocar. */
+export function setStationMarkers(map: MapLibreMap, estaciones: { nombre: string; lugar: string; lat: number; lon: number }[]): void {
+  if (stationMarkers.length) return;
+  for (const e of estaciones) {
+    const el = document.createElement("button");
+    el.type = "button";
+    el.className = "map-pin map-pin-estacion";
+    el.setAttribute("aria-label", `${e.nombre}, ${e.lugar}`);
+    el.title = `${e.nombre} · ${e.lugar}`;
+    el.innerHTML = `<span class="pin-dot"></span><span class="pin-label">${escapeHtml(e.nombre)}</span>`;
+    el.addEventListener("click", (ev) => {
+      ev.stopPropagation();
+      el.classList.toggle("is-selected");
+    });
+    stationMarkers.push(new maplibregl.Marker({ element: el, anchor: "center" }).setLngLat([e.lon, e.lat]).addTo(map));
+  }
+}
 
 export function setMarkers(
   map: MapLibreMap,

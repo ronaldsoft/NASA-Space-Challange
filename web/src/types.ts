@@ -45,12 +45,9 @@ export type Vista =
   | "similitud-luna"
   | "visualizador"
   | "validacion"
-  | "diagnostico"
   | "incertidumbre"
   | "trabajo-futuro"
-  | "ficha"
-  | "clases"
-  | "clima";
+  | "clases";
 
 export interface Extension {
   oeste: number;

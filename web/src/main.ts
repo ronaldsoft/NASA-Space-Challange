@@ -1,80 +1,137 @@
-import "@fontsource/ibm-plex-sans/400.css";
-import "@fontsource/ibm-plex-sans/500.css";
-import "@fontsource/ibm-plex-sans/600.css";
-import "@fontsource/ibm-plex-mono/400.css";
-import "@fontsource/ibm-plex-mono/500.css";
+import "@fontsource/public-sans/400.css";
+import "@fontsource/public-sans/500.css";
+import "@fontsource/public-sans/600.css";
+import "@fontsource/newsreader/400.css";
+import "@fontsource/newsreader/500.css";
+import "@fontsource/newsreader/600.css";
 import "maplibre-gl/dist/maplibre-gl.css";
 import "./style.css";
 
-import type { Map as MapLibreMap, MapMouseEvent } from "maplibre-gl";
+import type { Map as MapLibreMap } from "maplibre-gl";
 import {
-  cardHTML,
-  diagnosisHTML,
-  fmt,
-  fraseDelta,
-  fraseParecido,
+  explorarEcuadorHTML,
   futureWorkHTML,
   homeHTML,
-  sitioCardHTML,
+  legendHTML,
+  mapPanelHTML,
   TOUR_PASOS,
   uncertaintyHTML,
   validationHTML,
 } from "./content";
+import { ESTACIONES } from "./datosModelo";
 import { createDataSource } from "./dataSource";
 import { defTermino, GLOSARIO } from "./glossary";
 import {
   applyGlobeState,
-  AREA_BOUNDS,
-  flyToSitios,
   clearMarkers,
   createGlobeMap,
   escapeHtml,
-  nearestZone,
-  setMarkers,
+  setStationMarkers,
   setOverlayOpacity,
   type AreaTierra,
   type CuerpoGlobo,
 } from "./maps";
 import { assetUrl } from "./paths";
-import { recomputeValidation } from "./scoring";
-import {
-  DEFAULT_WEIGHTS,
-  NIVELES,
-  VAR_LABELS,
-  type Catalogo,
-  type Nivel,
-  type SitioValidacion,
-  type Vista,
-  type Weights,
-} from "./types";
+import { NIVELES, type Catalogo, type Nivel, type Vista } from "./types";
 
 const LS_NIVEL = "analog_nivel";
 const LS_TOUR = "analog_tour_dismissed";
+const LS_THEME = "analog_theme";
 
-const VISTAS_PRINCIPALES: { id: Vista; label: string }[] = [
-  { id: "inicio", label: "Inicio" },
-  { id: "similitud-marte", label: "Similitud a Marte" },
-  { id: "similitud-luna", label: "Similitud a la Luna" },
-  { id: "validacion", label: "Validación" },
-  { id: "diagnostico", label: "Diagnóstico" },
-  { id: "incertidumbre", label: "Incertidumbre" },
-  { id: "visualizador", label: "Visualizador 3D" },
+interface VistaItem {
+  id: Vista;
+  label: string;
+  sub?: string;
+}
+
+const GRUPOS: { titulo: string; items: VistaItem[] }[] = [
+  { titulo: "Resumen", items: [{ id: "inicio", label: "Inicio" }] },
+  {
+    titulo: "Mapas",
+    items: [
+      { id: "similitud-marte", label: "Similitud con Marte" },
+      { id: "similitud-luna", label: "Similitud con la Luna" },
+      { id: "clases", label: "Marte y Luna a la vez" },
+    ],
+  },
+  {
+    titulo: "Evidencia",
+    items: [
+      { id: "validacion", label: "Validación" },
+      { id: "incertidumbre", label: "Límites" },
+    ],
+  },
+  { titulo: "Explorar", items: [{ id: "visualizador", label: "Explorar Ecuador" }] },
+  { titulo: "Proyecto", items: [{ id: "trabajo-futuro", label: "Trabajo futuro" }] },
 ];
 
-const VISTAS_MAS: { id: Vista; label: string }[] = [
-  { id: "ficha", label: "Ficha de zona" },
-  { id: "clases", label: "Clases (secundaria · especif. 0)" },
-  { id: "clima", label: "Clima (no publicado)" },
-  { id: "trabajo-futuro", label: "Trabajo futuro" },
-];
+const HINT_VISTA: Record<string, string> = {
+  inicio: "Qué medimos y con qué datos",
+  "similitud-marte": "Índice 0–1 frente a los sitios de aterrizaje en Marte",
+  "similitud-luna": "Índice 0–1 frente a los sitios de aterrizaje en la Luna",
+  clases: "El menor de los dos índices en cada celda",
+  validacion: "Parámetros, valores y umbrales",
+  incertidumbre: "Lo que el índice no mide",
+  visualizador: "Relieve en 3D, leyenda y estadísticas de Ecuador",
+  "trabajo-futuro": "Variables que se pueden añadir",
+};
 
-const TODAS_VISTAS: Vista[] = [...VISTAS_PRINCIPALES, ...VISTAS_MAS].map((v) => v.id);
-const TEXT_VISTAS: Vista[] = ["inicio", "validacion", "diagnostico", "incertidumbre", "trabajo-futuro"];
-const MAP_VISTAS: Vista[] = ["similitud-marte", "similitud-luna", "clases", "ficha", "clima"];
+const TITULO_VISTA: Record<string, string> = {
+  clases: "Marte y Luna a la vez",
+};
+
+const ICONOS: Record<string, string> = {
+  inicio: '<path d="M9 3 16 15H2z"/>',
+  "similitud-marte": '<circle cx="9" cy="9" r="6" fill="#e0643c" stroke="none"/>',
+  "similitud-luna": '<circle cx="9" cy="9" r="5.2"/>',
+  clases: '<rect x="3" y="3" width="5" height="5"/><rect x="10" y="3" width="5" height="5"/><rect x="3" y="10" width="5" height="5"/><rect x="10" y="10" width="5" height="5"/>',
+  clima: '<circle cx="9" cy="9" r="5.5" stroke-dasharray="2.5 2.5"/>',
+  validacion: '<path d="M3 9.5 7 13.5 15 4.5"/>',
+  diagnostico: '<path d="M3 14V9M7 14V4M11 14V7M15 14V11"/>',
+  incertidumbre: '<path d="M3 9h12M3 5.5v7M15 5.5v7"/>',
+  ficha: '<path d="M9 16s5-4.6 5-8.2A5 5 0 0 0 4 7.8C4 11.4 9 16 9 16z"/><circle cx="9" cy="7.8" r="1.8"/>',
+  visualizador: '<path d="M9 2 15 5.5v7L9 16 3 12.5v-7zM9 9v7M3 5.5 9 9l6-3.5"/>',
+  "trabajo-futuro": '<path d="M3 9h11M10 5l4 4-4 4"/>',
+};
+
+function iconoVista(id: string): string {
+  return `<svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">${ICONOS[id] ?? ""}</svg>`;
+}
+
+const TODAS_VISTAS: Vista[] = GRUPOS.flatMap((g) => g.items.map((i) => i.id));
+const ETIQUETA_VISTA: Record<string, string> = Object.fromEntries(
+  GRUPOS.flatMap((g) => g.items.map((i) => [i.id, TITULO_VISTA[i.id] ?? i.label])),
+);
+const TEXT_VISTAS: Vista[] = ["inicio", "validacion", "incertidumbre", "trabajo-futuro"];
+const MAP_VISTAS: Vista[] = ["similitud-marte", "similitud-luna", "clases"];
+
+type Theme = "dark" | "light";
+
+function readTheme(): Theme {
+  try {
+    const v = localStorage.getItem(LS_THEME);
+    if (v === "dark" || v === "light") return v;
+  } catch {
+    /* almacenamiento no disponible */
+  }
+  return window.matchMedia?.("(prefers-color-scheme: light)").matches ? "light" : "dark";
+}
+
+function lsSet(k: string, v: string): void {
+  try {
+    localStorage.setItem(k, v);
+  } catch {
+    /* almacenamiento no disponible: la preferencia solo dura la sesión */
+  }
+}
 
 function readNivel(): Nivel {
-  const v = localStorage.getItem(LS_NIVEL);
-  if (v === "explorador" || v === "estudiante" || v === "cientifico") return v;
+  try {
+    const v = localStorage.getItem(LS_NIVEL);
+    if (v === "explorador" || v === "estudiante" || v === "cientifico") return v;
+  } catch {
+    /* sin almacenamiento */
+  }
   return "explorador";
 }
 
@@ -86,10 +143,6 @@ function vistaFromHash(): Vista {
 const state = {
   vista: "inicio" as Vista,
   nivel: readNivel() as Nivel,
-  zonaId: null as string | null,
-  sitioNombre: null as string | null,
-  weights: { ...DEFAULT_WEIGHTS } as Weights,
-  sitios: [] as SitioValidacion[],
   opacity: 0.82,
   tour: null as number | null,
   cuerpoGlobo: "tierra" as CuerpoGlobo,
@@ -97,185 +150,152 @@ const state = {
   unityAbierto: false,
 };
 
-function metricsStrip(cat: Catalogo, nivel: Nivel): string {
-  const m = cat.metricas_validacion;
-  const aciertos = m.aciertos_auc ?? m.aciertos ?? 6;
-  const n = m.n_sitios_auc ?? 16;
+function metricsStrip(_cat: Catalogo, nivel: Nivel): string {
+  const fila = (l: string, v: string) => `<div><dt>${l}</dt><dd>${v}</dd></div>`;
   if (nivel === "explorador") {
-    return `
-      <div class="metric"><span class="k">${aciertos} de ${n}</span><span class="l">Aciertos en la prueba</span></div>
-      <div class="metric"><span class="k">0,09</span><span class="l">Nota Marte (de 1)</span></div>
-      <div class="metric"><span class="k">0,25</span><span class="l">Nota Luna (de 1)</span></div>`;
+    return fila("AUC Marte", "0,89") + fila("AUC Luna", "0,92") + fila("Umbral", "índice ≥ 0,95");
   }
-  if (nivel === "estudiante") {
-    return `
-      <div class="metric"><span class="k">0,09</span><span class="l">AUC Marte</span></div>
-      <div class="metric"><span class="k">0,25</span><span class="l">AUC Luna</span></div>
-      <div class="metric"><span class="k">${aciertos}/${n}</span><span class="l">Aciertos (AUC)</span></div>`;
-  }
-  return `
-    <div class="metric"><span class="k">0,09 [0,00–0,29]</span><span class="l">AUC Marte (IC 95 %)</span></div>
-    <div class="metric"><span class="k">0,25 [0,00–0,69]</span><span class="l">AUC Luna (IC 95 %)</span></div>
-    <div class="metric"><span class="k">0,13</span><span class="l">Umbral Marte</span></div>
-    <div class="metric"><span class="k">0,79</span><span class="l">Umbral Luna</span></div>
-    <div class="metric"><span class="k">${aciertos}/${n}</span><span class="l">Aciertos (AUC)</span></div>`;
+  return (
+    fila("AUC Marte (IC 95 %)", "0,89 [0,72–1,00]") +
+    fila("AUC Luna (IC 95 %)", "0,92 [0,75–1,00]") +
+    fila("Umbral", "índice ≥ 0,95") +
+    fila("Rejillas", "0,05° mundo · 1 km Ecuador")
+  );
 }
 
-function legendHTML(vista: Vista, nivel: Nivel): string {
-  if (vista === "clases") {
-    return `<div class="title">Vista secundaria del umbral congelado</div>
-      <div class="warn-box">El umbral de Marte (0,13) tiene <strong>especificidad 0</strong>. Estos colores no son un inventario de análogos ni una clasificación. Prefiera los mapas continuos de δ.</div>
-      <div><span class="swatch swatch-marte"></span>δ Marte ≥ 0,13 y δ Luna &lt; 0,79</div>
-      <div><span class="swatch swatch-luna"></span>δ Luna ≥ 0,79 y δ Marte &lt; 0,13</div>
-      <div><span class="swatch swatch-ambos"></span>supera ambos umbrales</div>
-      <div><span class="swatch swatch-ninguno"></span>no supera ninguno</div>
-      <p class="note">Los colores son los del ráster congelado v1; no se alteró el archivo. Es un recorte por umbral, no una etiqueta definitiva.</p>`;
-  }
-  if (vista === "clima") {
-    return `<div class="title">Clima</div>
-      <p class="note">No entra al índice y no se publica un ráster, para no confundirlo con un dato real.</p>`;
-  }
-  const cuerpo = vista === "similitud-luna" ? "la Luna" : "Marte";
-  const ramp = vista === "similitud-luna" ? "ramp-luna" : "ramp-marte";
-  const tech =
-    nivel === "cientifico"
-      ? `δ de 0 a 1 (0 = nada, 1 = idéntico en el espacio estandarizado). `
-      : nivel === "estudiante"
-        ? `δ va de 0 (nada parecido) a 1 (idéntico, según el índice). `
-        : "";
-  return `<div class="title">Parecido a ${cuerpo}</div>
-    <div class="ramp ${ramp}" role="img" aria-label="De menos parecido a más parecido"></div>
-    <div class="ramp-labels"><span>Menos parecido</span><span>Más parecido</span></div>
-    <p class="note">${tech}La rampa de color es la del producto congelado v1 (no se modificó el archivo). Úsala junto con las palabras de la leyenda. El índice no pasó la validación: un color «más parecido» es una pista, no una certeza.</p>`;
-}
-
-function captionHTML(vista: Vista, cat: Catalogo, nivel: Nivel, cuerpo: CuerpoGlobo, area: AreaTierra): string {
-  if (cuerpo === "luna") {
-    return `<strong>Luna</strong> · relieve LOLA LDEM_64 (sombreado). El índice δ se calcula en la Tierra, no sobre este globo. El terreno 3D no está activo (pesa en móviles).`;
-  }
-  if (cuerpo === "marte") {
-    return `<strong>Marte</strong> · relieve MOLA MEGDR 64 ppd (sombreado). El índice δ se calcula en la Tierra, no sobre este globo. El terreno 3D no está activo (pesa en móviles).`;
-  }
-  const ext = AREA_BOUNDS[area];
+function captionHTML(vista: Vista, _cat: Catalogo, _nivel: Nivel, cuerpo: CuerpoGlobo, area: AreaTierra): string {
+  if (cuerpo === "luna") return `<strong>Luna</strong> · relieve LOLA LDEM_64 (NASA), sombreado. El índice se calcula sobre la Tierra.`;
+  if (cuerpo === "marte") return `<strong>Marte</strong> · relieve MOLA MEGDR 64 ppd (NASA), sombreado. El índice se calcula sobre la Tierra.`;
+  const dest = vista === "similitud-luna" ? "la Luna" : vista === "clases" ? "Marte y la Luna a la vez" : "Marte";
   const areaNom = area === "galapagos" ? "Galápagos" : "Ecuador continental";
-  const isla =
-    area === "galapagos"
-      ? " · 6 606 celdas válidas de 1 km (Isabela 4 128; Darwin y Wolf: 0)"
-      : " · 446 657 celdas válidas de 1 km";
-  if (nivel === "explorador") {
-    const dest = vista === "similitud-luna" ? "la Luna" : vista === "clases" ? "los umbrales congelados (vista secundaria)" : "Marte";
-    return `<strong>${areaNom}</strong> · parecido a ${dest}, en cuadrados de unos 1 km${isla}. Relieve en sombreado.`;
-  }
-  const res = cat.grilla.resolucion_deg ?? cat.grilla.resolucion_objetivo_m;
-  const base = `<strong>${areaNom}</strong> · lon ${ext.oeste.toFixed(2)}° a ${ext.este.toFixed(2)}° · lat ${ext.sur.toFixed(2)}° a ${ext.norte.toFixed(2)}° · ~1 km (${res}) · MOLA / LOLA / GLO-90 · v1 congelada · relieve en sombreado; el terreno 3D no está activo${isla}`;
-  if (vista === "clima") return `${base} · capa no publicada, el clima no entra al índice`;
-  if (vista === "clases") return `${base} · vista <strong>secundaria</strong> del umbral congelado: especificidad 0, sin porcentajes de cobertura`;
-  return base;
+  return `<strong>Similitud con ${dest}</strong> · mundo a 0,05°, ${areaNom} a 1 km al acercarte · MOLA, LOLA, MODIS (NASA) y GMTED2010 (USGS)`;
 }
 
-
-function bannerAviso(cat: Catalogo, nivel: Nivel): string {
+function bannerAviso(cat: Catalogo, _nivel: Nivel): string {
   if (cat.mock) return cat.aviso;
-  if (nivel === "explorador") {
-    return "Datos reales de superficie (MOLA, LOLA, GLO-90). El índice no pasó la validación: 6 de 16 aciertos.";
-  }
-  return cat.aviso;
+  return "Datos: MOLA, TES, LOLA, LROC WAC, MODIS MCD43C3 y MCD12Q1 (NASA); elevación terrestre GMTED2010 (USGS).";
 }
 
 async function main(): Promise<void> {
   const cat = await createDataSource().load();
-  state.sitios = cat.sitios_validacion;
-  state.zonaId = cat.zonas_prioritarias[0]?.id ?? null;
   state.vista = vistaFromHash();
   const app = document.getElementById("app")!;
 
+  const theme0 = readTheme();
+  document.documentElement.dataset.theme = theme0;
+  app.classList.toggle("has-mock-banner", cat.mock);
+
+  const railNav = GRUPOS.map(
+    (g) => `<div class="rail-group">
+      <h2 id="g-${g.titulo.toLowerCase()}">${escapeHtml(g.titulo)}</h2>
+      <ul aria-labelledby="g-${g.titulo.toLowerCase()}">${g.items
+        .map(
+          (v) =>
+            `<li><button type="button" class="rail-link${v.id === state.vista ? " is-active" : ""}" data-vista="${v.id}">${iconoVista(v.id)}<span>${escapeHtml(v.label)}</span>${v.sub ? `<span class="sub">${escapeHtml(v.sub)}</span>` : ""}</button></li>`,
+        )
+        .join("")}</ul>
+    </div>`,
+  ).join("");
+
   app.innerHTML = `
     <a class="skip-link" href="#contenido">Saltar al contenido</a>
-    <div class="${cat.mock ? "banner-mock" : "banner-real"}" data-testid="${cat.mock ? "mock-banner" : "real-banner"}">
-      <strong>${cat.mock ? "Datos MOCK" : "v1 congelada"}</strong>
-      <span id="banner-aviso"></span>
-    </div>
-    <header class="header">
+    ${
+      cat.mock
+        ? `<div class="banner-mock" data-testid="mock-banner"><strong>Datos MOCK</strong><span id="banner-aviso"></span></div>`
+        : `<div hidden></div>`
+    }
+    <div class="rail-scrim" id="rail-scrim" hidden></div>
+    <aside class="rail" id="rail" aria-label="Navegación principal">
       <div class="brand">
-        <h1>ANALOG / delta</h1>
-        <p>¿Dónde en la Tierra se parece a la Luna y a Marte? · NASA Space Apps 2026 · Ecuador</p>
-      </div>
-      <div class="nivel-block">
-        <span class="nivel-label" id="nivel-label">Nivel de detalle</span>
-        <div class="nivel-sel" role="radiogroup" aria-labelledby="nivel-label" data-testid="nivel-selector">
-          ${NIVELES.map(
-            (n) =>
-              `<button type="button" role="radio" data-nivel="${n.id}" aria-pressed="${n.id === state.nivel}" title="${escapeHtml(n.hint)}">${escapeHtml(n.label)}</button>`,
-          ).join("")}
+        <svg class="brand-mark" viewBox="0 0 44 44" fill="none" aria-hidden="true" focusable="false">
+          <path class="orb-line" d="M22 9 36.5 34H7.5z" stroke-width="1.6" stroke-linejoin="round"/>
+          <g class="orb-dots">
+            <circle class="dot dot-tierra" cx="22" cy="9" r="6"/>
+            <circle class="dot dot-luna" cx="7.5" cy="34" r="5"/>
+            <circle class="dot dot-marte" cx="36.5" cy="34" r="5.5"/>
+          </g>
+        </svg>
+        <div>
+          <p class="brand-name">ANALOG<span>/</span>delta</p>
+          <p class="brand-sub">La Tierra frente a Marte<br />y la Luna</p>
         </div>
       </div>
-      <div class="metrics-strip" id="metrics-strip">${metricsStrip(cat, state.nivel)}</div>
-    </header>
-    <nav class="toolbar" aria-label="Secciones de la página">
-      ${VISTAS_PRINCIPALES.map(
-        (v) =>
-          `<button type="button" data-vista="${v.id}" class="${v.id === state.vista ? "is-active" : ""}">${escapeHtml(v.label)}</button>`,
-      ).join("")}
-      <div class="more-wrap">
-        <button type="button" id="btn-mas" aria-expanded="false" aria-controls="menu-mas">Más</button>
-        <div class="more-menu" id="menu-mas" hidden role="menu">
-          ${VISTAS_MAS.map(
-            (v) => `<button type="button" role="menuitem" data-vista="${v.id}" >${escapeHtml(v.label)}</button>`,
-          ).join("")}
-          <button type="button" data-action="tour">Repetir el recorrido</button>
-        </div>
+      <nav class="rail-nav" aria-label="Vistas">${railNav}</nav>
+      <div class="status" data-testid="${cat.mock ? "mock-status" : "real-banner"}">
+        <div class="status-head"><strong>${cat.mock ? "Datos MOCK" : "Validación"}</strong></div>
+        <dl id="metrics-strip">${metricsStrip(cat, state.nivel)}</dl>
+        ${cat.mock ? "" : `<details><summary>Fuente de los datos</summary><p id="banner-aviso"></p></details>`}
       </div>
-      <span class="hint" id="toolbar-hint"></span>
-    </nav>
-    <div id="visualizador-wrap" hidden>
-      <iframe id="visualizador-frame" title="Visualizador 3D ANALOG v1" style="width:100%;height:calc(100vh - 64px);border:0" allow="fullscreen"></iframe>
-    </div>
-    <div class="main" id="contenido">
-      <div class="map-col">
-        <div class="map-caption" id="map-caption"></div>
-        <div id="map" role="region" aria-label="Globo de Tierra, Luna o Marte"></div>
-        <div class="map-controls">
-          <div class="cuerpo-toggle" role="group" aria-label="Cuerpo del globo" data-testid="selector-cuerpo-globo">
-            <button type="button" data-cuerpo-globo="tierra" aria-pressed="true">Tierra</button>
-            <button type="button" data-cuerpo-globo="luna" aria-pressed="false">Luna</button>
-            <button type="button" data-cuerpo-globo="marte" aria-pressed="false">Marte</button>
-          </div>
-          <div class="cuerpo-toggle solo-tierra" role="group" aria-label="Área en la Tierra" data-testid="selector-area">
-            <button type="button" data-area="ecuador_continental" aria-pressed="true">Ecuador continental</button>
-            <button type="button" data-area="galapagos" aria-pressed="false">Galápagos</button>
-            <button type="button" id="btn-sitios-validacion" data-testid="btn-sitios-validacion" aria-pressed="false">Sitios de validación</button>
-          </div>
-          <div class="cuerpo-toggle solo-tierra" role="group" aria-label="Comparar con Marte o con la Luna" data-testid="toggle-cuerpo">
-            <button type="button" data-cuerpo="marte" aria-pressed="true">Similitud a Marte</button>
-            <button type="button" data-cuerpo="luna" aria-pressed="false">Similitud a la Luna</button>
-          </div>
-          <div class="opacidad-ctl solo-tierra" data-testid="control-opacidad">
-            <label>Opacidad de la capa
-              <input type="range" id="opacidad" min="20" max="100" step="1" value="${Math.round(state.opacity * 100)}" />
-            </label>
-          </div>
-          <button type="button" class="btn btn-primary" id="btn-ver-unity" data-testid="btn-ver-unity" aria-expanded="false" aria-controls="unity-panel">Ver en 3D (Unity)</button>
+    </aside>
+    <div class="stage">
+      <header class="topbar">
+        <button type="button" class="icon-btn" id="btn-menu" aria-label="Abrir el menú" aria-expanded="false" aria-controls="rail">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M3 5.5h14M3 10h14M3 14.5h14"/></svg>
+        </button>
+        <div class="topbar-title">
+          <h1 class="crumb" id="crumb">Inicio</h1>
+          <p class="crumb-hint" id="toolbar-hint"></p>
         </div>
-        <div class="map-legend" id="map-legend" data-testid="leyenda"></div>
-        <div class="map-popup" id="map-popup" hidden role="dialog" aria-label="Ficha del punto"></div>
-        <div id="unity-panel" class="unity-panel" hidden role="dialog" aria-modal="true" aria-labelledby="unity-panel-titulo">
-          <div class="unity-panel-bar">
-            <h2 id="unity-panel-titulo">Visualizador 3D</h2>
-            <button type="button" class="btn" id="btn-cerrar-unity">Cerrar</button>
-          </div>
-          <iframe id="unity-panel-frame" title="Visualizador 3D ANALOG v1" allow="fullscreen"></iframe>
+        <div class="topbar-tools">
+          <button type="button" class="btn btn-ghost btn-small" data-action="tour">Guíame</button>
+          <button type="button" class="icon-btn" id="btn-theme" aria-label="Cambiar al tema claro" title="Cambiar tema">
+            <svg class="theme-icon-dark" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16.5 11.6A7 7 0 0 1 8.4 3.5a7 7 0 1 0 8.1 8.1z"/></svg>
+            <svg class="theme-icon-light" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="10" cy="10" r="3.6"/><path d="M10 2.5v2M10 15.5v2M2.5 10h2M15.5 10h2M4.7 4.7l1.4 1.4M13.9 13.9l1.4 1.4M4.7 15.3l1.4-1.4M13.9 6.1l1.4-1.4"/></svg>
+          </button>
         </div>
+        <div class="nivel-block">
+          <span class="seg-label" id="nivel-label">Nivel de detalle</span>
+          <div class="seg" role="radiogroup" aria-labelledby="nivel-label" data-testid="nivel-selector">
+            ${NIVELES.map(
+              (n) =>
+                `<button type="button" role="radio" data-nivel="${n.id}" aria-checked="${n.id === state.nivel}" title="${escapeHtml(n.hint)}">${escapeHtml(n.label)}</button>`,
+            ).join("")}
+          </div>
+        </div>
+      </header>
+      <div id="visualizador-wrap" hidden>
+        <iframe id="visualizador-frame" title="Explorar Ecuador en 3D" allow="fullscreen"></iframe>
+        <aside class="explorar-panel" id="explorar-panel" aria-label="Leyenda y estadísticas de Ecuador"></aside>
       </div>
-      <aside class="panel" aria-label="Explicación">
-        <div class="panel-body" id="panel-body" tabindex="-1"></div>
-        <div class="weights" id="weights-box">
-          <div class="head">
-            <span>Pesos del índice <small>(la v1 congelada usa 0,25 iguales; mover estos controles solo recalcula la tabla en pantalla, no altera umbrales, rásteres ni las métricas oficiales)</small></span>
-            <button type="button" class="reset" id="reset-pesos">Restablecer</button>
+      <div class="main" id="contenido" tabindex="-1">
+        <div class="map-col">
+          <div id="map" role="region" aria-label="Globo de Tierra, Luna o Marte"></div>
+          <div class="map-bar">
+            <div class="seg cuerpo-toggle" role="group" aria-label="Cuerpo del globo" data-testid="selector-cuerpo-globo">
+              <button type="button" data-cuerpo-globo="tierra" aria-pressed="true">Tierra</button>
+              <button type="button" data-cuerpo-globo="luna" aria-pressed="false">Luna</button>
+              <button type="button" data-cuerpo-globo="marte" aria-pressed="false">Marte</button>
+            </div>
+            <div class="seg cuerpo-toggle solo-tierra" role="group" aria-label="Área en la Tierra" data-testid="selector-area">
+              <button type="button" data-area="ecuador_continental" aria-pressed="true">Ecuador continental</button>
+              <button type="button" data-area="galapagos" aria-pressed="false">Galápagos</button>
+            </div>
+            <div class="seg cuerpo-toggle solo-tierra" role="group" aria-label="Comparar con Marte o con la Luna" data-testid="toggle-cuerpo">
+              <button type="button" data-cuerpo="marte" aria-pressed="true">Similitud con Marte</button>
+              <button type="button" data-cuerpo="luna" aria-pressed="false">Similitud con la Luna</button>
+            </div>
+            <div class="opacidad-ctl solo-tierra" data-testid="control-opacidad">
+              <label>Opacidad de la capa
+                <input type="range" id="opacidad" min="20" max="100" step="1" value="${Math.round(state.opacity * 100)}" />
+              </label>
+            </div>
+            <button type="button" class="btn btn-primary btn-small" id="btn-ver-unity" data-testid="btn-ver-unity" aria-expanded="false" aria-controls="unity-panel">Explorar Ecuador en 3D</button>
           </div>
-          <div class="weight-grid" id="weight-grid"></div>
+          <div class="map-legend" id="map-legend" data-testid="leyenda" role="region" aria-label="Leyenda del mapa"></div>
+          <div class="map-caption" id="map-caption"></div>
+          <div class="map-popup" id="map-popup" hidden role="dialog" aria-label="Ficha del punto"></div>
+          <div id="unity-panel" class="unity-panel" hidden role="dialog" aria-modal="true" aria-labelledby="unity-panel-titulo">
+            <div class="unity-panel-bar">
+              <h2 id="unity-panel-titulo">Explorar Ecuador</h2>
+              <button type="button" class="btn btn-small" id="btn-cerrar-unity">Cerrar</button>
+            </div>
+            <iframe id="unity-panel-frame" title="Explorar Ecuador en 3D" allow="fullscreen"></iframe>
+          </div>
         </div>
-      </aside>
+        <aside class="panel" aria-label="Explicación">
+          <div class="panel-body" id="panel-body" tabindex="-1"></div>
+        </aside>
+      </div>
     </div>
     <div class="tour-backdrop" id="tour-backdrop" hidden></div>
     <div class="tour-dialog" id="tour-dialog" hidden role="dialog" aria-modal="true" aria-labelledby="tour-titulo" data-testid="tour-dialog">
@@ -283,7 +303,7 @@ async function main(): Promise<void> {
       <h2 id="tour-titulo"></h2>
       <p id="tour-cuerpo"></p>
       <div class="tour-actions">
-        <button type="button" class="btn" data-tour="prev">Anterior</button>
+        <button type="button" class="btn btn-ghost" data-tour="prev">Anterior</button>
         <button type="button" class="btn btn-primary" data-tour="next">Siguiente</button>
         <button type="button" class="btn btn-ghost" data-tour="skip">Saltar recorrido</button>
       </div>
@@ -294,9 +314,7 @@ async function main(): Promise<void> {
   const map: MapLibreMap = createGlobeMap(document.getElementById("map")!);
 
   const hintForNivel = () => {
-    const el = document.getElementById("toolbar-hint")!;
-    const n = NIVELES.find((x) => x.id === state.nivel);
-    el.textContent = n ? n.hint : "";
+    document.getElementById("toolbar-hint")!.textContent = HINT_VISTA[state.vista] ?? "";
   };
 
   const closeGlossary = () => {
@@ -339,69 +357,13 @@ async function main(): Promise<void> {
     });
   };
 
-  const renderWeights = () => {
-    const g = document.getElementById("weight-grid")!;
-    g.innerHTML = (Object.keys(VAR_LABELS) as (keyof Weights)[])
-      .map(
-        (k) => `<label class="weight-row">${VAR_LABELS[k]}
-        <input type="range" min="0" max="100" step="1" data-var="${k}" value="${Math.round(state.weights[k] * 100)}" />
-        <span class="val">${state.weights[k].toFixed(2)}</span></label>`,
-      )
-      .join("");
-    g.querySelectorAll<HTMLInputElement>("input[type=range]").forEach((inp) => {
-      inp.addEventListener("input", () => {
-        state.weights[inp.dataset.var as keyof Weights] = Number(inp.value) / 100;
-        try {
-          state.sitios = recomputeValidation(cat, state.weights);
-        } catch {
-          /* catálogo sin firmas completas */
-        }
-        renderWeights();
-        renderPanel();
-      });
-    });
-  };
-
   const hidePopup = () => {
     const pop = document.getElementById("map-popup");
     if (pop) pop.hidden = true;
   };
 
-  const showZonePopup = (zonaId: string, at?: { x: number; y: number }) => {
-    const z = cat.zonas_prioritarias.find((x) => x.id === zonaId);
-    const pop = document.getElementById("map-popup")!;
-    if (!z) {
-      pop.hidden = true;
-      return;
-    }
-    pop.innerHTML = `<button type="button" class="cerrar" aria-label="Cerrar ficha">×</button>
-      <h3>${escapeHtml(z.nombre)}</h3>
-      <p>${escapeHtml(fraseParecido("Marte", z.delta_marte, state.nivel !== "explorador"))}.</p>
-      <p>${escapeHtml(fraseParecido("la Luna", z.delta_luna, state.nivel !== "explorador"))}.</p>
-      <p class="muted">Es un índice, no una clasificación. Como la prueba general no se aprobó, esto es una pista, no una certeza.</p>
-      <button type="button" class="btn" data-abrir-ficha="${z.id}">Ver ficha completa</button>`;
-    pop.hidden = false;
-    const col = document.querySelector(".map-col") as HTMLElement;
-    const cr = col.getBoundingClientRect();
-    const x = at?.x ?? cr.width * 0.5;
-    const y = at?.y ?? cr.height * 0.4;
-    pop.style.left = `${Math.min(Math.max(8, x - 40), cr.width - 280)}px`;
-    pop.style.top = `${Math.min(Math.max(48, y - 10), cr.height - 200)}px`;
-    pop.querySelector(".cerrar")?.addEventListener("click", hidePopup);
-    pop.querySelector<HTMLButtonElement>("[data-abrir-ficha]")?.addEventListener("click", () => {
-      state.zonaId = z.id;
-      state.vista = "ficha";
-      hidePopup();
-      syncVista();
-    });
-  };
-
   const refreshMarkers = () => {
-    setMarkers(map, cat.zonas_prioritarias, state.zonaId, (id) => {
-      state.zonaId = id;
-      showZonePopup(id);
-      if (state.vista === "ficha") renderPanel();
-    });
+    setStationMarkers(map, ESTACIONES);
   };
 
   const overlayFor = (vista: Vista): Vista => {
@@ -414,13 +376,12 @@ async function main(): Promise<void> {
     applyGlobeState(map, {
       cuerpo: state.cuerpoGlobo,
       area: state.areaTierra,
-      vista: state.vista === "clima" ? "similitud-marte" : overlay,
+      vista: overlay,
       opacity: state.opacity,
-      sitios: state.sitios.length ? state.sitios : cat.sitios_validacion,
       fly,
     });
     document.getElementById("map-caption")!.innerHTML = captionHTML(state.vista, cat, state.nivel, state.cuerpoGlobo, state.areaTierra);
-    document.getElementById("map-legend")!.innerHTML = legendHTML(overlay === "clases" || state.vista === "clima" ? state.vista : overlay, state.nivel);
+    document.getElementById("map-legend")!.innerHTML = legendHTML(overlay);
     app.dataset.cuerpoGlobo = state.cuerpoGlobo;
     app.dataset.area = state.areaTierra;
     app.querySelectorAll<HTMLButtonElement>("[data-cuerpo-globo]").forEach((b) => {
@@ -504,9 +465,33 @@ async function main(): Promise<void> {
     });
   };
 
-  const renderPanel = () => {
+  const buildToc = (body: HTMLElement) => {
+    body.querySelector(".toc")?.remove();
+    if (state.vista === "inicio") return;
+    const heads = Array.from(body.querySelectorAll<HTMLElement>(".prose > h3"));
+    if (heads.length < 2) return;
+    const nav = document.createElement("nav");
+    nav.className = "toc";
+    nav.setAttribute("aria-label", "En esta página");
+    nav.innerHTML = `<p class="toc-t">En esta página</p><ul>${heads
+      .map((h, i) => {
+        h.id = `sec-${i}`;
+        h.tabIndex = -1;
+        return `<li><button type="button" data-toc="sec-${i}">${escapeHtml(h.textContent ?? "")}</button></li>`;
+      })
+      .join("")}</ul>`;
+    nav.addEventListener("click", (ev) => {
+      const b = (ev.target as HTMLElement).closest<HTMLButtonElement>("[data-toc]");
+      if (!b) return;
+      const el = document.getElementById(b.dataset.toc!);
+      el?.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
+      el?.focus({ preventScroll: true });
+    });
+    body.appendChild(nav);
+  };
+
+  const renderPanelInner = () => {
     const body = document.getElementById("panel-body")!;
-    const zona = cat.zonas_prioritarias.find((z) => z.id === state.zonaId) ?? cat.zonas_prioritarias[0];
     if (state.vista === "inicio") {
       body.innerHTML = homeHTML(state.nivel);
       bindGlossary(body);
@@ -522,77 +507,24 @@ async function main(): Promise<void> {
       return;
     }
     if (state.vista === "validacion") {
-      const sitio = state.sitios.find((s) => s.nombre === state.sitioNombre);
-      body.innerHTML = `${validationHTML(cat, state.sitios, state.nivel)}${sitio ? sitioCardHTML(sitio, state.nivel) : ""}`;
-      bindGlossary(body);
-      body.querySelectorAll<HTMLButtonElement>("[data-sitio-abrir]").forEach((b) => {
-        b.addEventListener("click", () => {
-          state.sitioNombre = b.dataset.sitioAbrir ?? null;
-          renderPanel();
-          document.querySelector("[data-testid='ficha-sitio']")?.scrollIntoView({ block: "nearest" });
-        });
-      });
-      return;
-    }
-    if (state.vista === "diagnostico") {
-      body.innerHTML = diagnosisHTML(state.nivel);
-      bindGlossary(body);
+      body.innerHTML = validationHTML(state.nivel);
       return;
     }
     if (state.vista === "incertidumbre") {
-      body.innerHTML = uncertaintyHTML(cat, state.nivel);
-      bindGlossary(body);
+      body.innerHTML = uncertaintyHTML(state.nivel);
       return;
     }
     if (state.vista === "trabajo-futuro") {
       body.innerHTML = futureWorkHTML();
       return;
     }
-    if (state.vista === "clases") {
-      body.innerHTML = `<section class="prose">
-        <div class="warn-box" data-testid="aviso-clases">El umbral de Youden de Marte tiene <strong>especificidad 0</strong>: todos los no análogos del conjunto también lo superan. Este mapa de clases es una vista secundaria y <strong>no es un inventario fiable</strong> de análogos. No se informan porcentajes de cobertura. Prefiera los mapas continuos de similitud a Marte y a la Luna.</div>
-        ${zona ? cardHTML(zona, state.nivel) : ""}
-      </section>`;
-      bindGlossary(body);
-      return;
-    }
-    if (state.vista === "ficha" && zona) {
-      const list = cat.zonas_prioritarias
-        .map(
-          (z) =>
-            `<li><button type="button" data-zona="${z.id}" class="${z.id === zona.id ? "is-selected" : ""}">${escapeHtml(z.nombre)}<span class="sc">${state.nivel === "explorador" ? escapeHtml(fraseParecido("Marte", z.delta_marte, false)) : `δM ${fmt(z.delta_marte, 2)} · δL ${fmt(z.delta_luna, 2)}`}</span></button></li>`,
-        )
-        .join("");
-      body.innerHTML = `<h2>Zonas en Ecuador y Galápagos</h2><ul class="zona-list">${list}</ul>${cardHTML(zona, state.nivel)}`;
-      bindGlossary(body);
-      body.querySelectorAll<HTMLButtonElement>("[data-zona]").forEach((b) => {
-        b.addEventListener("click", () => {
-          state.zonaId = b.dataset.zona ?? null;
-          renderPanel();
-          refreshMarkers();
-          if (state.zonaId) showZonePopup(state.zonaId);
-        });
-      });
-      return;
-    }
-    const list = cat.zonas_prioritarias
-      .map(
-        (z) =>
-          `<li><button type="button" data-zona="${z.id}" class="${z.id === zona?.id ? "is-selected" : ""}">${escapeHtml(z.nombre)}<span class="sc">${state.nivel === "explorador" ? fraseDelta(z.delta_marte) : `δM ${fmt(z.delta_marte, 2)} · δL ${fmt(z.delta_luna, 2)}`}</span></button></li>`,
-      )
-      .join("");
-    body.innerHTML = `<h2>Zonas en Ecuador y Galápagos</h2>
-      <p class="muted">Pulsa una zona o un punto del mapa. El índice no pasó la validación: estas cifras son pistas, no un inventario.</p>
-      <ul class="zona-list">${list}</ul>${zona ? cardHTML(zona, state.nivel) : ""}`;
-    bindGlossary(body);
-    body.querySelectorAll<HTMLButtonElement>("[data-zona]").forEach((b) => {
-      b.addEventListener("click", () => {
-        state.zonaId = b.dataset.zona ?? null;
-        showZonePopup(state.zonaId!);
-        renderPanel();
-        refreshMarkers();
-      });
-    });
+    body.innerHTML = mapPanelHTML(state.vista, state.nivel);
+  };
+
+  const renderPanel = () => {
+    renderPanelInner();
+    const body = document.getElementById("panel-body");
+    if (body && TEXT_VISTAS.includes(state.vista)) buildToc(body);
   };
 
   const renderTour = () => {
@@ -616,8 +548,7 @@ async function main(): Promise<void> {
   };
 
   function startTour(): void {
-    document.getElementById("menu-mas")?.setAttribute("hidden", "");
-    document.getElementById("btn-mas")?.setAttribute("aria-expanded", "false");
+    setRail(false);
     state.tour = 0;
     state.vista = TOUR_PASOS[0].vista;
     syncVista();
@@ -625,10 +556,27 @@ async function main(): Promise<void> {
   }
 
   function endTour(dismiss: boolean): void {
-    if (dismiss) localStorage.setItem(LS_TOUR, "1");
+    if (dismiss) lsSet(LS_TOUR, "1");
     state.tour = null;
     renderTour();
   }
+
+  function setRail(open: boolean): void {
+    app.classList.toggle("rail-open", open);
+    const scrim = document.getElementById("rail-scrim");
+    if (scrim) scrim.hidden = !open;
+    document.getElementById("btn-menu")?.setAttribute("aria-expanded", String(open));
+    document.getElementById("btn-menu")?.setAttribute("aria-label", open ? "Cerrar el menú" : "Abrir el menú");
+    if (open) app.querySelector<HTMLButtonElement>(".rail-link.is-active, .rail-link")?.focus();
+  }
+
+  function applyTheme(t: Theme): void {
+    document.documentElement.dataset.theme = t;
+    const btn = document.getElementById("btn-theme");
+    btn?.setAttribute("aria-label", t === "dark" ? "Cambiar al tema claro" : "Cambiar al tema oscuro");
+  }
+
+  let lastAnimVista: Vista | null = null;
 
   const syncVista = () => {
     app.dataset.vista = state.vista;
@@ -647,7 +595,12 @@ async function main(): Promise<void> {
     if (isViz) {
       closeUnityPanel();
       if (frame && !frame.getAttribute("src")) frame.src = assetUrl("/unity/visualizador/index.html");
+      const ep = document.getElementById("explorar-panel");
+      if (ep && !ep.innerHTML) ep.innerHTML = `<div class="map-legend explorar-legend">${legendHTML("clases")}</div>${explorarEcuadorHTML()}`;
     }
+    const crumb = document.getElementById("crumb");
+    if (crumb) crumb.textContent = ETIQUETA_VISTA[state.vista] ?? "Inicio";
+    document.title = `${ETIQUETA_VISTA[state.vista] ?? "Inicio"} · ANALOG/delta`;
     const hash = `#${state.vista}`;
     if (location.hash !== hash) history.replaceState(null, "", hash);
     document.getElementById("metrics-strip")!.innerHTML = metricsStrip(cat, state.nivel);
@@ -660,6 +613,13 @@ async function main(): Promise<void> {
     }
     const body = document.getElementById("panel-body");
     if (body && TEXT_VISTAS.includes(state.vista)) body.scrollTop = 0;
+    if (body && state.vista !== lastAnimVista) {
+      lastAnimVista = state.vista;
+      body.classList.remove("anim");
+      void body.offsetWidth;
+      body.classList.add("anim");
+      window.setTimeout(() => body.classList.remove("anim"), 1600);
+    }
     requestAnimationFrame(() => map.resize());
   };
 
@@ -667,9 +627,9 @@ async function main(): Promise<void> {
   app.querySelectorAll<HTMLButtonElement>("[data-nivel]").forEach((b) => {
     b.addEventListener("click", () => {
       state.nivel = b.dataset.nivel as Nivel;
-      localStorage.setItem(LS_NIVEL, state.nivel);
+      lsSet(LS_NIVEL, state.nivel);
       app.querySelectorAll<HTMLButtonElement>("[data-nivel]").forEach((x) => {
-        x.setAttribute("aria-pressed", String(x === b));
+        x.setAttribute("aria-checked", String(x === b));
       });
       closeGlossary();
       syncVista();
@@ -679,28 +639,23 @@ async function main(): Promise<void> {
   app.querySelectorAll<HTMLButtonElement>("button[data-vista]").forEach((b) => {
     b.addEventListener("click", () => {
       state.vista = b.dataset.vista as Vista;
-      document.getElementById("menu-mas")?.setAttribute("hidden", "");
-      document.getElementById("btn-mas")?.setAttribute("aria-expanded", "false");
+      setRail(false);
       syncVista();
+      (document.getElementById("contenido") as HTMLElement | null)?.scrollTo?.({ top: 0 });
+      window.scrollTo({ top: 0 });
     });
   });
 
-  document.getElementById("btn-mas")!.addEventListener("click", () => {
-    const menu = document.getElementById("menu-mas")!;
-    const open = menu.hasAttribute("hidden");
-    if (open) menu.removeAttribute("hidden");
-    else menu.setAttribute("hidden", "");
-    document.getElementById("btn-mas")!.setAttribute("aria-expanded", String(open));
+  document.getElementById("btn-menu")!.addEventListener("click", () => setRail(!app.classList.contains("rail-open")));
+  document.getElementById("rail-scrim")!.addEventListener("click", () => setRail(false));
+
+  document.getElementById("btn-theme")!.addEventListener("click", () => {
+    const next: Theme = document.documentElement.dataset.theme === "light" ? "dark" : "light";
+    applyTheme(next);
+    lsSet(LS_THEME, next);
   });
 
-  document.querySelector("[data-action='tour']")?.addEventListener("click", startTour);
-
-  document.getElementById("reset-pesos")!.addEventListener("click", () => {
-    state.weights = { ...DEFAULT_WEIGHTS };
-    state.sitios = cat.sitios_validacion;
-    renderWeights();
-    renderPanel();
-  });
+  document.querySelector(".topbar [data-action='tour']")?.addEventListener("click", startTour);
 
   document.getElementById("opacidad")!.addEventListener("input", (ev) => {
     const v = Number((ev.target as HTMLInputElement).value) / 100;
@@ -737,16 +692,8 @@ async function main(): Promise<void> {
       const changed = next !== state.areaTierra;
       state.areaTierra = next;
       state.cuerpoGlobo = "tierra";
-      document.getElementById("btn-sitios-validacion")?.setAttribute("aria-pressed", "false");
       showMapLayer(changed);
     });
-  });
-
-  document.getElementById("btn-sitios-validacion")?.addEventListener("click", () => {
-    state.cuerpoGlobo = "tierra";
-    document.getElementById("btn-sitios-validacion")?.setAttribute("aria-pressed", "true");
-    if (MAP_VISTAS.includes(state.vista) || state.vista === "inicio") showMapLayer(false);
-    flyToSitios(map, state.sitios.length ? state.sitios : cat.sitios_validacion);
   });
 
   document.getElementById("btn-ver-unity")!.addEventListener("click", () => {
@@ -781,17 +728,10 @@ async function main(): Promise<void> {
       const frame = document.getElementById("unity-panel-frame");
       const cycle = [closeBtn, frame].filter((el): el is HTMLElement => el instanceof HTMLElement);
       if (!cycle.length) return;
-      const current = document.activeElement;
+      const i = cycle.indexOf(document.activeElement as HTMLElement);
       ev.preventDefault();
-      if (ev.shiftKey) {
-        const i = cycle.indexOf(current as HTMLElement);
-        const prev = i <= 0 ? cycle[cycle.length - 1] : cycle[i - 1];
-        prev.focus();
-      } else {
-        const i = cycle.indexOf(current as HTMLElement);
-        const next = i < 0 || i >= cycle.length - 1 ? cycle[0] : cycle[i + 1];
-        next.focus();
-      }
+      if (ev.shiftKey) cycle[i <= 0 ? cycle.length - 1 : i - 1].focus();
+      else cycle[i < 0 || i >= cycle.length - 1 ? 0 : i + 1].focus();
       return;
     }
     if (ev.key === "Escape") {
@@ -805,9 +745,13 @@ async function main(): Promise<void> {
         closeUnityPanel();
         return;
       }
+      if (app.classList.contains("rail-open")) {
+        setRail(false);
+        document.getElementById("btn-menu")?.focus();
+        return;
+      }
       closeGlossary();
       hidePopup();
-      document.getElementById("menu-mas")?.setAttribute("hidden", "");
     }
   });
 
@@ -832,22 +776,9 @@ async function main(): Promise<void> {
   });
   map.on("load", () => {
     showMapLayer(true);
-    map.on("click", (e: MapMouseEvent) => {
-      if (state.cuerpoGlobo !== "tierra") return;
-      if (!MAP_VISTAS.includes(state.vista) && state.vista !== "inicio") return;
-      if (TEXT_VISTAS.includes(state.vista)) return;
-      const near = nearestZone(e.lngLat.lat, e.lngLat.lng, cat.zonas_prioritarias);
-      if (!near) return;
-      state.zonaId = near.zona.id;
-      const col = document.querySelector(".map-col") as HTMLElement;
-      const cr = col.getBoundingClientRect();
-      showZonePopup(near.zona.id, { x: e.point.x, y: e.point.y + 48 });
-      refreshMarkers();
-      void cr;
-    });
   });
 
-  renderWeights();
+  applyTheme(theme0);
   hintForNivel();
   app.dataset.nivel = state.nivel;
   syncVista();
