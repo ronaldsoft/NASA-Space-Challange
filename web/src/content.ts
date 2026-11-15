@@ -394,8 +394,6 @@ export function diagnosisHTML(nivel: Nivel): string {
         "Entonces, ¿para qué sirve el mapa?",
         "Sirve para ver un retrato honesto de la superficie a 1 km, no para declarar que un porcentaje de Ecuador «es Marte». El mapa de clases no se usa como inventario, porque el corte de Marte dejó entrar a todos los no análogos.",
       )}
-      <h3>Yasuní, un control en selva plana</h3>
-      <p>En el Parque Nacional Yasuní, selva casi plana (pendiente mediana 0,3°), la similitud a Marte sale en 0,96. Un valor alto, aquí, indica sobre todo terreno llano a 1 km.</p>
       ${islasGalapagosHTML("explorador")}
     </section>`;
   }
@@ -412,8 +410,6 @@ export function diagnosisHTML(nivel: Nivel): string {
       <p>Meteor Crater (~1,2 km) e Inferno Chasm quedan casi planos en la grilla. Eso es un límite de resolución, no una sentencia sobre el sitio a otra escala.</p>
       <h3>Muestra pequeña y decisión de no retocar</h3>
       <p>n = 16, intervalos anchos. No se invirtió el índice ni se retocaron pesos o umbrales después del AUC, ni con Ecuador. El umbral de Marte (0,13) tiene ${term("especificidad")} 0: el mapa de clases no es un inventario y no se dan porcentajes de cobertura.</p>
-      <h3>Control en Yasuní</h3>
-      <p>En el polígono oficial del Parque Nacional Yasuní (n = 10 272 celdas; pendiente 0,30°) la mediana de δ Marte es 0,963 con <span class="mono">banda_propia</span> (0,954 en la corrida previa). Un δ alto indica sobre todo terreno llano a 1 km.</p>
       ${islasGalapagosHTML("estudiante")}
     </section>`;
   }
@@ -431,8 +427,6 @@ export function diagnosisHTML(nivel: Nivel): string {
     <p>El umbral y el AUC se fijaron solo sobre 16 sitios. Los intervalos de confianza son anchos. No se invirtió el índice, no se retocaron los pesos y no se reajustó el umbral después de ver el AUC ni con Ecuador.</p>
     <h3>Cómo hay que leer el resultado</h3>
     <p>El umbral de Youden de Marte queda en 0,13, con sensibilidad 1,0 y <strong>especificidad 0,0</strong>: todos los no análogos también lo superan. Por eso el mapa de clases no es un inventario fiable y no se presentan porcentajes de Ecuador como «análogo de Marte». Los mapas que hay que leer son los continuos de δ Marte y δ Luna, junto con esta validación y la nota de incertidumbre.</p>
-    <h3>Control en Yasuní</h3>
-    <p>En el polígono oficial del Parque Nacional Yasuní (WDPA/WDPCA site_id 186; n = 10 272; pendiente mediana 0,30°, TRI 5,38 m) la mediana de δ Marte es 0,9628 con <span class="mono">banda_propia</span> y 0,9543 en la corrida previa <span class="mono">todas_min</span>. Un δ alto indica sobre todo terreno llano a 1 km. Detalle: <span class="mono">docs/control_yasuni.md</span>.</p>
     ${islasGalapagosHTML("cientifico")}
   </section>`;
 }

@@ -134,7 +134,7 @@ No son cifras copiadas. En la Luna, la banda propia ya era la ganadora en los 16
 
 Umbral oficial de Marte: 0,13 (sensibilidad 1,00, especificidad **0,00**: está degenerado; marca todo como parecido). Umbral de la Luna: 0,79 (sensibilidad 0,20, especificidad 1,00). El modelo nulo que usa solo |lat| obtiene un AUC de Marte de **0,58**, mayor que el del índice completo.
 
-**Diagnóstico:** a ~1 km el terreno planetario típico es suave (mediana de pendiente de la banda A en MOLA ≈ 0,79°). Varios no análogos terrestres también son casi planos a esa escala, y el índice los acerca más a Marte que a análogos clásicos más rugosos. El control de Yasuní (Parque Nacional, Amazonía ecuatoriana; polígono oficial WDPA, 10 272 celdas) lo muestra: pendiente mediana 0,3° y δ Marte 0,96 en `banda_propia`. Un valor alto refleja sobre todo terreno llano. Meteor Crater e Inferno Chasm fallan por **escala** (quedan planos en la grilla de 1 km). La muestra del AUC es pequeña (16 sitios).
+**Diagnóstico:** a ~1 km el terreno planetario típico es suave (mediana de pendiente de la banda A en MOLA ≈ 0,79°). Varios no análogos terrestres también son casi planos a esa escala, y el índice los acerca más a Marte que a análogos clásicos más rugosos. Un valor alto refleja sobre todo terreno llano. Meteor Crater e Inferno Chasm fallan por **escala** (quedan planos en la grilla de 1 km). La muestra del AUC es pequeña (16 sitios).
 
 Los mapas que hay que leer son los continuos de **δ Marte** y **δ Luna**. El mapa de clases es secundario: el umbral de Marte no tiene poder de discriminación (especificidad 0). **No se presentan porcentajes de cobertura de Ecuador como «análogo».**
 

@@ -95,7 +95,7 @@
     },
     {
       "nombre": "roughness",
-      "unidad": "m (TRI de Riley et al. 1999, ventana 3×3)",
+      "unidad": "m (TRI de Wilson, M. F. J. et al. (2007), Marine Geodesy 30, DOI 10.1080/01490410701295962; media de las diferencias absolutas con los 8 vecinos)",
       "en_indice": true,
       "valor_nodata": null,
       "fuente_por_cuerpo": {
@@ -1393,7 +1393,7 @@
       "etiqueta": "lunar",
       "excluido_auc": false,
       "coordenada_no_verificada": false,
-      "cita": "Impact Earth (Western University), ficha Barringer; contexto en Osinski et al. (2023), 10.3389/fspas.2023.1186173",
+      "cita": "Impact Earth (Western University), ficha Barringer; contexto en Lambert y Reimold (2023), Front. Astron. Space Sci., 10.3389/fspas.2023.1186173",
       "elevacion_m": 1670,
       "pendiente_deg": 16.0,
       "rugosidad_tri": 420.0,
@@ -1410,7 +1410,7 @@
       "clase_conocida": "luna",
       "acierto": true,
       "entra_al_auc": true,
-      "fuente": "Impact Earth (Western University), ficha Barringer; contexto en Osinski et al. (2023), 10.3389/fspas.2023.1186173"
+      "fuente": "Impact Earth (Western University), ficha Barringer; contexto en Lambert y Reimold (2023), Front. Astron. Space Sci., 10.3389/fspas.2023.1186173"
     },
     {
       "nombre": "S P Mountain (S P Crater), campo volcánico de San Francisco, Arizona (EE. UU.)",

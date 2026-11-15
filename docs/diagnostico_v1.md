@@ -15,9 +15,6 @@ El índice v1, con datos reales, **no separa** bien los análogos etiquetados de
 
 A ~1 km, Marte en el MEGDR es muy suave: pendiente mediana de la banda A 0,79° (IQR 0,34–1,90°) y TRI 12 m. Los no análogos casi planos (Bondville, Tapajós, Hyytiälä) quedan cerca de esa firma. Tapajós da δ Marte 0,9778 (`todas_min`) y 0,9819 (`banda_propia`). Análogos con más relieve a esta escala (University Valley, Mauna Kea, Sverrefjell) se alejan. Meteor Crater e Inferno Chasm quedan casi planos en la grilla de 1 km.
 
-## Control en Yasuní
-
-En el polígono oficial del Parque Nacional Yasuní (n = 10 272 celdas, 0 % nodata; pendiente mediana 0,30°, TRI 5,38 m) la mediana de δ Marte es 0,954 (`todas_min`) y 0,963 (`banda_propia`). Un valor alto indica sobre todo terreno llano a 1 km. Detalle y fuente del polígono: `docs/control_yasuni.md`.
 
 ## Galápagos
 
