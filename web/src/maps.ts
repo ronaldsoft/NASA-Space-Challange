@@ -2,6 +2,7 @@ import maplibregl from "maplibre-gl";
 import type { GeoJSONSource, Map as MapLibreMap, RasterTileSource, StyleSpecification } from "maplibre-gl";
 import type { Extension, SitioValidacion, Vista, ZonaPrioritaria } from "./types";
 import { assetUrl } from "./paths";
+import { coordTexto } from "./datosModelo";
 
 export type CuerpoGlobo = "tierra" | "luna" | "marte";
 export type AreaTierra = "ecuador_continental" | "galapagos";
@@ -378,6 +379,9 @@ export function applyGlobeState(
   stationMarkers.forEach((m) => {
     m.getElement().style.display = enTierra ? "" : "none";
   });
+  missionMarkers.forEach(({ cuerpo, m }) => {
+    m.getElement().style.display = cuerpo === opts.cuerpo ? "" : "none";
+  });
   if (enTierra) {
     setModelo(map, bandaModelo(opts.vista), opts.opacity);
     if (opts.fly) flyToArea(map, AREA_BOUNDS[opts.area]);
@@ -420,6 +424,32 @@ export function flyToSitios(map: MapLibreMap, sitios: { lon: number; lat: number
 
 const markers: maplibregl.Marker[] = [];
 const stationMarkers: maplibregl.Marker[] = [];
+const missionMarkers: { cuerpo: "marte" | "luna"; m: maplibregl.Marker }[] = [];
+
+
+/** Sitios de aterrizaje de las firmas: solo se ven en el globo de su cuerpo (Marte o Luna). */
+export function setMissionMarkers(
+  map: MapLibreMap,
+  misiones: { cuerpo: "marte" | "luna"; mision: string; anio: number; lat: number; lon: number; terreno: string; usada: boolean }[],
+): void {
+  if (missionMarkers.length) return;
+  for (const s of misiones) {
+    const el = document.createElement("button");
+    el.type = "button";
+    el.className = `map-pin map-pin-mision map-pin-mision-${s.cuerpo}${s.usada ? "" : " is-fuera"}`;
+    const coord = coordTexto(s.lat, s.lon);
+    const estado = s.usada ? "usada para entrenar el modelo" : "fuera de la firma";
+    el.setAttribute("aria-label", `${s.mision}, ${s.anio}, ${coord}, ${s.terreno}, ${estado}`);
+    el.title = `${s.mision} (${s.anio}) · ${coord} · ${s.terreno} · ${estado}`;
+    el.innerHTML = `<span class="pin-dot"></span><span class="pin-label"><span class="pin-nombre">${escapeHtml(s.mision)} · ${s.anio}</span><span class="pin-coord">${escapeHtml(coord)}</span></span>`;
+    el.addEventListener("click", (ev) => {
+      ev.stopPropagation();
+      el.classList.toggle("is-selected");
+    });
+    el.style.display = "none";
+    missionMarkers.push({ cuerpo: s.cuerpo, m: new maplibregl.Marker({ element: el, anchor: "center" }).setLngLat([s.lon, s.lat]).addTo(map) });
+  }
+}
 
 /** Estaciones análogas permanentes: punto con etiqueta visible al pasar o enfocar. */
 export function setStationMarkers(map: MapLibreMap, estaciones: { nombre: string; lugar: string; lat: number; lon: number }[]): void {

@@ -1,4 +1,4 @@
-import { CAPAS, CLASES_TESELA, ESTACIONES, FUENTES, FUENTES_MAPA, METRICAS } from "./datosModelo";
+import { CAPAS, ESTACIONES, clasesTesela, FUENTES, FUENTES_MAPA, METRICAS, MISIONES, coordTexto } from "./datosModelo";
 import { escapeHtml } from "./maps";
 import { assetUrl } from "./paths";
 import type { Nivel, Vista } from "./types";
@@ -70,10 +70,33 @@ const PROV_REGION: Record<string, string> = {
 
 /* ---------------- Leyenda dentro del mapa ---------------- */
 
+/** Leyenda del globo de Marte o de la Luna: sitios de aterrizaje de las firmas. */
+export function legendCuerpoHTML(cuerpo: "marte" | "luna"): string {
+  const usadas = MISIONES.filter((m) => m.cuerpo === cuerpo && m.usada).length;
+  const fuera = MISIONES.filter((m) => m.cuerpo === cuerpo && !m.usada).length;
+  const nombre = cuerpo === "marte" ? "Marte" : "Luna";
+  const relieve = cuerpo === "marte" ? "MOLA MEGDR 64 ppd (NASA)" : "LOLA LDEM_64 (NASA)";
+  return `<div class="title">${nombre} · relieve sombreado</div>
+    <p class="leg-line">${escapeHtml(CAPAS.misiones.linea)}</p>
+    <ul class="leg-otros leg-misiones">
+      <li><span class="swatch swatch-mision swatch-mision-${cuerpo}"></span><span>${escapeHtml(CAPAS.misiones.nombre)} (${usadas})</span></li>
+      ${fuera ? `<li><span class="swatch swatch-mision swatch-mision-${cuerpo} is-fuera"></span><span>${escapeHtml(CAPAS.misiones_fuera.nombre)} (${fuera})</span></li>` : ""}
+    </ul>
+    <details class="note"><summary>Cómo leer este mapa</summary><p>Pasa el cursor o toca un sitio para ver sus coordenadas. Relieve: ${escapeHtml(relieve)}. El índice se calcula sobre la Tierra; aquí solo se ven los puntos de referencia. ${fuera ? escapeHtml(CAPAS.misiones_fuera.linea) : ""}</p></details>`;
+}
+
+/** Tira compacta de las 5 clases (leyenda plegada en móvil). */
+export function legendStripHTML(vista: Vista): string {
+  return [...clasesTesela(bandaDeVista(vista))]
+    .reverse()
+    .map((c) => `<span class="swatch" style="background:${c.rgb}" title="${c.rango} ${c.nombre}"></span>`)
+    .join("");
+}
+
 export function legendHTML(vista: Vista): string {
   const b = bandaDeVista(vista);
   const capa = CAPAS[b];
-  const filas = CLASES_TESELA.map(
+  const filas = clasesTesela(b).map(
     (c) => `<li><span class="swatch" style="background:${c.rgb}"></span><span class="rng">${c.rango}</span><span>${c.nombre}</span></li>`,
   ).join("");
   return `<div class="title">${escapeHtml(capa.nombre)}</div>
@@ -82,6 +105,7 @@ export function legendHTML(vista: Vista): string {
     <ul class="leg-otros">
       <li><span class="swatch swatch-vacio"></span><span>${escapeHtml(CAPAS.mascara.nombre)}</span></li>
       <li><span class="swatch swatch-estacion"></span><span>${escapeHtml(CAPAS.estaciones.nombre)} (${ESTACIONES.length})</span></li>
+      <li class="leg-pista"><span class="swatch swatch-mision swatch-mision-marte"></span><span>${escapeHtml(CAPAS.misiones.nombre)}: cambia el globo a Marte o Luna</span></li>
     </ul>
     <details class="note"><summary>Cómo leer este mapa</summary><p>Al alejarte ves el mapa mundial en celdas de 0,05° (unos 5 km); al acercarte a Ecuador, celdas de 1 km. Umbral de alta similitud: índice ≥ 0,95. ${escapeHtml(CAPAS.mascara.linea)}</p></details>`;
 }
@@ -145,12 +169,32 @@ export function mapPanelHTML(vista: Vista, _nivel: Nivel): string {
     <ul class="capas-lista">
       <li><strong>${escapeHtml(CAPAS.mascara.nombre)}.</strong> ${escapeHtml(CAPAS.mascara.linea)}</li>
       <li><strong>${escapeHtml(CAPAS.estaciones.nombre)}.</strong> ${escapeHtml(CAPAS.estaciones.linea)}</li>
+      <li><strong>${escapeHtml(CAPAS.misiones.nombre)}.</strong> ${escapeHtml(CAPAS.misiones.linea)} Se ven en los globos de Marte y la Luna.</li>
     </ul>
     ${glob}
     ${tablaEcuador(b)}
     ${estacionesHTML()}
+    ${misionesHTML(b)}
     ${fuentesHTML(b)}
   </section>`;
+}
+
+function misionesHTML(b: Banda): string {
+  const cuerpos: ("marte" | "luna")[] = b === "conjunta" ? ["marte", "luna"] : [b];
+  const bloques = cuerpos
+    .map((c) => {
+      const li = MISIONES.filter((m) => m.cuerpo === c)
+        .map(
+          (m) =>
+            `<li><strong>${escapeHtml(m.mision)}</strong> (${m.anio}), ${escapeHtml(m.terreno)}. ${escapeHtml(coordTexto(m.lat, m.lon))}.${m.usada ? "" : " Fuera de la firma."} <a href="${m.fuente}" target="_blank" rel="noopener noreferrer">Fuente</a></li>`,
+        )
+        .join("");
+      const usadas = MISIONES.filter((m) => m.cuerpo === c && m.usada).length;
+      return `<p class="muted">${c === "marte" ? "Marte" : "Luna"}: ${usadas} usadas de ${MISIONES.filter((m) => m.cuerpo === c).length}.</p><ul class="fuentes-lista">${li}</ul>`;
+    })
+    .join("");
+  const total = MISIONES.filter((m) => cuerpos.includes(m.cuerpo) && m.usada).length;
+  return `<details class="fuentes" data-testid="misiones-firma"><summary>${escapeHtml(CAPAS.misiones.nombre)} (${total})</summary>${bloques}<p class="muted">${escapeHtml(FUENTES.misiones.cita)}</p></details>`;
 }
 
 function estacionesHTML(): string {
@@ -343,7 +387,7 @@ export function explorarEcuadorHTML(): string {
       const barras = [...z.clases]
         .reverse()
         .map((c) => {
-          const col = CLASES_TESELA.find((t) => t.rango === c.clase)?.rgb ?? "#888";
+          const col = clasesTesela(b).find((t) => t.rango === c.clase)?.rgb ?? "#888";
           const pct = (100 * c.area_km2) / total;
           return `<tr><td><span class="swatch" style="background:${col}"></span> ${c.clase}</td><td class="num">${km2(c.area_km2, 1)}</td><td class="num">${fmt(pct, 1)} %</td><td class="bar"><span style="width:${pct.toFixed(1)}%;background:${col}"></span></td></tr>`;
         })

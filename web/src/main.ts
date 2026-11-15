@@ -13,12 +13,14 @@ import {
   futureWorkHTML,
   homeHTML,
   legendHTML,
+  legendCuerpoHTML,
+  legendStripHTML,
   mapPanelHTML,
   TOUR_PASOS,
   uncertaintyHTML,
   validationHTML,
 } from "./content";
-import { ESTACIONES } from "./datosModelo";
+import { ESTACIONES, MISIONES } from "./datosModelo";
 import { createDataSource } from "./dataSource";
 import { defTermino, GLOSARIO } from "./glossary";
 import {
@@ -27,6 +29,7 @@ import {
   createGlobeMap,
   escapeHtml,
   setStationMarkers,
+  setMissionMarkers,
   setOverlayOpacity,
   type AreaTierra,
   type CuerpoGlobo,
@@ -164,8 +167,8 @@ function metricsStrip(_cat: Catalogo, nivel: Nivel): string {
 }
 
 function captionHTML(vista: Vista, _cat: Catalogo, _nivel: Nivel, cuerpo: CuerpoGlobo, area: AreaTierra): string {
-  if (cuerpo === "luna") return `<strong>Luna</strong> · relieve LOLA LDEM_64 (NASA), sombreado. El índice se calcula sobre la Tierra.`;
-  if (cuerpo === "marte") return `<strong>Marte</strong> · relieve MOLA MEGDR 64 ppd (NASA), sombreado. El índice se calcula sobre la Tierra.`;
+  if (cuerpo === "luna") return `<strong>Luna</strong> · relieve LOLA LDEM_64 (NASA), sombreado, con los sitios de aterrizaje de las firmas. El índice se calcula sobre la Tierra.`;
+  if (cuerpo === "marte") return `<strong>Marte</strong> · relieve MOLA MEGDR 64 ppd (NASA), sombreado, con los sitios de aterrizaje de las firmas. El índice se calcula sobre la Tierra.`;
   const dest = vista === "similitud-luna" ? "la Luna" : vista === "clases" ? "Marte y la Luna a la vez" : "Marte";
   const areaNom = area === "galapagos" ? "Galápagos" : "Ecuador continental";
   return `<strong>Similitud con ${dest}</strong> · mundo a 0,05°, ${areaNom} a 1 km al acercarte · MOLA, LOLA, MODIS (NASA) y GMTED2010 (USGS)`;
@@ -371,8 +374,23 @@ async function main(): Promise<void> {
     return "similitud-marte";
   };
 
+  /** Leyenda dentro del mapa. En móvil queda plegada: botón «Leyenda» con la tira de colores; se abre al tocarlo. */
+  const setLegend = (html: string, strip: string) => {
+    const el = document.getElementById("map-legend")!;
+    const abierta = el.dataset.abierta === "1";
+    el.innerHTML = `<button type="button" class="leg-toggle" aria-expanded="${abierta}" aria-controls="map-legend-body"><span class="leg-toggle-txt">${abierta ? "Ocultar leyenda" : "Leyenda"}</span><span class="leg-strip" aria-hidden="true">${strip}</span></button><div class="leg-body" id="map-legend-body">${html}</div>`;
+    el.querySelector<HTMLButtonElement>(".leg-toggle")!.addEventListener("click", () => {
+      const abrir = el.dataset.abierta !== "1";
+      el.dataset.abierta = abrir ? "1" : "0";
+      const b = el.querySelector<HTMLButtonElement>(".leg-toggle")!;
+      b.setAttribute("aria-expanded", String(abrir));
+      b.querySelector(".leg-toggle-txt")!.textContent = abrir ? "Ocultar leyenda" : "Leyenda";
+    });
+  };
+
   const showMapLayer = (fly = false) => {
     const overlay = overlayFor(state.vista);
+    setMissionMarkers(map, MISIONES);
     applyGlobeState(map, {
       cuerpo: state.cuerpoGlobo,
       area: state.areaTierra,
@@ -381,7 +399,10 @@ async function main(): Promise<void> {
       fly,
     });
     document.getElementById("map-caption")!.innerHTML = captionHTML(state.vista, cat, state.nivel, state.cuerpoGlobo, state.areaTierra);
-    document.getElementById("map-legend")!.innerHTML = legendHTML(overlay);
+    setLegend(
+      state.cuerpoGlobo === "tierra" ? legendHTML(overlay) : legendCuerpoHTML(state.cuerpoGlobo),
+      state.cuerpoGlobo === "tierra" ? legendStripHTML(overlay) : `<span class="swatch swatch-mision swatch-mision-${state.cuerpoGlobo}"></span>`,
+    );
     app.dataset.cuerpoGlobo = state.cuerpoGlobo;
     app.dataset.area = state.areaTierra;
     app.querySelectorAll<HTMLButtonElement>("[data-cuerpo-globo]").forEach((b) => {

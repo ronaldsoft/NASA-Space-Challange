@@ -15,6 +15,9 @@ LUT = np.full(256, 5, np.uint8)
 for i,(a,b) in enumerate(CLASES): LUT[a:b+1] = i
 PAL = sum([list(c[:3]) for c in RGBA], []) + [0,0,0]
 TRN = bytes([c[3] for c in RGBA] + [0])
+# Marte en rampa rojiza (15 nov 2026): mismas clases y misma transparencia, solo cambia el color.
+RGBA_MARTE = [(74,26,22,110),(128,40,30,165),(186,64,40,205),(228,110,60,235),(255,190,130,255)]
+PAL_MARTE = sum([list(c[:3]) for c in RGBA_MARTE], []) + [0,0,0]
 
 def lonlat_px(z, x, y):
     n = 256*2**z
@@ -32,19 +35,19 @@ def reducir(a, f):
     s = np.where(v, b, 0).sum((1,3)); n = v.sum((1,3))
     return np.where(n >= max(1, f*f//4), s/np.maximum(n,1), np.nan).astype(np.float32)
 
-def guardar(cl, path):
+def guardar(cl, path, pal=PAL):
     """Escribe la tesela; si no tiene datos escribe una tesela transparente (vite preview
     devuelve index.html con 200 para archivos ausentes y MapLibre fallaría al decodificar)."""
     if (cl == 5).all():
         os.makedirs(os.path.dirname(path), exist_ok=True)
 
-        im = Image.fromarray(np.full((256,256),5,np.uint8), "P"); im.putpalette(PAL); im.save(path, optimize=True, transparency=TRN)
+        im = Image.fromarray(np.full((256,256),5,np.uint8), "P"); im.putpalette(pal); im.save(path, optimize=True, transparency=TRN)
         return False
     os.makedirs(os.path.dirname(path), exist_ok=True)
-    im = Image.fromarray(cl, "P"); im.putpalette(PAL); im.save(path, optimize=True, transparency=TRN)
+    im = Image.fromarray(cl, "P"); im.putpalette(pal); im.save(path, optimize=True, transparency=TRN)
     return True
 
-def teselas(arr, west, north, res, zooms, out, bbox, recorte=None):
+def teselas(arr, west, north, res, zooms, out, bbox, recorte=None, pal=PAL):
     n_ok = 0
     for z in zooms:
         ppd_tile = 256*2**z/360; f = 1
@@ -60,12 +63,12 @@ def teselas(arr, west, north, res, zooms, out, bbox, recorte=None):
                 ci = np.floor((lon-west)/r).astype(int); ri = np.floor((north-lat)/r).astype(int)
                 okc = (ci>=0)&(ci<a.shape[1]); okr = (ri>=0)&(ri<a.shape[0])
                 if not okc.any() or not okr.any():
-                    guardar(np.full((256,256),5,np.uint8), f"{out}/{z}/{x}/{y}.png"); continue
+                    guardar(np.full((256,256),5,np.uint8), f"{out}/{z}/{x}/{y}.png", pal); continue
                 v = np.full((256,256), np.nan, np.float32)
                 v[np.ix_(okr,okc)] = a[np.ix_(ri[okr], ci[okc])]
                 if recorte is not None: v[recorte(lon, lat)] = np.nan
                 cl = np.where(np.isnan(v), 5, LUT[np.clip(np.round(np.nan_to_num(v)),0,100).astype(np.uint8)]).astype(np.uint8)
-                n_ok += guardar(cl, f"{out}/{z}/{x}/{y}.png")
+                n_ok += guardar(cl, f"{out}/{z}/{x}/{y}.png", pal)
     return n_ok
 
 def main(dmod, shp, out):
@@ -83,10 +86,11 @@ def main(dmod, shp, out):
     e = rasterio.open(f"{dmod}/similitud_ecuador_1km_v2.tif"); ep = e.read(); t = e.transform
     res = {}
     for i, b in enumerate(["marte","luna","conjunta"]):
-        res[f"global/{b}"] = teselas(gp[i], -180, 90, 0.05, range(0,7), f"{out}/global/{b}", (-180,-85,180,85))
-        res[f"global_sin_ecuador/{b}"] = teselas(gp[i], -180, 90, 0.05, [6], f"{out}/global_sin_ecuador/{b}", (-180,-85,180,85), recorte)
-        res[f"ecuador/{b}"] = teselas(ep[i], t.c, t.f, t.a, range(5,10), f"{out}/ecuador/{b}", (t.c, t.f+t.e*e.height, t.c+t.a*e.width, t.f))
-    meta = {"clases": [f"{a}–{b}" for a,b in CLASES], "rgba": RGBA, "teselas": res,
+        pal = PAL_MARTE if b == "marte" else PAL
+        res[f"global/{b}"] = teselas(gp[i], -180, 90, 0.05, range(0,7), f"{out}/global/{b}", (-180,-85,180,85), pal=pal)
+        res[f"global_sin_ecuador/{b}"] = teselas(gp[i], -180, 90, 0.05, [6], f"{out}/global_sin_ecuador/{b}", (-180,-85,180,85), recorte, pal=pal)
+        res[f"ecuador/{b}"] = teselas(ep[i], t.c, t.f, t.a, range(5,10), f"{out}/ecuador/{b}", (t.c, t.f+t.e*e.height, t.c+t.a*e.width, t.f), pal=pal)
+    meta = {"clases": [f"{a}–{b}" for a,b in CLASES], "rgba": RGBA, "rgba_marte": RGBA_MARTE, "teselas": res,
             "esquema": "XYZ, 256 px, EPSG:3857; píxel sin dato = transparente; z0–6 global, z6 sin Ecuador, z5–9 Ecuador"}
     json.dump(meta, open(f"{out}/teselas.json","w"), ensure_ascii=False, indent=1)
     print(json.dumps(res, indent=1))

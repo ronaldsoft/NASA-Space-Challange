@@ -60,6 +60,58 @@ export const ESTACIONES: Estacion[] = [
   },
 ];
 
+export interface MisionFirma {
+  cuerpo: "marte" | "luna";
+  mision: string;
+  /** Año de aterrizaje (primeros 4 dígitos de «periodo»). */
+  anio: number;
+  periodo: string;
+  lat: number;
+  lon: number;
+  terreno: string;
+  /** usada_en_modelo: true = entra en la firma con la que se calcula el índice. */
+  usada: boolean;
+  fuente: string;
+}
+
+/** «4,5895° S · 137,4417° E» con los decimales tal como vienen en los datos. */
+export function coordTexto(lat: number, lon: number): string {
+  const n = (v: number) => String(Math.abs(v)).replace(".", ",");
+  return `${n(lat)}° ${lat < 0 ? "S" : "N"} · ${n(lon)}° ${lon < 0 ? "O" : "E"}`;
+}
+
+/**
+ * Sitios de aterrizaje con firma de superficie: analog.v2_mission_signatures (Supabase,
+ * RPC analog_v2_get_missions), leído el 15 nov 2026. Lat/lon planetocéntricas, longitud este de −180 a 180.
+ * En Marte solo entran en la firma las misiones con resultado hidrológico «alto»; en la Luna, las 14.
+ */
+export const MISIONES: MisionFirma[] = [
+  { cuerpo: "marte", mision: "Pathfinder", anio: 1997, periodo: "1997-07 a 1997-09", lat: 19.17, lon: -33.21, terreno: "Ares Vallis", usada: true, fuente: "https://science.nasa.gov/resource/mars-pathfinder-landing-site/" },
+  { cuerpo: "marte", mision: "Opportunity", anio: 2004, periodo: "2004-01 a 2018-06", lat: -1.9462, lon: -5.5266, terreno: "Meridiani Planum", usada: true, fuente: "https://science.nasa.gov/mission/mars-exploration-rovers-spirit-and-opportunity/" },
+  { cuerpo: "marte", mision: "Phoenix", anio: 2008, periodo: "2008-05 a 2008-11", lat: 68.22, lon: -125.75, terreno: "Planicie polar", usada: true, fuente: "https://science.nasa.gov/mission/mars-phoenix/" },
+  { cuerpo: "marte", mision: "Curiosity", anio: 2012, periodo: "2012-08 a 2026-11", lat: -4.5895, lon: 137.4417, terreno: "Cráter Gale", usada: true, fuente: "https://science.nasa.gov/blogs/perseverance-mars-rover/2026/10/12/nasas-perseverance-sets-off-world-record-for-total-distance-driven/" },
+  { cuerpo: "marte", mision: "Perseverance", anio: 2021, periodo: "2021-02 a 2026-11", lat: 18.4447, lon: 77.4508, terreno: "Delta y cráter", usada: true, fuente: "https://science.nasa.gov/blogs/perseverance-mars-rover/2026/10/12/nasas-perseverance-sets-off-world-record-for-total-distance-driven/" },
+  { cuerpo: "marte", mision: "Viking 1", anio: 1976, periodo: "1976-07 a 1982-11", lat: 22.27, lon: -48.264, terreno: "Planicie Chryse", usada: false, fuente: "https://science.nasa.gov/mission/viking/" },
+  { cuerpo: "marte", mision: "Viking 2", anio: 1976, periodo: "1976-09 a 1980-04", lat: 47.64, lon: 134.29, terreno: "Planicie Utopia", usada: false, fuente: "https://science.nasa.gov/mission/viking/" },
+  { cuerpo: "marte", mision: "Spirit", anio: 2004, periodo: "2004-01 a 2010-03", lat: -14.5692, lon: 175.4729, terreno: "Cráter Gusev", usada: false, fuente: "https://science.nasa.gov/mission/mars-exploration-rovers-spirit-and-opportunity/" },
+  { cuerpo: "marte", mision: "InSight", anio: 2018, periodo: "2018-11 a 2022-12", lat: 4.502, lon: 135.623, terreno: "Planicie Elysium", usada: false, fuente: "https://science.nasa.gov/mission/insight/" },
+  { cuerpo: "marte", mision: "Zhurong", anio: 2021, periodo: "2021-05 a 2022-05", lat: 25.066, lon: 109.925, terreno: "Utopia Planitia", usada: false, fuente: "https://www.nature.com/articles/s41597-026-07034-4" },
+  { cuerpo: "luna", mision: "Apollo 11", anio: 1969, periodo: "1969-07", lat: 0.67416, lon: 23.47314, terreno: "Mare Tranquillitatis", usada: true, fuente: "https://www.nasa.gov/wp-content/uploads/2023/04/sp-4029.pdf" },
+  { cuerpo: "luna", mision: "Apollo 12", anio: 1969, periodo: "1969-11", lat: -3.0128, lon: -23.4219, terreno: "Oceanus Procellarum", usada: true, fuente: "https://www.nasa.gov/wp-content/uploads/2023/04/sp-4029.pdf" },
+  { cuerpo: "luna", mision: "Luna 17 / Lunokhod 1", anio: 1970, periodo: "1970-11 a 1971-09", lat: 38.28, lon: -35, terreno: "Mare Imbrium", usada: true, fuente: "https://science.nasa.gov/wp-content/uploads/2023/09/DSC_monograph24.pdf" },
+  { cuerpo: "luna", mision: "Apollo 14", anio: 1971, periodo: "1971-02", lat: -3.64589, lon: -17.47194, terreno: "Tierras altas y eyecta", usada: true, fuente: "https://www.nasa.gov/wp-content/uploads/2023/04/sp-4029.pdf" },
+  { cuerpo: "luna", mision: "Apollo 15", anio: 1971, periodo: "1971-07 a 1971-08", lat: 26.13239, lon: 3.6333, terreno: "Hadley Apennine", usada: true, fuente: "https://nssdc.gsfc.nasa.gov/planetary/lunar/apollo_lrv.html" },
+  { cuerpo: "luna", mision: "Apollo 16", anio: 1972, periodo: "1972-04", lat: -8.9734, lon: 15.5011, terreno: "Tierras altas Descartes", usada: true, fuente: "https://nssdc.gsfc.nasa.gov/planetary/lunar/apollo_lrv.html" },
+  { cuerpo: "luna", mision: "Apollo 17", anio: 1972, periodo: "1972-12", lat: 20.1911, lon: 30.7723, terreno: "Valle Taurus Littrow", usada: true, fuente: "https://nssdc.gsfc.nasa.gov/planetary/lunar/apollo_lrv.html" },
+  { cuerpo: "luna", mision: "Luna 24", anio: 1976, periodo: "1976-08", lat: 12.75, lon: 62.2, terreno: "Mare Crisium", usada: true, fuente: "https://nssdc.gsfc.nasa.gov/planetary/lunar/lunarussr.html" },
+  { cuerpo: "luna", mision: "Chang'e-3 / Yutu", anio: 2013, periodo: "2013-12 a 2016", lat: 44.12, lon: -19.51, terreno: "Mare Imbrium", usada: true, fuente: "https://planetarynames.wr.usgs.gov/Feature/15415" },
+  { cuerpo: "luna", mision: "Chang'e-4 / Yutu-2", anio: 2019, periodo: "2019-01 a fecha indeterminada", lat: -45.457, lon: 177.588, terreno: "Von Kármán SPA", usada: true, fuente: "https://planetarynames.wr.usgs.gov/SearchResults?Feature+Type=59_Statio&Target=16_Moon" },
+  { cuerpo: "luna", mision: "Chang'e-5", anio: 2020, periodo: "2020-12", lat: 43.06, lon: -51.92, terreno: "Oceanus Procellarum", usada: true, fuente: "https://planetarynames.wr.usgs.gov/SearchResults?Feature+Type=59_Statio&Target=16_Moon" },
+  { cuerpo: "luna", mision: "Chandrayaan-3", anio: 2023, periodo: "2023-08 a 2023-09", lat: -69.367621, lon: 32.348126, terreno: "Tierras altas australes", usada: true, fuente: "https://www.isro.gov.in/ISRO_EN/Chandrayaan3_Details.html" },
+  { cuerpo: "luna", mision: "SLIM", anio: 2024, periodo: "2024-01 a 2024-08", lat: -13.3, lon: 25.2, terreno: "Cerca de Shioli", usada: true, fuente: "https://darts.isas.jaxa.jp/en/missions/slim" },
+  { cuerpo: "luna", mision: "Chang'e-6", anio: 2024, periodo: "2024-06", lat: -41.63, lon: -153.98, terreno: "Cuenca Apollo SPA", usada: true, fuente: "https://planetarynames.wr.usgs.gov/SearchResults?Feature+Type=59_Statio&Target=16_Moon" },
+];
+
 export interface Fuente {
   id: string;
   dato: string;
@@ -121,8 +173,8 @@ export const FUENTES: Record<string, Fuente> = {
   misiones: {
     id: "misiones",
     dato: "Coordenadas de 24 misiones de aterrizaje (10 en Marte, 14 en la Luna)",
-    uso: "Puntos de referencia de las firmas",
-    cita: "Orloff, R. W. (2000). Apollo by the Numbers: A Statistical Reference. NASA SP-2000-4029; NASA NSSDCA, fichas lunares; USGS Gazetteer of Planetary Nomenclature (estaciones de aterrizaje); fichas de misión de NASA Science, CNSA, JAXA e ISRO.",
+    uso: "Puntos de referencia de las firmas y marcadores de los globos de Marte y la Luna",
+    cita: "Tabla analog.v2_mission_signatures del proyecto (Supabase). Coordenadas: Orloff, R. W. (2000). Apollo by the Numbers: A Statistical Reference. NASA SP-2000-4029; NASA NSSDCA, fichas lunares; USGS Gazetteer of Planetary Nomenclature (estaciones de aterrizaje); fichas de misión de NASA Science, CNSA, JAXA e ISRO.",
     url: "https://www.nasa.gov/wp-content/uploads/2023/04/sp-4029.pdf",
   },
   ne_paises: {
@@ -172,13 +224,21 @@ export const CAPAS = {
     nombre: "Máscara de vegetación y cultivos excluidos",
     linea: "Celdas transparentes: bosque, humedales, cultivos, zonas urbanas y mosaicos agrícolas según MODIS. No se evalúan.",
   },
+  misiones: {
+    nombre: "Sitios de aterrizaje usados para entrenar el modelo",
+    linea: "Misiones cuya firma de superficie (elevación, pendiente y albedo en 5 km) define a qué se parece cada celda de la Tierra.",
+  },
+  misiones_fuera: {
+    nombre: "Otros aterrizajes en Marte, fuera de la firma",
+    linea: "Tienen firma calculada pero no entran en el índice: su resultado hidrológico no es «alto».",
+  },
   estaciones: {
     nombre: "Estaciones análogas permanentes",
     linea: "Instalaciones activas hoy en el mundo. Son referencia, no entran al cálculo.",
   },
 } as const;
 
-/** Paleta real de las teselas (pipeline_v2/teselas_v2.py, CLASES y RGBA). */
+/** Paleta real de las teselas de la Luna y la conjunta (pipeline_v2/teselas_v2.py, CLASES y RGBA). */
 export const CLASES_TESELA = [
   { rango: "0,95–1,00", nombre: "muy alta", rgb: "rgb(252,236,60)" },
   { rango: "0,90–0,94", nombre: "alta", rgb: "rgb(248,150,64)" },
@@ -186,6 +246,19 @@ export const CLASES_TESELA = [
   { rango: "0,50–0,74", nombre: "baja", rgb: "rgb(118,42,160)" },
   { rango: "0,00–0,49", nombre: "muy baja", rgb: "rgb(45,40,110)" },
 ];
+
+/** Marte en rampa rojiza (teselas_v2.py, RGBA_MARTE): mismas clases, solo cambia el color. */
+export const CLASES_TESELA_MARTE = [
+  { rango: "0,95–1,00", nombre: "muy alta", rgb: "rgb(255,190,130)" },
+  { rango: "0,90–0,94", nombre: "alta", rgb: "rgb(228,110,60)" },
+  { rango: "0,75–0,89", nombre: "moderada", rgb: "rgb(186,64,40)" },
+  { rango: "0,50–0,74", nombre: "baja", rgb: "rgb(128,40,30)" },
+  { rango: "0,00–0,49", nombre: "muy baja", rgb: "rgb(74,26,22)" },
+];
+
+export function clasesTesela(banda: "marte" | "luna" | "conjunta") {
+  return banda === "marte" ? CLASES_TESELA_MARTE : CLASES_TESELA;
+}
 
 /** analog.v2_metrics → auc_sitios_conocidos, recuperacion_nulo_bloques, jackknife_*, sensibilidad_umbral. */
 export const METRICAS = {

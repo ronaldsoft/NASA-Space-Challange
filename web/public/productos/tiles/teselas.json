@@ -49,5 +49,37 @@
   "global_sin_ecuador/conjunta": 1218,
   "ecuador/conjunta": 80
  },
- "esquema": "XYZ, 256 px, EPSG:3857; píxel sin dato = transparente; z0–6 global, z6 sin Ecuador, z5–9 Ecuador"
+ "esquema": "XYZ, 256 px, EPSG:3857; píxel sin dato = transparente; z0–6 global, z6 sin Ecuador, z5–9 Ecuador",
+ "rgba_marte": [
+  [
+   74,
+   26,
+   22,
+   110
+  ],
+  [
+   128,
+   40,
+   30,
+   165
+  ],
+  [
+   186,
+   64,
+   40,
+   205
+  ],
+  [
+   228,
+   110,
+   60,
+   235
+  ],
+  [
+   255,
+   190,
+   130,
+   255
+  ]
+ ]
 }
