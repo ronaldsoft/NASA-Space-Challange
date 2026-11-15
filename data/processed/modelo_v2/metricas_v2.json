@@ -1,0 +1,435 @@
+{
+ "semilla": 20261115,
+ "reproduccion_ecuador_1km": {
+  "mars": {
+   "coincidencia_exacta": 1.0,
+   "dif_max": 0.0
+  },
+  "moon": {
+   "coincidencia_exacta": 1.0,
+   "dif_max": 0.0
+  }
+ },
+ "jackknife_ecuador_v2": {
+  "mars": {
+   "n_ge95": 387,
+   "misiones": {
+    "Phoenix": 0.576,
+    "Pathfinder": 0.747,
+    "Perseverance": 0.653,
+    "Opportunity": 0.886,
+    "Curiosity": 0.627
+   },
+   "misiones_min": 0.576,
+   "misiones_mediana": 0.653,
+   "variables": {
+    "sin_elevation_m": 0.176,
+    "sin_slope_deg": 0.21,
+    "sin_albedo": 0.244
+   }
+  },
+  "moon": {
+   "n_ge95": 193,
+   "misiones": {
+    "Apollo 11": 0.98,
+    "Apollo 12": 0.932,
+    "Apollo 14": 0.777,
+    "Apollo 15": 0.923,
+    "Apollo 16": 0.865,
+    "Apollo 17": 0.794,
+    "Luna 17 / Lunokhod 1": 1.0,
+    "Luna 24": 0.779,
+    "Chang'e-3 / Yutu": 0.995,
+    "Chang'e-5": 0.99,
+    "Chang'e-4 / Yutu-2": 0.898,
+    "Chang'e-6": 0.866,
+    "SLIM": 0.881,
+    "Chandrayaan-3": 0.975
+   },
+   "misiones_min": 0.777,
+   "misiones_mediana": 0.9105000000000001,
+   "variables": {
+    "sin_elevation_m": 0.289,
+    "sin_slope_deg": 0.151,
+    "sin_albedo": 0.121
+   }
+  }
+ },
+ "jackknife_global_muestra100k": {
+  "mars": {
+   "n_ge95": 5500,
+   "misiones": {
+    "Phoenix": 0.655,
+    "Pathfinder": 0.582,
+    "Perseverance": 0.599,
+    "Opportunity": 0.794,
+    "Curiosity": 0.819
+   },
+   "misiones_min": 0.582,
+   "misiones_mediana": 0.655,
+   "variables": {
+    "sin_elevation_m": 0.185,
+    "sin_slope_deg": 0.228,
+    "sin_albedo": 0.174
+   }
+  },
+  "moon": {
+   "n_ge95": 5500,
+   "misiones": {
+    "Apollo 11": 0.946,
+    "Apollo 12": 0.894,
+    "Apollo 14": 0.871,
+    "Apollo 15": 0.851,
+    "Apollo 16": 0.818,
+    "Apollo 17": 0.88,
+    "Luna 17 / Lunokhod 1": 0.997,
+    "Luna 24": 0.94,
+    "Chang'e-3 / Yutu": 0.997,
+    "Chang'e-5": 0.986,
+    "Chang'e-4 / Yutu-2": 0.844,
+    "Chang'e-6": 0.903,
+    "SLIM": 0.817,
+    "Chandrayaan-3": 0.939
+   },
+   "misiones_min": 0.817,
+   "misiones_mediana": 0.8985000000000001,
+   "variables": {
+    "sin_elevation_m": 0.353,
+    "sin_slope_deg": 0.183,
+    "sin_albedo": 0.154
+   }
+  }
+ },
+ "auc_sitios_conocidos": {
+  "marte_v1": {
+   "auc": 0.63,
+   "n_pos": 9,
+   "n_neg": 6,
+   "ic95_bootstrap": [
+    0.296,
+    0.944
+   ],
+   "ic95_hanley_mcneil": [
+    0.339,
+    0.92
+   ]
+  },
+  "luna_v1": {
+   "auc": 0.722,
+   "n_pos": 6,
+   "n_neg": 6,
+   "ic95_bootstrap": [
+    0.361,
+    1.0
+   ],
+   "ic95_hanley_mcneil": [
+    0.423,
+    1.021
+   ]
+  },
+  "marte_v2": {
+   "auc": 0.889,
+   "n_pos": 9,
+   "n_neg": 6,
+   "ic95_bootstrap": [
+    0.722,
+    1.0
+   ],
+   "ic95_hanley_mcneil": [
+    0.718,
+    1.06
+   ]
+  },
+  "luna_v2": {
+   "auc": 0.917,
+   "n_pos": 6,
+   "n_neg": 6,
+   "ic95_bootstrap": [
+    0.75,
+    1.0
+   ],
+   "ic95_hanley_mcneil": [
+    0.741,
+    1.092
+   ]
+  }
+ },
+ "sitios": [
+  {
+   "sitio": "Yungay, núcleo hiperárido del Atacama (Chile)",
+   "clase_conocida": "marte",
+   "marte_v1": 14.0,
+   "luna_v1": 28.0,
+   "propio_v1": 14.0,
+   "marte_v2": 14.0,
+   "luna_v2": 28.0,
+   "propio_v2": 14.0
+  },
+  {
+   "sitio": "Estructura de impacto de Haughton, isla Devon (Nunavut, Canadá)",
+   "clase_conocida": "marte",
+   "marte_v1": 45.0,
+   "luna_v1": 45.0,
+   "propio_v1": 45.0,
+   "marte_v2": 45.0,
+   "luna_v2": 45.0,
+   "propio_v2": 45.0
+  },
+  {
+   "sitio": "University Valley, Valles Secos de McMurdo (Antártida)",
+   "clase_conocida": "marte",
+   "marte_v1": null,
+   "luna_v1": null,
+   "propio_v1": null,
+   "marte_v2": null,
+   "luna_v2": null,
+   "propio_v2": null
+  },
+  {
+   "sitio": "Askja / colada basáltica Vikrahraun 1961 (Islandia)",
+   "clase_conocida": "marte",
+   "marte_v1": 31.5,
+   "luna_v1": 6.0,
+   "propio_v1": 31.5,
+   "marte_v2": 31.5,
+   "luna_v2": 6.0,
+   "propio_v2": 31.5
+  },
+  {
+   "sitio": "Conos de ceniza de la cumbre de Mauna Kea (Hawái, EE. UU.)",
+   "clase_conocida": "ambos",
+   "marte_v1": 7.5,
+   "luna_v1": 1.0,
+   "propio_v1": 7.5,
+   "marte_v2": 7.0,
+   "luna_v2": 1.0,
+   "propio_v2": 7.0
+  },
+  {
+   "sitio": "Sverrefjell, complejo volcánico de Bockfjorden (Svalbard, Noruega)",
+   "clase_conocida": "marte",
+   "marte_v1": 15.0,
+   "luna_v1": 32.0,
+   "propio_v1": 15.0,
+   "marte_v2": 15.0,
+   "luna_v2": 32.0,
+   "propio_v2": 15.0
+  },
+  {
+   "sitio": "Parque Nacional de Timanfaya, Lanzarote (España)",
+   "clase_conocida": "ambos",
+   "marte_v1": 98.0,
+   "luna_v1": 57.0,
+   "propio_v1": 98.0,
+   "marte_v2": 98.0,
+   "luna_v2": 57.0,
+   "propio_v2": 98.0
+  },
+  {
+   "sitio": "Meteor Crater (Barringer), Arizona (EE. UU.)",
+   "clase_conocida": "luna",
+   "marte_v1": 13.0,
+   "luna_v1": 23.0,
+   "propio_v1": 23.0,
+   "marte_v2": 13.0,
+   "luna_v2": 23.0,
+   "propio_v2": 23.0
+  },
+  {
+   "sitio": "S P Mountain (S P Crater), campo volcánico de San Francisco, Arizona (EE. UU.)",
+   "clase_conocida": "ambos",
+   "marte_v1": 20.0,
+   "luna_v1": 16.0,
+   "propio_v1": 20.0,
+   "marte_v2": 20.0,
+   "luna_v2": 16.0,
+   "propio_v2": 20.0
+  },
+  {
+   "sitio": "Inferno Chasm, llanura de Snake River / entorno de Craters of the Moon, Idaho (EE. UU.)",
+   "clase_conocida": "luna",
+   "marte_v1": 11.0,
+   "luna_v1": 27.0,
+   "propio_v1": 27.0,
+   "marte_v2": 11.0,
+   "luna_v2": 27.0,
+   "propio_v2": 27.0
+  },
+  {
+   "sitio": "Peña de Hierro / cabecera del Río Tinto (Huelva, España)",
+   "clase_conocida": "marte",
+   "marte_v1": null,
+   "luna_v1": null,
+   "propio_v1": null,
+   "marte_v2": null,
+   "luna_v2": null,
+   "propio_v2": null
+  },
+  {
+   "sitio": "Ries (Nördlinger Ries), Alemania",
+   "clase_conocida": "luna",
+   "marte_v1": 54.0,
+   "luna_v1": 68.0,
+   "propio_v1": 68.0,
+   "marte_v2": null,
+   "luna_v2": null,
+   "propio_v2": null
+  }
+ ],
+ "sitios_no_analogo": [
+  {
+   "sitio": "FLONA Tapajós, torre LBA km 67 (BR-Sa1), Amazonía (Brasil)",
+   "marte_v1": null,
+   "luna_v1": null,
+   "marte_v2": null,
+   "luna_v2": null
+  },
+  {
+   "sitio": "Bondville, Illinois (US-Bo1), llanura agrícola (EE. UU.)",
+   "marte_v1": 61.0,
+   "luna_v1": 45.0,
+   "marte_v2": null,
+   "luna_v2": null
+  },
+  {
+   "sitio": "Harvard Forest EMS (US-Ha1), Massachusetts (EE. UU.)",
+   "marte_v1": null,
+   "luna_v1": null,
+   "marte_v2": null,
+   "luna_v2": null
+  },
+  {
+   "sitio": "Tumbarumba (AU-Tum), Nueva Gales del Sur (Australia)",
+   "marte_v1": null,
+   "luna_v1": null,
+   "marte_v2": null,
+   "luna_v2": null
+  },
+  {
+   "sitio": "Hainich (DE-Hai), Turingia (Alemania)",
+   "marte_v1": 75.5,
+   "luna_v1": 70.0,
+   "marte_v2": null,
+   "luna_v2": null
+  },
+  {
+   "sitio": "Hyytiälä / SMEAR II (FI-Hyy), Finlandia",
+   "marte_v1": null,
+   "luna_v1": null,
+   "marte_v2": null,
+   "luna_v2": null
+  }
+ ],
+ "recuperacion_nulo_bloques": {
+  "v1": {
+   "umbral_90": {
+    "recuperados": 1,
+    "de": 12,
+    "nulo_media": 1.05,
+    "nulo_p95": 3.0,
+    "p_valor": 0.6783
+   },
+   "umbral_95": {
+    "recuperados": 1,
+    "de": 12,
+    "nulo_media": 0.34,
+    "nulo_p95": 1.0,
+    "p_valor": 0.3117
+   },
+   "umbral_97": {
+    "recuperados": 1,
+    "de": 12,
+    "nulo_media": 0.12,
+    "nulo_p95": 1.0,
+    "p_valor": 0.1139
+   },
+   "mediana_percentil": {
+    "observada": 21.5,
+    "nulo_media": 48.5,
+    "p_valor": 0.974
+   },
+   "diseno": "1000 permutaciones; cada sitio se reubica en una celda elegible al azar de un bloque 10°×10° elegido al azar dentro de su misma franja de latitud de 10°; mismo radio y misma mediana de buffer (≥10 km) que el observado; celda sin dato = 0."
+  },
+  "v2": {
+   "umbral_90": {
+    "recuperados": 1,
+    "de": 12,
+    "nulo_media": 1.08,
+    "nulo_p95": 3.0,
+    "p_valor": 0.6803
+   },
+   "umbral_95": {
+    "recuperados": 1,
+    "de": 12,
+    "nulo_media": 0.33,
+    "nulo_p95": 1.0,
+    "p_valor": 0.2937
+   },
+   "umbral_97": {
+    "recuperados": 1,
+    "de": 12,
+    "nulo_media": 0.15,
+    "nulo_p95": 1.0,
+    "p_valor": 0.1419
+   },
+   "mediana_percentil": {
+    "observada": 17.5,
+    "nulo_media": 47.5,
+    "p_valor": 0.985
+   },
+   "diseno": "1000 permutaciones; cada sitio se reubica en una celda elegible al azar de un bloque 10°×10° elegido al azar dentro de su misma franja de latitud de 10°; mismo radio y misma mediana de buffer (≥10 km) que el observado; celda sin dato = 0."
+  }
+ },
+ "sensibilidad_umbral": {
+  "90": {
+   "global_v2": {
+    "marte": 86645,
+    "luna": 95964,
+    "conjunta_min": 4541,
+    "celdas": 2197719
+   },
+   "ecuador_v2": {
+    "marte": 710,
+    "luna": 378,
+    "conjunta_min": 8,
+    "celdas": 8741
+   }
+  },
+  "95": {
+   "global_v2": {
+    "marte": 44693,
+    "luna": 38387,
+    "conjunta_min": 1144,
+    "celdas": 2197719
+   },
+   "ecuador_v2": {
+    "marte": 387,
+    "luna": 193,
+    "conjunta_min": 0,
+    "celdas": 8741
+   }
+  },
+  "97": {
+   "global_v2": {
+    "marte": 28373,
+    "luna": 23271,
+    "conjunta_min": 427,
+    "celdas": 2197719
+   },
+   "ecuador_v2": {
+    "marte": 276,
+    "luna": 105,
+    "conjunta_min": 0,
+    "celdas": 8741
+   }
+  },
+  "jaccard_global_marte": {
+   "90_vs_95": 0.516,
+   "97_vs_95": 0.635
+  },
+  "jaccard_global_luna": {
+   "90_vs_95": 0.4,
+   "97_vs_95": 0.606
+  }
+ }
+}
