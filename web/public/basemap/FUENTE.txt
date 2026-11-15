@@ -1,21 +1,58 @@
-ne_110m_land.geojson: Natural Earth 1:110m Physical Land, public domain.
-https://www.naturalearthdata.com/  version in shapefile VERSION.txt.
-Hillshade de Ecuador: Copernicus GLO-90 (EGM2008) remuestreado a 1 km, Horn 315°/45°.
-Hillshade global de la Tierra: Natural Earth SR_50M (public domain), remuestreado a 2048×1024 y con el contraste subido para que el relieve se lea en el globo.
+ne_110m_land.geojson: Natural Earth 1:110m Physical Land, dominio público (NO es NASA).
+  https://www.naturalearthdata.com/  Se sigue cargando en web/src/maps.ts solo como contorno
+  (capas land-fill y land-line); ya no se usa ningún relieve de Natural Earth.
 
-Relieve uniforme v2 (2026-11-14, hora de Ecuador UTC-5), generado con web/scripts/basemap_relieve.py:
-  hillshade_luna.png  <- NASA PDS Geosciences, LRO LOLA LDEM_64 (LRO-L-LOLA-3-RDR-V1, ldem_64.img, 64 px/grado,
-                         radio 1737,4 km). https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/cylindrical/img/ldem_64.img
-  hillshade_marte.png <- NASA PDS Geosciences, MGS MOLA MEGDR 64 ppd (MGS-M-MOLA-5-MEGDR-L3-V1.0, teselas
-                         megt90n000gb, megt90n180gb, megt00n000gb, megt00n180gb; radio 3396,0 km).
-                         https://pds-geosciences.wustl.edu/mgs/mgs-m-mola-5-megdr-l3-v1/mgsl_300x/meg064/
-  Parámetros (iguales para ambos cuerpos):
-    - DEM promediado por área a malla equirectangular 2048x1024.
-    - Horn 3x3, acimut geográfico 315° (luz desde el noroeste), altura solar 45°.
-    - Celda métrica según el radio: dx = R·Δλ·cos φ, dy = R·Δφ.
-    - Exageración z = tamaño de píxel ecuatorial (m) / 1066 -> Luna 5330,3 m -> z = 5,00; Marte 10418,8 m -> z = 9,77.
-    - Salida clip(hs,0,1)·255, sin percentiles ni gamma; RGBA gris, alfa 255 (nodata alfa 0; no hay nodata).
-    - Reproyectado (bilineal) a Web Mercator 2048x2048 cubriendo exactamente las esquinas WORLD de
-      web/src/maps.ts: lon -179,9..179,9, lat -85..85 (no ±85,0511), filas lineales en y de Mercator.
-  hillshade_tierra.png y hillshade_ecuador.png no cambian todavía: siguen siendo los descritos arriba
-  (Natural Earth y GLO-90, equirectangulares) hasta tener SRTMGL30 / NASADEM con cuenta Earthdata.
+Relieve uniforme v2 — generado el 2026-11-14 (hora de Ecuador, UTC-5) con web/scripts/basemap_relieve.py
+(python3 web/scripts/basemap_relieve.py luna marte tierra ecuador; solo numpy + Pillow).
+
+Fuentes (todas NASA):
+  hillshade_luna.png    LRO LOLA LDEM_64 (LRO-L-LOLA-3-RDR-V1, NASA PDS Geosciences), radio 1737,4 km.
+                        https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/cylindrical/img/ldem_64.img
+  hillshade_marte.png   MGS MOLA MEGDR 64 ppd (MGS-M-MOLA-5-MEGDR-L3-V1.0, teselas megt90n000gb,
+                        megt90n180gb, megt00n000gb, megt00n180gb; NASA PDS Geosciences), radio 3396,0 km.
+                        https://pds-geosciences.wustl.edu/mgs/mgs-m-mola-5-megdr-l3-v1/mgsl_300x/meg064/
+  hillshade_tierra.png  SRTMGL30 V002, NASA Shuttle Radar Topography Mission Global 30 arc second
+  hillshade_ecuador.png (NASA JPL / LP DAAC), DOI 10.5067/MEaSUREs/SRTM/SRTMGL30.002
+                        https://www.earthdata.nasa.gov/data/catalog/lpcloud-srtmgl30-002
+                        Las 27 teselas (*.SRTMGL30.dem.zip) se bajaron con cuenta Earthdata. Radio medio 6371,0088 km.
+
+Formato SRTMGL30 (comprobado en los archivos): los .DEM vienen sin .hdr; int16 big-endian,
+6000 filas × 4800 columnas por tesela de 40° lon × 50° lat, celda 30" (1/120°), la esquina superior
+izquierda es el nombre de la tesela (W100N40 = lon −100, lat 40). Las 27 teselas cubren 90°N–60°S
+(SRTM User Guide V3, LP DAAC, oct. 2015, §2.1.4).
+  - nodata −9999: no aparece en ninguna tesela de V002. El mar viene como 0 m (y el mar en los .DEM
+    es exactamente 0). Se trata 0 y −9999 como mar/nodata -> alfa 0. Los píxeles de tierra a 0 m
+    exactos (algunos de costa) también quedan transparentes; a 1 km es despreciable.
+  - Lagos y mares interiores con cota (p. ej. Caspio, −28 m) quedan como superficie plana opaca.
+  - Antártida: SRTMGL30 termina en 60°S. Todo lo que está al sur de 60°S queda transparente (alfa 0)
+    en hillshade_tierra.png; en el globo ahí solo se ve el contorno de Natural Earth.
+  - SRTM solo midió entre 60°N y 56°S (ficha LP DAAC). Al norte de 60°N (y entre 56°S y 60°S) los
+    valores no son SRTM. La ficha dice que SRTMGL30 se hizo "to correspond with GTOPO30" (USGS), y
+    lo esperable es que esos valores vengan de GTOPO30, aunque la ficha de V002 no lo dice textualmente. Por eso el
+    relieve de Groenlandia, el Ártico canadiense y el norte de Siberia es más suave.
+
+Parámetros (iguales para los cuerpos del globo):
+  - DEM promediado en bloques 3×3 (malla fina) y luego promediado por área exacta en la malla
+    Web Mercator de salida, 2048×2048, que cubre exactamente las esquinas WORLD de web/src/maps.ts:
+    lon −179,9..179,9, lat −85..85 (no ±85,0511). Columnas lineales en longitud, filas lineales en y
+    de Mercator. No hace falta cambiar maps.ts.
+  - Horn 3×3 en esa malla, acimut geográfico 315° (luz desde el noroeste), altura solar 45°.
+  - Celda métrica según el radio: Mercator es conforme, cada celda mide R·Δλ·cos φ en x y en y.
+  - Exageración z = tamaño de píxel ecuatorial (m) / 1066, una por cuerpo:
+      Luna 5327,3 m -> z = 5,00; Marte 10413,0 m -> z = 9,77; Tierra 19535,2 m -> z = 18,33.
+  - Salida clip(hs,0,1)·255, sin percentiles ni gamma. RGBA gris; alfa 255 en tierra, 0 en mar/nodata.
+  hillshade_ecuador.png:
+  - SRTMGL30 a 30" nativo (celda 926,6 m, z = 926,6/1066 = 0,87), mismo Horn 315°/45° con
+    dx = R·Δλ·cos φ, dy = R·Δφ.
+  - Cubre exactamente AREA_BOUNDS.completo de maps.ts (oeste −92,007, sur −5,103, este −74,997,
+    norte 1,701), que incluye Galápagos. 2041×817 px, columnas lineales en lon, filas en y de Mercator.
+  - Al este de 82°W, los 120 px (≈110 km) de cada borde del recuadro llevan una rampa de alfa (0 -> 255)
+    para que no se vea el corte sobre Colombia y Perú encima del relieve global. Galápagos (oeste de
+    82°W) no lleva rampa, así que Darwin y Wolf, pegadas al borde norte, se ven completas. La rampa
+    también suaviza la franja amazónica de Ecuador junto al borde este (−75,2°) y el extremo sur;
+    ahí se ve el relieve global debajo.
+
+Comprobaciones (2026-11-14): Tycho cae a 0,4° de 43,3°S 11,2°W; la cumbre de Olympus Mons cae en
+17,34°N 226,9°E (la cumbre MOLA está en 17,35°N 226,55°E). Everest, Chimborazo y Kilimanjaro caen a
+menos de un píxel de su posición. La tierra de SRTMGL30 coincide con el contorno Natural Earth 110m
+(IoU 0,95, máximo sin desplazamiento).
