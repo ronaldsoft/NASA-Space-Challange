@@ -1,18 +1,29 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Explorar Ecuador · NASA Space Apps 2026</title>
+<title>Explore Ecuador · NASA Space Apps 2026</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
 html,body{margin:0;height:100%;background:#05080d;overflow:hidden}
 #lienzo{width:100%;height:100%;display:block}
-#carga{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#cfd8e0;font:16px system-ui,sans-serif;pointer-events:none}
+#carga{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:.4em;color:#cfd8e0;font:16px system-ui,sans-serif;pointer-events:none;text-align:center;padding:1em}
 </style>
 </head>
 <body>
 <canvas id="lienzo" tabindex="-1"></canvas>
-<div id="carga">Cargando visualizador… <span id="pct"></span></div>
+<div id="carga"><span id="msg">Loading viewer…</span> <span id="pct"></span></div>
+<script>
+// Idioma por ?lang=es|en (lo pasa el dashboard); por defecto inglés, igual que web/src/i18n.ts.
+var LANG = (new URLSearchParams(location.search).get("lang") || "").toLowerCase() === "es" ? "es" : "en";
+var TXT = {
+  es: { titulo: "Explorar Ecuador · NASA Space Apps 2026", carga: "Cargando visualizador…", error: "No se pudo cargar el visualizador: " },
+  en: { titulo: "Explore Ecuador · NASA Space Apps 2026", carga: "Loading viewer…", error: "The viewer could not be loaded: " }
+}[LANG];
+document.documentElement.lang = LANG;
+document.title = TXT.titulo;
+document.getElementById("msg").textContent = TXT.carga;
+</script>
 <script src="Build/WebGL.loader.js"></script>
 <script>
 createUnityInstance(document.getElementById("lienzo"), {
@@ -21,13 +32,13 @@ createUnityInstance(document.getElementById("lienzo"), {
   codeUrl: "Build/WebGL.wasm",
   streamingAssetsUrl: "StreamingAssets",
   companyName: "SpaceAppsEcuador",
-  productName: "Visualizador ANALOG v1",
+  productName: "Explorar Ecuador",
   productVersion: "1.0",
   matchWebGLToCanvasSize: true,
   devicePixelRatio: Math.min(window.devicePixelRatio || 1, 2)
 }, function (p) { document.getElementById("pct").textContent = Math.round(p * 100) + " %"; })
 .then(function () { document.getElementById("carga").remove(); })
-.catch(function (e) { document.getElementById("carga").textContent = "Error al cargar el visualizador: " + e; });
+.catch(function (e) { document.getElementById("carga").textContent = TXT.error + e; });
 </script>
 </body>
 </html>

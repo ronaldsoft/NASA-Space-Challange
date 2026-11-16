@@ -1,0 +1,160 @@
+{
+ "t": [
+  {
+   "k": "cargando",
+   "v": "Cargando datos…"
+  },
+  {
+   "k": "titulo",
+   "v": "Explorar Ecuador"
+  },
+  {
+   "k": "subtitulo",
+   "v": "parecido de su superficie con Marte y la Luna (índice exploratorio)"
+  },
+  {
+   "k": "vista_ecuador",
+   "v": "Ecuador 3D"
+  },
+  {
+   "k": "vista_marte",
+   "v": "Marte"
+  },
+  {
+   "k": "vista_luna",
+   "v": "Luna"
+  },
+  {
+   "k": "vista_tierra",
+   "v": "Instalaciones en la Tierra"
+  },
+  {
+   "k": "ayuda",
+   "v": "Ayuda"
+  },
+  {
+   "k": "cerrar",
+   "v": "Cerrar"
+  },
+  {
+   "k": "pestana_capas",
+   "v": "Capas y leyenda"
+  },
+  {
+   "k": "pestana_validacion",
+   "v": "Validación"
+  },
+  {
+   "k": "ecuador_titulo",
+   "v": "Ecuador continental y Galápagos"
+  },
+  {
+   "k": "ecuador_capa",
+   "v": "Capa sobre el relieve:"
+  },
+  {
+   "k": "solo_relieve",
+   "v": "Solo relieve"
+  },
+  {
+   "k": "relieve_de",
+   "v": "Relieve sombreado de {0}."
+  },
+  {
+   "k": "exageracion",
+   "v": "Exageración vertical: ×{0}"
+  },
+  {
+   "k": "textura_de",
+   "v": "Textura: relieve sombreado de {0}."
+  },
+  {
+   "k": "tierra_globo",
+   "v": "Contorno de continentes: Natural Earth."
+  },
+  {
+   "k": "clic_punto",
+   "v": "Haz clic en un punto para ver su ficha."
+  },
+  {
+   "k": "controles_ecuador",
+   "v": "Arrastra para girar · rueda para acercar · WASD o flechas para moverte."
+  },
+  {
+   "k": "controles_globo",
+   "v": "Arrastra para girar el globo · rueda para acercar."
+  },
+  {
+   "k": "val_titulo",
+   "v": "Validación del modelo"
+  },
+  {
+   "k": "val_auc",
+   "v": "Exclusión de misión: AUC {0} en el mundo (p exacta {1}) y {2} en Ecuador (p exacta {3}), con {4} asignaciones."
+  },
+  {
+   "k": "val_auc_explica",
+   "v": "{0} misiones marcianas: {1} con evidencia hidrogeomorfológica alta frente a {2} medias o medio-altas. La evaluación no respalda discriminación útil."
+  },
+  {
+   "k": "val_umbral",
+   "v": "Alta similitud: índice ≥ {0} (escala 0–100)."
+  },
+  {
+   "k": "val_ecuador",
+   "v": "Ecuador, modelo inicial: {0} celdas ≥ {4} para Marte, {1} para la Luna y {2} conjuntas, de {3} celdas evaluadas."
+  },
+  {
+   "k": "val_superficie",
+   "v": "El índice compara solo la superficie: elevación, pendiente y señal radiométrica. I de Moran {0}–{1}: dependencia espacial, no exactitud predictiva."
+  },
+  {
+   "k": "ficha",
+   "v": "Ficha"
+  },
+  {
+   "k": "coordenadas",
+   "v": "Coordenadas: {0}"
+  },
+  {
+   "k": "mision_anio",
+   "v": "Año: {0}"
+  },
+  {
+   "k": "punto_n",
+   "v": "N"
+  },
+  {
+   "k": "punto_s",
+   "v": "S"
+  },
+  {
+   "k": "punto_e",
+   "v": "E"
+  },
+  {
+   "k": "punto_o",
+   "v": "O"
+  },
+  {
+   "k": "pie",
+   "v": "Datos: relieve 3D {0} · {1} · {2} · índice: {3}. NASA Space Apps 2026 · Devebug Industries."
+  },
+  {
+   "k": "ayuda_titulo",
+   "v": "Cómo leer este visor"
+  },
+  {
+   "k": "ayuda_texto",
+   "v": "Cada celda de 30″ (cerca de 1 km) de Ecuador tiene un índice de 0 a 100: la proporción del fondo terrestre que queda más lejos de la firma de los sitios de aterrizaje en Marte o en la Luna. Desde {0} la similitud es «muy alta». Los colores son el modelo inicial, antes del control de calidad MODIS: con QA≤1 ninguna celda ≥ {0} persiste y no se recomiendan sitios. Las vistas Marte y Luna muestran las misiones de referencia; la vista Tierra, las instalaciones análogas de la Tabla 7 del artículo."
+  },
+  {
+   "k": "val_qa",
+   "v": "Control de calidad MODIS: solo {0} de {1} celdas cumplen QA≤1 y ninguna ≥ {3} lo cumple; con QA≤2 ({2} celdas) tampoco. No se recomiendan sitios."
+  },
+  {
+   "k": "tierra_sin_sede",
+   "v": "PANGAEA (Lanzarote) es un programa de campañas sin sede fija: no tiene marcador."
+  }
+ ]
+}

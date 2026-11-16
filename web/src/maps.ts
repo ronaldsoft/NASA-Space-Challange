@@ -1,3 +1,4 @@
+import { tr } from "./i18n";
 import maplibregl from "maplibre-gl";
 import type { GeoJSONSource, Map as MapLibreMap, RasterTileSource, StyleSpecification } from "maplibre-gl";
 import type { Extension, SitioValidacion, Vista, ZonaPrioritaria } from "./types";
@@ -85,7 +86,7 @@ function globeStyle(): StyleSpecification {
       land: {
         type: "geojson",
         data: assetUrl("/basemap/ne_110m_land.geojson"),
-        attribution: "Natural Earth 110m land (dominio público)",
+        attribution: tr("Natural Earth 110m land (dominio público)", "Natural Earth 110m land (public domain)"),
       },
       hs_tierra: {
         type: "image",
@@ -113,7 +114,7 @@ function globeStyle(): StyleSpecification {
         tileSize: 256,
         minzoom: TESELAS.global.minzoom,
         maxzoom: TESELAS.global.maxzoom,
-        attribution: "Índice ANALOG; máscara NASA MODIS IGBP (MCD12Q1 v061, GIBS)",
+        attribution: tr("Índice ANALOG; máscara ESA CCI Land Cover 2022", "ANALOG index; ESA CCI Land Cover 2022 mask"),
       },
       global_sin_ecuador: {
         type: "raster",
@@ -438,7 +439,7 @@ export function setMissionMarkers(
     el.type = "button";
     el.className = `map-pin map-pin-mision map-pin-mision-${s.cuerpo}${s.usada ? "" : " is-fuera"}`;
     const coord = coordTexto(s.lat, s.lon);
-    const estado = s.usada ? "usada para entrenar el modelo" : "fuera de la firma";
+    const estado = s.usada ? tr("usada para entrenar el modelo", "used to train the model") : tr("fuera de la firma", "outside the signature");
     el.setAttribute("aria-label", `${s.mision}, ${s.anio}, ${coord}, ${s.terreno}, ${estado}`);
     el.title = `${s.mision} (${s.anio}) · ${coord} · ${s.terreno} · ${estado}`;
     el.innerHTML = `<span class="pin-dot"></span><span class="pin-label"><span class="pin-nombre">${escapeHtml(s.mision)} · ${s.anio}</span><span class="pin-coord">${escapeHtml(coord)}</span></span>`;

@@ -38,18 +38,6 @@
    255
   ]
  ],
- "teselas": {
-  "global/marte": 1847,
-  "global_sin_ecuador/marte": 1218,
-  "ecuador/marte": 80,
-  "global/luna": 1847,
-  "global_sin_ecuador/luna": 1218,
-  "ecuador/luna": 80,
-  "global/conjunta": 1847,
-  "global_sin_ecuador/conjunta": 1218,
-  "ecuador/conjunta": 80
- },
- "esquema": "XYZ, 256 px, EPSG:3857; píxel sin dato = transparente; z0–6 global, z6 sin Ecuador, z5–9 Ecuador",
  "rgba_marte": [
   [
    74,
@@ -81,5 +69,17 @@
    130,
    255
   ]
- ]
+ ],
+ "teselas": {
+  "global/marte": 1936,
+  "global_sin_ecuador/marte": 1294,
+  "ecuador/marte": 85,
+  "global/luna": 1936,
+  "global_sin_ecuador/luna": 1294,
+  "ecuador/luna": 85,
+  "global/conjunta": 1936,
+  "global_sin_ecuador/conjunta": 1294,
+  "ecuador/conjunta": 85
+ },
+ "esquema": "XYZ, 256 px, EPSG:3857; píxel sin dato = transparente; z0–6 global, z6 sin Ecuador, z5–9 Ecuador"
 }

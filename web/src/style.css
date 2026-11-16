@@ -771,11 +771,11 @@ body, .rail, .topbar, .panel, .panel-body, .status, .ficha, .explica, .home-card
 .map-legend { z-index: 4; left: auto; right: 0.75rem; bottom: 4.1rem; max-height: calc(100% - 9rem); overflow-y: auto; }
 .map-legend .leg-line { margin: 0 0 0.45rem; line-height: 1.4; }
 .map-legend ul.leg-clases, .map-legend ul.leg-otros { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.2rem; }
-.map-legend ul.leg-otros { margin-top: 0.45rem; padding-top: 0.45rem; border-top: 1px solid var(--s2); }
+.map-legend ul.leg-otros { margin-top: 0.45rem; padding-top: 0.2rem; }
 .map-legend ul li { display: flex; align-items: center; gap: 0.5rem; color: var(--ink); }
 .map-legend .rng { font-variant-numeric: tabular-nums; min-width: 5.6rem; }
 .swatch-vacio { background: transparent; outline: 1px dashed var(--muted); outline-offset: -1px; }
-.swatch-estacion { background: #ffffff; border-radius: 50%; box-shadow: inset 0 0 0 2px #1d1c19; }
+.swatch-estacion { background: #ffffff; border-radius: 50%; box-shadow: inset 0 0 0 2px #1d1c19; } /* taste-skill-ignore: anillo del marcador, no una sombra */
 .map-pin-estacion .pin-dot { width: 12px; height: 12px; background: #ffffff; border-color: #1d1c19; }
 .map-pin-estacion { padding: 4px; }
 .map-pin-estacion .pin-label { position: absolute; top: 100%; left: 50%; transform: translateX(-50%); }
@@ -809,7 +809,7 @@ table.clases-area td.bar span { display: block; height: 0.55rem; border-radius: 
 .map-pin-mision .pin-dot { width: 11px; height: 11px; border-width: 2px; border-color: #1d1c19; }
 .map-pin-mision-marte .pin-dot { background: #e0643c; }
 .map-pin-mision-luna .pin-dot { background: #f1ede2; }
-.map-pin-mision.is-fuera .pin-dot { background: transparent; border-color: #e0643c; box-shadow: 0 0 0 1px #1d1c19; }
+.map-pin-mision.is-fuera .pin-dot { background: transparent; border-color: #e0643c; box-shadow: 0 0 0 1px #1d1c19; } /* taste-skill-ignore: anillo del marcador, no una sombra */
 .map-pin-mision .pin-label {
   display: inline-flex; flex-direction: column; align-items: flex-start; gap: 1px;
   position: absolute; left: 100%; top: 50%; transform: translateY(-50%); margin: 0 0 0 2px;
@@ -819,10 +819,10 @@ table.clases-area td.bar span { display: block; height: 0.55rem; border-radius: 
 .map-pin-mision:hover .pin-coord, .map-pin-mision:focus-visible .pin-coord, .map-pin-mision.is-selected .pin-coord { display: inline; }
 .map-pin-mision:hover, .map-pin-mision:focus-visible, .map-pin-mision.is-selected { z-index: 2; }
 .map-pin-mision:hover .pin-label, .map-pin-mision.is-selected .pin-label { opacity: 1; }
-.swatch-mision { border-radius: 50%; box-shadow: inset 0 0 0 2px #1d1c19; }
+.swatch-mision { border-radius: 50%; box-shadow: inset 0 0 0 2px #1d1c19; } /* taste-skill-ignore: anillo del marcador, no una sombra */
 .swatch-mision-marte { background: #e0643c; }
 .swatch-mision-luna { background: #f1ede2; }
-.swatch-mision.is-fuera { background: transparent; box-shadow: inset 0 0 0 2px #e0643c; }
+.swatch-mision.is-fuera { background: transparent; box-shadow: inset 0 0 0 2px #e0643c; } /* taste-skill-ignore: anillo del marcador, no una sombra */
 .map-legend .leg-pista { color: var(--muted); font-size: 0.82rem; }
 
 /* ---------- Leyenda plegable y marcadores en móvil (15 nov 2026) ---------- */
@@ -878,3 +878,11 @@ table.clases-area td.bar span { display: block; height: 0.55rem; border-radius: 
   .map-pin-mision.is-selected .pin-label { left: 50%; top: 100%; transform: translateX(-50%); margin: 2px 0 0; align-items: center; }
 }
 .explorar-legend .leg-pista { display: none; }
+
+/* ---------- Selector de idioma ---------- */
+.lang-seg button { min-width: 2.4rem; padding-inline: 0.6rem; font-weight: 600; letter-spacing: 0.02em; }
+.lang-seg button[aria-pressed="true"] { background: var(--bg); color: var(--ink); }
+
+/* Aviso del control de calidad MODIS (artículo final, Tabla 6) */
+.aviso-qa { border-left: 3px solid var(--warn); background: var(--s2); border-radius: var(--r-l); padding: 0.7rem 1rem; margin: 0.8rem 0; max-width: 68ch; }
+.aviso-qa p { margin: 0; font-size: 0.92rem; line-height: 1.5; }

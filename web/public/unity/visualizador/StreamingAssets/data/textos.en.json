@@ -1,0 +1,160 @@
+{
+ "t": [
+  {
+   "k": "cargando",
+   "v": "Loading data…"
+  },
+  {
+   "k": "titulo",
+   "v": "Explore Ecuador"
+  },
+  {
+   "k": "subtitulo",
+   "v": "how its surface resembles Mars and the Moon (exploratory index)"
+  },
+  {
+   "k": "vista_ecuador",
+   "v": "Ecuador 3D"
+  },
+  {
+   "k": "vista_marte",
+   "v": "Mars"
+  },
+  {
+   "k": "vista_luna",
+   "v": "Moon"
+  },
+  {
+   "k": "vista_tierra",
+   "v": "Facilities on Earth"
+  },
+  {
+   "k": "ayuda",
+   "v": "Help"
+  },
+  {
+   "k": "cerrar",
+   "v": "Close"
+  },
+  {
+   "k": "pestana_capas",
+   "v": "Layers and legend"
+  },
+  {
+   "k": "pestana_validacion",
+   "v": "Validation"
+  },
+  {
+   "k": "ecuador_titulo",
+   "v": "Mainland Ecuador and Galápagos"
+  },
+  {
+   "k": "ecuador_capa",
+   "v": "Layer over the relief:"
+  },
+  {
+   "k": "solo_relieve",
+   "v": "Relief only"
+  },
+  {
+   "k": "relieve_de",
+   "v": "Shaded relief from {0}."
+  },
+  {
+   "k": "exageracion",
+   "v": "Vertical exaggeration: ×{0}"
+  },
+  {
+   "k": "textura_de",
+   "v": "Texture: shaded relief from {0}."
+  },
+  {
+   "k": "tierra_globo",
+   "v": "Continent outlines: Natural Earth."
+  },
+  {
+   "k": "clic_punto",
+   "v": "Click a point to see its details."
+  },
+  {
+   "k": "controles_ecuador",
+   "v": "Drag to rotate · scroll to zoom · WASD or arrow keys to move."
+  },
+  {
+   "k": "controles_globo",
+   "v": "Drag to rotate the globe · scroll to zoom."
+  },
+  {
+   "k": "val_titulo",
+   "v": "Model validation"
+  },
+  {
+   "k": "val_auc",
+   "v": "Leave-one-mission-out: AUC {0} worldwide (exact p {1}) and {2} in Ecuador (exact p {3}), with {4} assignments."
+  },
+  {
+   "k": "val_auc_explica",
+   "v": "{0} Mars missions: {1} with high hydrogeomorphological evidence against {2} medium or medium-high. The evaluation does not support useful discrimination."
+  },
+  {
+   "k": "val_umbral",
+   "v": "High similarity: index ≥ {0} (0–100 scale)."
+  },
+  {
+   "k": "val_ecuador",
+   "v": "Ecuador, initial model: {0} cells ≥ {4} for Mars, {1} for the Moon and {2} joint, out of {3} evaluated cells."
+  },
+  {
+   "k": "val_superficie",
+   "v": "The index compares surface only: elevation, slope and radiometric signal. Moran’s I {0}–{1}: spatial dependence, not predictive accuracy."
+  },
+  {
+   "k": "ficha",
+   "v": "Details"
+  },
+  {
+   "k": "coordenadas",
+   "v": "Coordinates: {0}"
+  },
+  {
+   "k": "mision_anio",
+   "v": "Year: {0}"
+  },
+  {
+   "k": "punto_n",
+   "v": "N"
+  },
+  {
+   "k": "punto_s",
+   "v": "S"
+  },
+  {
+   "k": "punto_e",
+   "v": "E"
+  },
+  {
+   "k": "punto_o",
+   "v": "W"
+  },
+  {
+   "k": "pie",
+   "v": "Data: 3D relief {0} · {1} · {2} · index: {3}. NASA Space Apps 2026 · Devebug Industries."
+  },
+  {
+   "k": "ayuda_titulo",
+   "v": "How to read this viewer"
+  },
+  {
+   "k": "ayuda_texto",
+   "v": "Each 30″ cell (about 1 km) in Ecuador has a 0 to 100 index: the share of the land background lying farther from the signature of the landing sites on Mars or the Moon. From {0} up, similarity is “very high”. The colors are the initial model, before the MODIS quality control: with QA≤1 no cell ≥ {0} remains and no site is recommended. The Mars and Moon views show the reference missions; the Earth view shows the analog facilities in the article’s Table 7."
+  },
+  {
+   "k": "val_qa",
+   "v": "MODIS quality control: only {0} of {1} cells meet QA≤1 and none ≥ {3} does; with QA≤2 ({2} cells) none either. No site is recommended."
+  },
+  {
+   "k": "tierra_sin_sede",
+   "v": "PANGAEA (Lanzarote) is a campaign program with no fixed site: it has no marker."
+  }
+ ]
+}

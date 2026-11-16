@@ -20,7 +20,7 @@ export class MockDataSource implements DataSource {
   async load(): Promise<Catalogo> {
     if (this.cache) return this.cache;
     const res = await fetch(assetUrl("/productos/catalogo.json"));
-    if (!res.ok) throw new Error(`No se pudo cargar el catálogo (${res.status})`);
+    if (!res.ok) throw new Error(`Catalog request failed (${res.status})`);
     this.cache = (await res.json()) as Catalogo;
     return this.cache;
   }

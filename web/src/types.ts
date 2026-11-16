@@ -1,3 +1,5 @@
+import { tr } from "./i18n";
+
 export const INDEX_VARS = ["latitude", "elevation", "slope", "roughness"] as const;
 export type IndexVar = (typeof INDEX_VARS)[number];
 export type Weights = Record<IndexVar, number>;
@@ -34,9 +36,9 @@ export const LABEL_TO_CLASS: Record<string, string> = {
 export type Nivel = "explorador" | "estudiante" | "cientifico";
 
 export const NIVELES: { id: Nivel; label: string; hint: string }[] = [
-  { id: "explorador", label: "Explorador", hint: "Lenguaje sencillo, para empezar de cero" },
-  { id: "estudiante", label: "Estudiante", hint: "Conceptos intermedios: latitud, elevación, pendiente, rugosidad y δ" },
-  { id: "cientifico", label: "Científico", hint: "Método completo, métricas, citas e incertidumbre" },
+  { id: "explorador", label: tr("Explorador", "Explorer"), hint: tr("Lenguaje sencillo, para empezar de cero", "Plain language, to start from zero") },
+  { id: "estudiante", label: tr("Estudiante", "Student"), hint: tr("Conceptos intermedios: latitud, elevación, pendiente, rugosidad y δ", "Intermediate concepts: latitude, elevation, slope, roughness and δ") },
+  { id: "cientifico", label: tr("Científico", "Scientist"), hint: tr("Método completo, métricas, citas e incertidumbre", "Full method, metrics, citations and uncertainty") },
 ];
 
 export type Vista =

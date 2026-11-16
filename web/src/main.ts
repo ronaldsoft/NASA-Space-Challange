@@ -20,7 +20,7 @@ import {
   uncertaintyHTML,
   validationHTML,
 } from "./content";
-import { ESTACIONES, MISIONES } from "./datosModelo";
+import { ESTACIONES_MAPA, MISIONES } from "./datosModelo";
 import { createDataSource } from "./dataSource";
 import { defTermino, GLOSARIO } from "./glossary";
 import {
@@ -35,6 +35,7 @@ import {
   type CuerpoGlobo,
 } from "./maps";
 import { assetUrl } from "./paths";
+import { isEn, LANG, LANGS, saveLang, tr, type Lang } from "./i18n";
 import { NIVELES, type Catalogo, type Nivel, type Vista } from "./types";
 
 const LS_NIVEL = "analog_nivel";
@@ -48,39 +49,39 @@ interface VistaItem {
 }
 
 const GRUPOS: { titulo: string; items: VistaItem[] }[] = [
-  { titulo: "Resumen", items: [{ id: "inicio", label: "Inicio" }] },
+  { titulo: tr("Resumen", "Overview"), items: [{ id: "inicio", label: tr("Inicio", "Home") }] },
   {
-    titulo: "Mapas",
+    titulo: tr("Mapas", "Maps"),
     items: [
-      { id: "similitud-marte", label: "Similitud con Marte" },
-      { id: "similitud-luna", label: "Similitud con la Luna" },
-      { id: "clases", label: "Marte y Luna a la vez" },
+      { id: "similitud-marte", label: tr("Similitud con Marte", "Similarity to Mars") },
+      { id: "similitud-luna", label: tr("Similitud con la Luna", "Similarity to the Moon") },
+      { id: "clases", label: tr("Marte y Luna a la vez", "Mars and Moon at once") },
     ],
   },
   {
-    titulo: "Evidencia",
+    titulo: tr("Evidencia", "Evidence"),
     items: [
-      { id: "validacion", label: "Validación" },
-      { id: "incertidumbre", label: "Límites" },
+      { id: "validacion", label: tr("Validación", "Validation") },
+      { id: "incertidumbre", label: tr("Límites", "Limits") },
     ],
   },
-  { titulo: "Explorar", items: [{ id: "visualizador", label: "Explorar Ecuador" }] },
-  { titulo: "Proyecto", items: [{ id: "trabajo-futuro", label: "Trabajo futuro" }] },
+  { titulo: tr("Explorar", "Explore"), items: [{ id: "visualizador", label: tr("Explorar Ecuador", "Explore Ecuador") }] },
+  { titulo: tr("Proyecto", "Project"), items: [{ id: "trabajo-futuro", label: tr("Trabajo futuro", "Future work") }] },
 ];
 
 const HINT_VISTA: Record<string, string> = {
-  inicio: "Qué medimos y con qué datos",
-  "similitud-marte": "Índice 0–1 frente a los sitios de aterrizaje en Marte",
-  "similitud-luna": "Índice 0–1 frente a los sitios de aterrizaje en la Luna",
-  clases: "El menor de los dos índices en cada celda",
-  validacion: "Parámetros, valores y umbrales",
-  incertidumbre: "Lo que el índice no mide",
-  visualizador: "Relieve en 3D, leyenda y estadísticas de Ecuador",
-  "trabajo-futuro": "Variables que se pueden añadir",
+  inicio: tr("Qué medimos y con qué datos", "What we measure and with what data"),
+  "similitud-marte": tr("Índice 0–100 frente a los sitios de aterrizaje en Marte", "0–100 index against the Mars landing sites"),
+  "similitud-luna": tr("Índice 0–100 frente a los sitios de aterrizaje en la Luna", "0–100 index against the Moon landing sites"),
+  clases: tr("El menor de los dos índices en cada celda", "The lower of the two indices in each cell"),
+  validacion: tr("Evaluación por misión, autocorrelación y control de calidad", "Mission-level evaluation, autocorrelation and quality control"),
+  incertidumbre: tr("Lo que el índice no mide", "What the index does not measure"),
+  visualizador: tr("Relieve en 3D, leyenda y estadísticas de Ecuador", "3D relief, legend and statistics for Ecuador"),
+  "trabajo-futuro": tr("Variables que se pueden añadir", "Variables that could be added"),
 };
 
 const TITULO_VISTA: Record<string, string> = {
-  clases: "Marte y Luna a la vez",
+  clases: tr("Marte y Luna a la vez", "Mars and Moon at once"),
 };
 
 const ICONOS: Record<string, string> = {
@@ -155,28 +156,45 @@ const state = {
 
 function metricsStrip(_cat: Catalogo, nivel: Nivel): string {
   const fila = (l: string, v: string) => `<div><dt>${l}</dt><dd>${v}</dd></div>`;
+  const d = (x: string) => (isEn ? x.replace(/,/g, ".") : x);
+  const umbral = tr("índice ≥ 95 (escala 0–100)", "index ≥ 95 (0–100 scale)");
+  const auc = fila(tr("AUC por exclusión de misión", "Leave-one-mission-out AUC"), d("0,40") + tr(" (p 0,683 mundo · 0,714 Ecuador)", " (p 0.683 world · 0.714 Ecuador)"));
+  const qa = fila(tr("Ecuador con QA≤1", "Ecuador with QA≤1"), tr("0 candidatos ≥ 95", "0 candidates ≥ 95"));
   if (nivel === "explorador") {
-    return fila("AUC Marte", "0,89") + fila("AUC Luna", "0,92") + fila("Umbral", "índice ≥ 0,95");
+    return auc + fila(tr("Umbral", "Threshold"), umbral) + qa;
   }
   return (
-    fila("AUC Marte (IC 95 %)", "0,89 [0,72–1,00]") +
-    fila("AUC Luna (IC 95 %)", "0,92 [0,75–1,00]") +
-    fila("Umbral", "índice ≥ 0,95") +
-    fila("Rejillas", "0,05° mundo · 1 km Ecuador")
+    auc +
+    fila(tr("Umbral", "Threshold"), umbral) +
+    qa +
+    fila(tr("Rejillas", "Grids"), tr("0,05° mundo · 30″ Ecuador", "0.05° world · 30″ Ecuador"))
   );
 }
 
 function captionHTML(vista: Vista, _cat: Catalogo, _nivel: Nivel, cuerpo: CuerpoGlobo, area: AreaTierra): string {
-  if (cuerpo === "luna") return `<strong>Luna</strong> · relieve LOLA LDEM_64 (NASA), sombreado, con los sitios de aterrizaje de las firmas. El índice se calcula sobre la Tierra.`;
-  if (cuerpo === "marte") return `<strong>Marte</strong> · relieve MOLA MEGDR 64 ppd (NASA), sombreado, con los sitios de aterrizaje de las firmas. El índice se calcula sobre la Tierra.`;
-  const dest = vista === "similitud-luna" ? "la Luna" : vista === "clases" ? "Marte y la Luna a la vez" : "Marte";
-  const areaNom = area === "galapagos" ? "Galápagos" : "Ecuador continental";
-  return `<strong>Similitud con ${dest}</strong> · mundo a 0,05°, ${areaNom} a 1 km al acercarte · MOLA, LOLA, MODIS (NASA) y GMTED2010 (USGS)`;
+  if (cuerpo === "luna") {
+    return tr(
+      `<strong>Luna</strong> · relieve LOLA LDEM_64 (NASA), sombreado, con los sitios de aterrizaje de las firmas. El índice se calcula sobre la Tierra.`,
+      `<strong>Moon</strong> · LOLA LDEM_64 relief (NASA), shaded, with the landing sites of the signatures. The index is computed on Earth.`,
+    );
+  }
+  if (cuerpo === "marte") {
+    return tr(
+      `<strong>Marte</strong> · relieve MOLA MEGDR 64 ppd (NASA), sombreado, con los sitios de aterrizaje de las firmas. El índice se calcula sobre la Tierra.`,
+      `<strong>Mars</strong> · MOLA MEGDR 64 ppd relief (NASA), shaded, with the landing sites of the signatures. The index is computed on Earth.`,
+    );
+  }
+  const dest = vista === "similitud-luna" ? tr("la Luna", "the Moon") : vista === "clases" ? tr("Marte y la Luna a la vez", "Mars and the Moon at once") : tr("Marte", "Mars");
+  const areaNom = area === "galapagos" ? "Galápagos" : tr("Ecuador continental", "mainland Ecuador");
+  return tr(
+    `<strong>Similitud con ${dest}</strong> · mundo a 0,05°, ${areaNom} a 30″ al acercarte · MOLA, LOLA, MODIS (NASA), ESA CCI y GMTED2010 (USGS)`,
+    `<strong>Similarity to ${dest}</strong> · world at 0.05°, ${areaNom} at 30″ when you zoom in · MOLA, LOLA, MODIS (NASA), ESA CCI and GMTED2010 (USGS)`,
+  );
 }
 
 function bannerAviso(cat: Catalogo, _nivel: Nivel): string {
   if (cat.mock) return cat.aviso;
-  return "Datos: MOLA, TES, LOLA, LROC WAC, MODIS MCD43C3 y MCD12Q1 (NASA); elevación terrestre GMTED2010 (USGS).";
+  return tr("Datos: MOLA, TES, LOLA, LROC WAC y MODIS MCD43C3 (NASA); cobertura ESA CCI 2022; elevación terrestre GMTED2010 (USGS).", "Data: MOLA, TES, LOLA, LROC WAC and MODIS MCD43C3 (NASA); ESA CCI 2022 land cover; land elevation GMTED2010 (USGS).");
 }
 
 async function main(): Promise<void> {
@@ -201,14 +219,14 @@ async function main(): Promise<void> {
   ).join("");
 
   app.innerHTML = `
-    <a class="skip-link" href="#contenido">Saltar al contenido</a>
+    <a class="skip-link" href="#contenido">${tr("Saltar al contenido", "Skip to content")}</a>
     ${
       cat.mock
-        ? `<div class="banner-mock" data-testid="mock-banner"><strong>Datos MOCK</strong><span id="banner-aviso"></span></div>`
+        ? `<div class="banner-mock" data-testid="mock-banner"><strong>${tr("Datos MOCK", "MOCK data")}</strong><span id="banner-aviso"></span></div>`
         : `<div hidden></div>`
     }
     <div class="rail-scrim" id="rail-scrim" hidden></div>
-    <aside class="rail" id="rail" aria-label="Navegación principal">
+    <aside class="rail" id="rail" aria-label="${tr("Navegación principal", "Main navigation")}">
       <div class="brand">
         <svg class="brand-mark" viewBox="0 0 44 44" fill="none" aria-hidden="true" focusable="false">
           <path class="orb-line" d="M22 9 36.5 34H7.5z" stroke-width="1.6" stroke-linejoin="round"/>
@@ -220,34 +238,37 @@ async function main(): Promise<void> {
         </svg>
         <div>
           <p class="brand-name">ANALOG<span>/</span>delta</p>
-          <p class="brand-sub">La Tierra frente a Marte<br />y la Luna</p>
+          <p class="brand-sub">${tr("La Tierra frente a Marte<br />y la Luna", "Earth against Mars<br />and the Moon")}</p>
         </div>
       </div>
-      <nav class="rail-nav" aria-label="Vistas">${railNav}</nav>
+      <nav class="rail-nav" aria-label="${tr("Vistas", "Views")}">${railNav}</nav>
       <div class="status" data-testid="${cat.mock ? "mock-status" : "real-banner"}">
-        <div class="status-head"><strong>${cat.mock ? "Datos MOCK" : "Validación"}</strong></div>
+        <div class="status-head"><strong>${cat.mock ? tr("Datos MOCK", "MOCK data") : tr("Validación", "Validation")}</strong></div>
         <dl id="metrics-strip">${metricsStrip(cat, state.nivel)}</dl>
-        ${cat.mock ? "" : `<details><summary>Fuente de los datos</summary><p id="banner-aviso"></p></details>`}
+        ${cat.mock ? "" : `<details><summary>${tr("Fuente de los datos", "Data source")}</summary><p id="banner-aviso"></p></details>`}
       </div>
     </aside>
     <div class="stage">
       <header class="topbar">
-        <button type="button" class="icon-btn" id="btn-menu" aria-label="Abrir el menú" aria-expanded="false" aria-controls="rail">
+        <button type="button" class="icon-btn" id="btn-menu" aria-label="${tr("Abrir el menú", "Open the menu")}" aria-expanded="false" aria-controls="rail">
           <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M3 5.5h14M3 10h14M3 14.5h14"/></svg>
         </button>
         <div class="topbar-title">
-          <h1 class="crumb" id="crumb">Inicio</h1>
+          <h1 class="crumb" id="crumb">${tr("Inicio", "Home")}</h1>
           <p class="crumb-hint" id="toolbar-hint"></p>
         </div>
         <div class="topbar-tools">
-          <button type="button" class="btn btn-ghost btn-small" data-action="tour">Guíame</button>
-          <button type="button" class="icon-btn" id="btn-theme" aria-label="Cambiar al tema claro" title="Cambiar tema">
+          <button type="button" class="btn btn-ghost btn-small" data-action="tour">${tr("Guíame", "Guide me")}</button>
+          <div class="seg lang-seg" role="group" aria-label="${tr("Idioma", "Language")}" data-testid="selector-idioma">
+            ${LANGS.map((l) => `<button type="button" data-lang="${l.id}" lang="${l.id}" aria-pressed="${l.id === LANG}" title="${l.name}">${l.label}</button>`).join("")}
+          </div>
+          <button type="button" class="icon-btn" id="btn-theme" aria-label="${tr("Cambiar al tema claro", "Switch to the light theme")}" title="${tr("Cambiar tema", "Change theme")}">
             <svg class="theme-icon-dark" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16.5 11.6A7 7 0 0 1 8.4 3.5a7 7 0 1 0 8.1 8.1z"/></svg>
             <svg class="theme-icon-light" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="10" cy="10" r="3.6"/><path d="M10 2.5v2M10 15.5v2M2.5 10h2M15.5 10h2M4.7 4.7l1.4 1.4M13.9 13.9l1.4 1.4M4.7 15.3l1.4-1.4M13.9 6.1l1.4-1.4"/></svg>
           </button>
         </div>
         <div class="nivel-block">
-          <span class="seg-label" id="nivel-label">Nivel de detalle</span>
+          <span class="seg-label" id="nivel-label">${tr("Nivel de detalle", "Level of detail")}</span>
           <div class="seg" role="radiogroup" aria-labelledby="nivel-label" data-testid="nivel-selector">
             ${NIVELES.map(
               (n) =>
@@ -257,45 +278,45 @@ async function main(): Promise<void> {
         </div>
       </header>
       <div id="visualizador-wrap" hidden>
-        <iframe id="visualizador-frame" title="Explorar Ecuador en 3D" allow="fullscreen"></iframe>
-        <aside class="explorar-panel" id="explorar-panel" aria-label="Leyenda y estadísticas de Ecuador"></aside>
+        <iframe id="visualizador-frame" title="${tr("Explorar Ecuador en 3D", "Explore Ecuador in 3D")}" allow="fullscreen"></iframe>
+        <aside class="explorar-panel" id="explorar-panel" aria-label="${tr("Leyenda y estadísticas de Ecuador", "Legend and statistics for Ecuador")}"></aside>
       </div>
       <div class="main" id="contenido" tabindex="-1">
         <div class="map-col">
-          <div id="map" role="region" aria-label="Globo de Tierra, Luna o Marte"></div>
+          <div id="map" role="region" aria-label="${tr("Globo de Tierra, Luna o Marte", "Globe of Earth, the Moon or Mars")}"></div>
           <div class="map-bar">
-            <div class="seg cuerpo-toggle" role="group" aria-label="Cuerpo del globo" data-testid="selector-cuerpo-globo">
-              <button type="button" data-cuerpo-globo="tierra" aria-pressed="true">Tierra</button>
-              <button type="button" data-cuerpo-globo="luna" aria-pressed="false">Luna</button>
-              <button type="button" data-cuerpo-globo="marte" aria-pressed="false">Marte</button>
+            <div class="seg cuerpo-toggle" role="group" aria-label="${tr("Cuerpo del globo", "Globe body")}" data-testid="selector-cuerpo-globo">
+              <button type="button" data-cuerpo-globo="tierra" aria-pressed="true">${tr("Tierra", "Earth")}</button>
+              <button type="button" data-cuerpo-globo="luna" aria-pressed="false">${tr("Luna", "Moon")}</button>
+              <button type="button" data-cuerpo-globo="marte" aria-pressed="false">${tr("Marte", "Mars")}</button>
             </div>
-            <div class="seg cuerpo-toggle solo-tierra" role="group" aria-label="Área en la Tierra" data-testid="selector-area">
-              <button type="button" data-area="ecuador_continental" aria-pressed="true">Ecuador continental</button>
+            <div class="seg cuerpo-toggle solo-tierra" role="group" aria-label="${tr("Área en la Tierra", "Area on Earth")}" data-testid="selector-area">
+              <button type="button" data-area="ecuador_continental" aria-pressed="true">${tr("Ecuador continental", "Mainland Ecuador")}</button>
               <button type="button" data-area="galapagos" aria-pressed="false">Galápagos</button>
             </div>
-            <div class="seg cuerpo-toggle solo-tierra" role="group" aria-label="Comparar con Marte o con la Luna" data-testid="toggle-cuerpo">
-              <button type="button" data-cuerpo="marte" aria-pressed="true">Similitud con Marte</button>
-              <button type="button" data-cuerpo="luna" aria-pressed="false">Similitud con la Luna</button>
+            <div class="seg cuerpo-toggle solo-tierra" role="group" aria-label="${tr("Comparar con Marte o con la Luna", "Compare with Mars or the Moon")}" data-testid="toggle-cuerpo">
+              <button type="button" data-cuerpo="marte" aria-pressed="true">${tr("Similitud con Marte", "Similarity to Mars")}</button>
+              <button type="button" data-cuerpo="luna" aria-pressed="false">${tr("Similitud con la Luna", "Similarity to the Moon")}</button>
             </div>
             <div class="opacidad-ctl solo-tierra" data-testid="control-opacidad">
-              <label>Opacidad de la capa
+              <label>${tr("Opacidad de la capa", "Layer opacity")}
                 <input type="range" id="opacidad" min="20" max="100" step="1" value="${Math.round(state.opacity * 100)}" />
               </label>
             </div>
-            <button type="button" class="btn btn-primary btn-small" id="btn-ver-unity" data-testid="btn-ver-unity" aria-expanded="false" aria-controls="unity-panel">Explorar Ecuador en 3D</button>
+            <button type="button" class="btn btn-primary btn-small" id="btn-ver-unity" data-testid="btn-ver-unity" aria-expanded="false" aria-controls="unity-panel">${tr("Explorar Ecuador en 3D", "Explore Ecuador in 3D")}</button>
           </div>
-          <div class="map-legend" id="map-legend" data-testid="leyenda" role="region" aria-label="Leyenda del mapa"></div>
+          <div class="map-legend" id="map-legend" data-testid="leyenda" role="region" aria-label="${tr("Leyenda del mapa", "Map legend")}"></div>
           <div class="map-caption" id="map-caption"></div>
-          <div class="map-popup" id="map-popup" hidden role="dialog" aria-label="Ficha del punto"></div>
+          <div class="map-popup" id="map-popup" hidden role="dialog" aria-label="${tr("Ficha del punto", "Point details")}"></div>
           <div id="unity-panel" class="unity-panel" hidden role="dialog" aria-modal="true" aria-labelledby="unity-panel-titulo">
             <div class="unity-panel-bar">
-              <h2 id="unity-panel-titulo">Explorar Ecuador</h2>
-              <button type="button" class="btn btn-small" id="btn-cerrar-unity">Cerrar</button>
+              <h2 id="unity-panel-titulo">${tr("Explorar Ecuador", "Explore Ecuador")}</h2>
+              <button type="button" class="btn btn-small" id="btn-cerrar-unity">${tr("Cerrar", "Close")}</button>
             </div>
-            <iframe id="unity-panel-frame" title="Explorar Ecuador en 3D" allow="fullscreen"></iframe>
+            <iframe id="unity-panel-frame" title="${tr("Explorar Ecuador en 3D", "Explore Ecuador in 3D")}" allow="fullscreen"></iframe>
           </div>
         </div>
-        <aside class="panel" aria-label="Explicación">
+        <aside class="panel" aria-label="${tr("Explicación", "Explanation")}">
           <div class="panel-body" id="panel-body" tabindex="-1"></div>
         </aside>
       </div>
@@ -306,9 +327,9 @@ async function main(): Promise<void> {
       <h2 id="tour-titulo"></h2>
       <p id="tour-cuerpo"></p>
       <div class="tour-actions">
-        <button type="button" class="btn btn-ghost" data-tour="prev">Anterior</button>
-        <button type="button" class="btn btn-primary" data-tour="next">Siguiente</button>
-        <button type="button" class="btn btn-ghost" data-tour="skip">Saltar recorrido</button>
+        <button type="button" class="btn btn-ghost" data-tour="prev">${tr("Anterior", "Back")}</button>
+        <button type="button" class="btn btn-primary" data-tour="next">${tr("Siguiente", "Next")}</button>
+        <button type="button" class="btn btn-ghost" data-tour="skip">${tr("Saltar recorrido", "Skip the tour")}</button>
       </div>
     </div>
     <div id="glosario-panel" hidden role="tooltip"></div>
@@ -366,7 +387,7 @@ async function main(): Promise<void> {
   };
 
   const refreshMarkers = () => {
-    setStationMarkers(map, ESTACIONES);
+    setStationMarkers(map, ESTACIONES_MAPA());
   };
 
   const overlayFor = (vista: Vista): Vista => {
@@ -378,13 +399,13 @@ async function main(): Promise<void> {
   const setLegend = (html: string, strip: string) => {
     const el = document.getElementById("map-legend")!;
     const abierta = el.dataset.abierta === "1";
-    el.innerHTML = `<button type="button" class="leg-toggle" aria-expanded="${abierta}" aria-controls="map-legend-body"><span class="leg-toggle-txt">${abierta ? "Ocultar leyenda" : "Leyenda"}</span><span class="leg-strip" aria-hidden="true">${strip}</span></button><div class="leg-body" id="map-legend-body">${html}</div>`;
+    el.innerHTML = `<button type="button" class="leg-toggle" aria-expanded="${abierta}" aria-controls="map-legend-body"><span class="leg-toggle-txt">${abierta ? tr("Ocultar leyenda", "Hide legend") : tr("Leyenda", "Legend")}</span><span class="leg-strip" aria-hidden="true">${strip}</span></button><div class="leg-body" id="map-legend-body">${html}</div>`;
     el.querySelector<HTMLButtonElement>(".leg-toggle")!.addEventListener("click", () => {
       const abrir = el.dataset.abierta !== "1";
       el.dataset.abierta = abrir ? "1" : "0";
       const b = el.querySelector<HTMLButtonElement>(".leg-toggle")!;
       b.setAttribute("aria-expanded", String(abrir));
-      b.querySelector(".leg-toggle-txt")!.textContent = abrir ? "Ocultar leyenda" : "Leyenda";
+      b.querySelector(".leg-toggle-txt")!.textContent = abrir ? tr("Ocultar leyenda", "Hide legend") : tr("Leyenda", "Legend");
     });
   };
 
@@ -462,7 +483,7 @@ async function main(): Promise<void> {
     state.unityAbierto = true;
     document.documentElement.classList.add("unity-abierto");
     document.getElementById("btn-ver-unity")?.setAttribute("aria-expanded", "true");
-    if (!frame.getAttribute("src")) frame.src = assetUrl("/unity/visualizador/index.html");
+    if (!frame.getAttribute("src")) frame.src = assetUrl(`/unity/visualizador/index.html?lang=${LANG}`);
     hookUnityFrameEsc();
     document.getElementById("btn-cerrar-unity")?.focus();
   };
@@ -493,8 +514,8 @@ async function main(): Promise<void> {
     if (heads.length < 2) return;
     const nav = document.createElement("nav");
     nav.className = "toc";
-    nav.setAttribute("aria-label", "En esta página");
-    nav.innerHTML = `<p class="toc-t">En esta página</p><ul>${heads
+    nav.setAttribute("aria-label", tr("En esta página", "On this page"));
+    nav.innerHTML = `<p class="toc-t">${tr("En esta página", "On this page")}</p><ul>${heads
       .map((h, i) => {
         h.id = `sec-${i}`;
         h.tabIndex = -1;
@@ -557,11 +578,11 @@ async function main(): Promise<void> {
       return;
     }
     const paso = TOUR_PASOS[state.tour];
-    document.getElementById("tour-progress")!.textContent = `Paso ${state.tour + 1} de ${TOUR_PASOS.length}`;
+    document.getElementById("tour-progress")!.textContent = tr(`Paso ${state.tour + 1} de ${TOUR_PASOS.length}`, `Step ${state.tour + 1} of ${TOUR_PASOS.length}`);
     document.getElementById("tour-titulo")!.textContent = paso.titulo;
     document.getElementById("tour-cuerpo")!.textContent = paso.cuerpo;
     const next = box.querySelector<HTMLButtonElement>("[data-tour='next']")!;
-    next.textContent = state.tour === TOUR_PASOS.length - 1 ? "Terminar" : "Siguiente";
+    next.textContent = state.tour === TOUR_PASOS.length - 1 ? tr("Terminar", "Finish") : tr("Siguiente", "Next");
     box.querySelector<HTMLButtonElement>("[data-tour='prev']")!.disabled = state.tour === 0;
     box.hidden = false;
     backdrop.hidden = false;
@@ -587,14 +608,14 @@ async function main(): Promise<void> {
     const scrim = document.getElementById("rail-scrim");
     if (scrim) scrim.hidden = !open;
     document.getElementById("btn-menu")?.setAttribute("aria-expanded", String(open));
-    document.getElementById("btn-menu")?.setAttribute("aria-label", open ? "Cerrar el menú" : "Abrir el menú");
+    document.getElementById("btn-menu")?.setAttribute("aria-label", open ? tr("Cerrar el menú", "Close the menu") : tr("Abrir el menú", "Open the menu"));
     if (open) app.querySelector<HTMLButtonElement>(".rail-link.is-active, .rail-link")?.focus();
   }
 
   function applyTheme(t: Theme): void {
     document.documentElement.dataset.theme = t;
     const btn = document.getElementById("btn-theme");
-    btn?.setAttribute("aria-label", t === "dark" ? "Cambiar al tema claro" : "Cambiar al tema oscuro");
+    btn?.setAttribute("aria-label", t === "dark" ? tr("Cambiar al tema claro", "Switch to the light theme") : tr("Cambiar al tema oscuro", "Switch to the dark theme"));
   }
 
   let lastAnimVista: Vista | null = null;
@@ -615,13 +636,13 @@ async function main(): Promise<void> {
     if (wrap) wrap.hidden = !isViz;
     if (isViz) {
       closeUnityPanel();
-      if (frame && !frame.getAttribute("src")) frame.src = assetUrl("/unity/visualizador/index.html");
+      if (frame && !frame.getAttribute("src")) frame.src = assetUrl(`/unity/visualizador/index.html?lang=${LANG}`);
       const ep = document.getElementById("explorar-panel");
       if (ep && !ep.innerHTML) ep.innerHTML = `<div class="map-legend explorar-legend">${legendHTML("clases")}</div>${explorarEcuadorHTML()}`;
     }
     const crumb = document.getElementById("crumb");
-    if (crumb) crumb.textContent = ETIQUETA_VISTA[state.vista] ?? "Inicio";
-    document.title = `${ETIQUETA_VISTA[state.vista] ?? "Inicio"} · ANALOG/delta`;
+    if (crumb) crumb.textContent = ETIQUETA_VISTA[state.vista] ?? tr("Inicio", "Home");
+    document.title = `${ETIQUETA_VISTA[state.vista] ?? tr("Inicio", "Home")} · ANALOG/delta`;
     const hash = `#${state.vista}`;
     if (location.hash !== hash) history.replaceState(null, "", hash);
     document.getElementById("metrics-strip")!.innerHTML = metricsStrip(cat, state.nivel);
@@ -799,6 +820,19 @@ async function main(): Promise<void> {
     showMapLayer(true);
   });
 
+  document.documentElement.lang = LANG;
+  app.querySelectorAll<HTMLButtonElement>("[data-lang]").forEach((b) => {
+    b.addEventListener("click", () => {
+      const l = b.dataset.lang as Lang;
+      if (l === LANG) return;
+      saveLang(l);
+      // quitar ?lang= para que no pise la elección, y recargar de verdad (asignar la misma URL no recarga)
+      const url = new URL(location.href);
+      url.searchParams.delete("lang");
+      history.replaceState(null, "", url.toString());
+      location.reload();
+    });
+  });
   applyTheme(theme0);
   hintForNivel();
   app.dataset.nivel = state.nivel;
@@ -806,5 +840,5 @@ async function main(): Promise<void> {
 }
 
 main().catch((err) => {
-  document.getElementById("app")!.innerHTML = `<p style="padding:2rem">Error al cargar el catálogo: ${escapeHtml(String(err))}</p>`;
+  document.getElementById("app")!.innerHTML = `<p style="padding:2rem">${tr("Error al cargar el catálogo", "Could not load the catalog")}: ${escapeHtml(String(err))}</p>`;
 });

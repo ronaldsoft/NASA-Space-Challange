@@ -41,6 +41,7 @@ async function freshPage(viewport) {
   await page.evaluate(() => {
     localStorage.removeItem("analog_tour_dismissed");
     localStorage.setItem("analog_nivel", "explorador");
+    localStorage.setItem("analog_lang", "es");
   });
   await page.reload({ waitUntil: "networkidle0" });
   await page.waitForSelector("[data-testid='home'], [data-testid='real-banner']");
